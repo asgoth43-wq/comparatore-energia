@@ -11,23 +11,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
-  <!-- Scripts: OCR & Chart.js -->
+  <!-- Scripts: OCR, Chart.js, PayPal SDK -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
 
   <style>
     :root {
-      --bg-dark: #090d16;
-      --card-bg: rgba(22, 31, 49, 0.7);
-      --card-border: rgba(255, 255, 255, 0.08);
+      --bg-dark: #070a12;
+      --card-bg: rgba(18, 26, 43, 0.65);
+      --card-border: rgba(255, 255, 255, 0.1);
       --accent-cyan: #00f2fe;
       --accent-blue: #4facfe;
       --accent-purple: #7f00ff;
       --accent-green: #00f5a0;
+      --accent-orange: #ff7e5f;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --radius: 20px;
-      --glow: 0 0 25px rgba(0, 242, 254, 0.15);
+      --glow: 0 0 30px rgba(0, 242, 254, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,80 +37,130 @@
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(127, 0, 255, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(0, 242, 254, 0.1) 0px, transparent 50%);
-      background-attachment: fixed;
       color: var(--text-main);
       line-height: 1.5;
-      padding: 3rem 1rem;
+      padding: 2.5rem 1rem;
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* SFONDO DINAMICO E PARTICELLE ANIMATE */
+    .bg-blobs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      animation: float 18s ease-in-out infinite alternate;
+    }
+
+    .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--accent-purple); }
+    .blob-2 { bottom: -10%; right: -10%; width: 550px; height: 550px; background: var(--accent-cyan); animation-delay: -5s; }
+    .blob-3 { top: 40%; left: 30%; width: 350px; height: 350px; background: var(--accent-orange); opacity: 0.18; animation-delay: -10s; }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.1); }
+      100% { transform: translate(-40px, 80px) scale(0.95); }
     }
     
-    .container { max-width: 1200px; margin: 0 auto; }
+    .container { max-width: 1240px; margin: 0 auto; }
     
-    header { text-align: center; margin-bottom: 3.5rem; }
+    /* HEADER */
+    header { text-align: center; margin-bottom: 3rem; }
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1.2rem;
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+    }
     header h1 {
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 800;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan));
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
-    header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 400; }
+    header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 400; max-width: 600px; margin: 0 auto; }
 
-    /* Switcher Casa / Business principale */
+    /* Switcher Casa / Business */
     .target-switcher {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px;
+      border-radius: 40px;
+      border: 1px solid var(--card-border);
+      margin-top: 1.8rem;
     }
     .target-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
+      background: transparent;
+      border: none;
       color: var(--text-muted);
-      padding: 0.6rem 1.5rem;
+      padding: 0.65rem 1.8rem;
       border-radius: 30px;
       font-weight: 700;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     .target-btn.active {
       background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
       color: #fff;
-      border-color: transparent;
-      box-shadow: var(--glow);
+      box-shadow: 0 4px 20px rgba(127, 0, 255, 0.4);
     }
 
     /* Layout Grid */
-    .app-layout { display: grid; grid-template-columns: 380px 1fr; gap: 2.5rem; align-items: start; }
-    @media (max-width: 900px) { .app-layout { grid-template-columns: 1fr; } }
+    .app-layout { display: grid; grid-template-columns: 380px 1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 960px) { .app-layout { grid-template-columns: 1fr; } }
 
-    /* Glassmorphism Cards */
+    /* Cards Glassmorphism */
     .panel-card {
       background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: var(--radius);
       border: 1px solid var(--card-border);
       padding: 1.75rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
       margin-bottom: 1.75rem;
-      transition: border-color 0.3s;
+      transition: all 0.3s ease;
     }
-    .panel-card:hover { border-color: rgba(0, 242, 254, 0.2); }
-    .panel-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+    .panel-card:hover { border-color: rgba(0, 242, 254, 0.3); }
+    .panel-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; color: #fff; }
 
     /* Dropzone OCR UI */
     .dropzone {
       border: 2px dashed rgba(0, 242, 254, 0.3);
-      border-radius: 14px;
-      padding: 2rem 1rem;
+      border-radius: 16px;
+      padding: 2.2rem 1rem;
       text-align: center;
-      background: rgba(0, 242, 254, 0.03);
+      background: rgba(0, 242, 254, 0.02);
       cursor: pointer;
       position: relative;
       transition: all 0.3s ease;
@@ -117,38 +169,39 @@
       border-color: var(--accent-cyan);
       background: rgba(0, 242, 254, 0.08);
       box-shadow: var(--glow);
+      transform: translateY(-2px);
     }
     .dropzone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
     .dropzone-text { font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan); display: block; }
-    .dropzone-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem; display: block; }
+    .dropzone-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem; display: block; }
     .ocr-status { display: none; margin-top: 1rem; font-size: 0.85rem; padding: 0.75rem; border-radius: 10px; background: rgba(0, 245, 160, 0.1); border: 1px solid rgba(0, 245, 160, 0.2); color: var(--accent-green); text-align: center; font-weight: 600; }
 
-    /* Type Switcher Pulsante Glow */
-    .type-selector { display: grid; grid-template-columns: 1fr 1fr; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--card-border); }
-    .type-btn { border: none; background: transparent; padding: 0.75rem; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.3s; }
+    /* Type Switcher */
+    .type-selector { display: grid; grid-template-columns: 1fr 1fr; background: rgba(0, 0, 0, 0.35); padding: 5px; border-radius: 14px; margin-bottom: 1.5rem; border: 1px solid var(--card-border); }
+    .type-btn { border: none; background: transparent; padding: 0.8rem; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; border-radius: 10px; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
     .type-btn.active { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #000; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4); }
 
     /* Inputs */
     .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-muted); }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; color: var(--text-muted); }
     .input-wrapper { position: relative; }
     .input-wrapper input, select {
       width: 100%;
       padding: 0.85rem 1rem;
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.3);
       border: 1px solid var(--card-border);
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 0.95rem;
       color: #fff;
       outline: none;
       transition: all 0.3s;
     }
-    .input-wrapper input:focus, select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 12px rgba(0, 242, 254, 0.25); }
-    .input-suffix { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text-muted); pointer-events: none; }
+    .input-wrapper input:focus, select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 242, 254, 0.25); background: rgba(0, 0, 0, 0.5); }
+    .input-suffix { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text-muted); pointer-events: none; font-weight: 600; }
 
     .fasce-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
     .fasce-box { text-align: center; }
-    .fasce-box label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+    .fasce-box label { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
     .fasce-box input { padding: 0.5rem; text-align: center; font-size: 0.85rem; }
 
     .btn-submit {
@@ -157,35 +210,57 @@
       color: #000;
       border: none;
       padding: 1rem;
-      border-radius: 12px;
+      border-radius: 14px;
       font-weight: 800;
       font-size: 1rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 10px 20px rgba(0, 242, 254, 0.2);
+      box-shadow: 0 8px 25px rgba(0, 242, 254, 0.25);
     }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(0, 242, 254, 0.4); }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 242, 254, 0.45); }
 
-    /* Results Header & Freq Toggle */
-    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    /* Results Header & Barra Ricerca */
+    .results-header { display: flex; justify-space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     .results-header h2 { font-size: 1.5rem; font-weight: 800; }
+    
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .search-input {
+      flex: 1;
+      padding: 0.75rem 1.2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+    }
+    .search-input:focus { border-color: var(--accent-cyan); box-shadow: var(--glow); }
+
     .freq-toggle { display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 30px; padding: 4px; }
     .freq-btn { border: none; background: transparent; padding: 0.5rem 1.25rem; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); border-radius: 20px; cursor: pointer; transition: all 0.3s; }
     .freq-btn.active { background: var(--accent-cyan); color: #000; }
 
-    /* Dynamic Offer Cards */
+    /* Card Offerte */
     .offer-card {
       background: var(--card-bg);
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: var(--radius);
       border: 1px solid var(--card-border);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       margin-bottom: 1.75rem;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .offer-card:hover { transform: translateY(-4px); border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .offer-card:hover { transform: translateY(-4px); border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
     .offer-card.featured { border: 1px solid var(--accent-cyan); box-shadow: var(--glow); }
 
     .badge-evidenza {
@@ -198,22 +273,23 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 1px;
-      padding: 0.4rem 1rem;
-      border-bottom-left-radius: 12px;
+      padding: 0.4rem 1.2rem;
+      border-bottom-left-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .offer-body { padding: 2rem; display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center; }
     .offer-supplier { font-size: 0.85rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; color: var(--accent-cyan); margin-bottom: 0.2rem; }
-    .offer-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.4rem; color: #fff; }
-    .offer-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.4; }
+    .offer-title { font-size: 1.45rem; font-weight: 800; margin-bottom: 0.4rem; color: #fff; }
+    .offer-desc { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.9rem; line-height: 1.4; }
     .tags-list { display: flex; gap: 8px; flex-wrap: wrap; }
-    .tag { display: inline-block; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); padding: 0.3rem 0.7rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
+    .tag { display: inline-block; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); padding: 0.3rem 0.75rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
     .tag.fixed { border-color: rgba(254, 240, 138, 0.3); color: #fef08a; }
     .tag.variable { border-color: rgba(199, 210, 254, 0.3); color: #c7d2fe; }
     .tag.portal100 { border-color: rgba(0, 242, 254, 0.3); color: var(--accent-cyan); }
 
     .price-box { text-align: right; }
-    .price-value { font-size: 2.2rem; font-weight: 800; color: var(--accent-green); text-shadow: 0 0 15px rgba(0, 245, 160, 0.2); }
+    .price-value { font-size: 2.3rem; font-weight: 800; color: var(--accent-green); text-shadow: 0 0 20px rgba(0, 245, 160, 0.25); }
     .price-period { font-size: 0.85rem; color: var(--text-muted); }
 
     .btn-checkout {
@@ -221,32 +297,33 @@
       color: #000;
       border: none;
       padding: 0.75rem 1.5rem;
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: 800;
       cursor: pointer;
       font-size: 0.95rem;
       margin-top: 0.75rem;
       width: 100%;
       transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 245, 160, 0.2);
     }
-    .btn-checkout:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0, 245, 160, 0.4); }
+    .btn-checkout:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0, 245, 160, 0.4); }
 
-    /* Visual Chart Container */
+    /* Chart Container */
     .chart-container {
       padding: 1.5rem 2rem;
       border-top: 1px solid var(--card-border);
-      background: rgba(0,0,0,0.15);
+      background: rgba(0,0,0,0.2);
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 200px 1fr;
       gap: 1.5rem;
       align-items: center;
     }
     @media (max-width: 600px) { .chart-container { grid-template-columns: 1fr; } }
 
-    /* ARERA Receipt Futuristic Tech Style */
+    /* ARERA Receipt */
     .receipt-wrapper {
       border-top: 1px solid var(--card-border);
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.3);
       padding: 1.25rem 2rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.82rem;
@@ -255,66 +332,78 @@
     .receipt-row { display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: #cbd5e1; }
     .receipt-row.total { font-weight: 700; font-size: 1rem; border-top: 1px dashed var(--card-border); padding-top: 0.6rem; margin-top: 0.6rem; color: var(--accent-cyan); }
 
-    /* Guida Bolletta & Accordeon */
-    .guide-section {
-      margin-top: 3.5rem;
+    /* SEZIONE DONAZIONE PAYPAL INTEGRATA */
+    .donation-card {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(127, 0, 255, 0.15), rgba(0, 242, 254, 0.1));
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      backdrop-filter: blur(20px);
+      padding: 2rem;
     }
+    #donate-button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1.2rem;
+    }
+
+    /* Guida Bolletta */
+    .guide-section { margin-top: 4rem; }
     .guide-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 2rem;
-      margin-top: 1rem;
+      padding: 2.2rem;
+      backdrop-filter: blur(20px);
     }
     .guide-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.5rem;
       margin-top: 1.5rem;
     }
     .guide-box {
-      background: rgba(0,0,0,0.25);
+      background: rgba(0,0,0,0.3);
       border: 1px solid var(--card-border);
       padding: 1.25rem;
-      border-radius: 14px;
+      border-radius: 16px;
+      transition: all 0.3s;
     }
-    .guide-box h4 {
-      color: var(--accent-cyan);
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .guide-box p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
+    .guide-box:hover { border-color: var(--accent-cyan); transform: translateY(-3px); }
+    .guide-box h4 { color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .guide-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
-    /* Modale Wizard Dark */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.85); backdrop-filter: blur(12px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
-    .modal-card { background: var(--bg-dark); border-radius: var(--radius); border: 1px solid var(--card-border); max-width: 550px; width: 100%; padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.5); position: relative; }
+    /* Modale Wizard */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 10, 18, 0.85); backdrop-filter: blur(15px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
+    .modal-card { background: var(--bg-dark); border-radius: var(--radius); border: 1px solid var(--card-border); max-width: 550px; width: 100%; padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; }
     .modal-close { position: absolute; top: 1.2rem; right: 1.2rem; border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
 
     .wizard-steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
     .wizard-steps::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: var(--card-border); z-index: 1; transform: translateY(-50%); }
-    .step-node { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-dark); border: 2px solid var(--card-border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; z-index: 2; color: var(--text-muted); }
+    .step-node { width: 38px; height: 38px; border-radius: 50%; background: var(--bg-dark); border: 2px solid var(--card-border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; z-index: 2; color: var(--text-muted); }
     .step-node.active { border-color: var(--accent-cyan); background: var(--accent-cyan); color: #000; box-shadow: var(--glow); }
     .step-node.done { border-color: var(--accent-green); background: var(--accent-green); color: #000; }
 
     .wizard-step-content { display: none; }
     .wizard-step-content.active { display: block; }
     .modal-actions { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
-    .btn-sec { background: transparent; border: 1px solid var(--card-border); color: #fff; padding: 0.85rem 1.5rem; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    .btn-sec { background: transparent; border: 1px solid var(--card-border); color: #fff; padding: 0.85rem 1.5rem; border-radius: 12px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
 
+  <!-- Elementi Sfondo Dinamico -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
   <div class="container">
     <header>
+      <div class="brand-badge">⚡ Trasparenza Garanzia ARERA</div>
       <h1>Comparatore Energia & Gas</h1>
-      <p>Algoritmo basato su trasparenza ARERA & Portale100</p>
+      <p>Trova la tariffa ideale per la tua casa o azienda confrontando i costi reali senza costi nascosti.</p>
 
       <div class="target-switcher">
         <button class="target-btn active" id="target-res" onclick="setTarget('res')">🏠 Casa / Residenziale</button>
@@ -323,14 +412,14 @@
     </header>
 
     <div class="app-layout">
-      <!-- SIDEBAR -->
+      <!-- SIDEBAR PARAMETRI -->
       <aside>
         <div class="panel-card">
           <h2 class="panel-title">⚡ Auto-Scan Bolletta</h2>
           <div class="dropzone">
-            <span style="font-size:2rem; display:block; margin-bottom:0.4rem;">📄</span>
+            <span style="font-size:2.2rem; display:block; margin-bottom:0.4rem;">📄</span>
             <span class="dropzone-text">Trascina o carica la bolletta</span>
-            <span class="dropzone-sub">AI OCR analizza PDF o immagini</span>
+            <span class="dropzone-sub">L'intelligenza artificiale analizza i consumi</span>
             <input type="file" id="bill-file" accept="image/*,.pdf" onchange="processBill(this)">
           </div>
           <div class="ocr-status" id="ocr-status">Lettura bolletta in corso...</div>
@@ -394,27 +483,29 @@
           </div>
         </div>
 
+        <!-- BARRA FILTRO RAPIDO -->
+        <div class="filter-bar">
+          <input type="text" id="search-provider" class="search-input" placeholder="🔍 Cerca fornitore o nome offerta (es. Duferco, Acea...)" oninput="calculateOffers()">
+        </div>
+
         <div id="results-container"></div>
 
-        <!-- SEZIONE DONAZIONI -->
-        <div class="panel-card donation-card" style="text-align: center; background: linear-gradient(135deg, rgba(127, 0, 255, 0.15), rgba(0, 242, 254, 0.15)); border: 1px solid var(--accent-cyan);">
-          <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #fff;">☕ Ti piace questo progetto?</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
-            Questo comparatore è completamente gratuito e trasparente. Se ti ha aiutato a risparmiare sulla bolletta, considera di offrire un caffè allo sviluppatore!
+        <!-- SEZIONE DONAZIONE PAYPAL OFFIZIALE INTEGRATA -->
+        <div class="panel-card donation-card">
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: #fff;">❤️ Ti piace questo progetto?</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            Questo comparatore è completamente gratuito e indipendente. Se ti ha aiutato a risparmiare sulla tua bolletta, considera di offrire una donazione per sostenere lo sviluppo!
           </p>
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" class="btn-submit" style="text-decoration: none; width: auto; padding: 0.6rem 1.2rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem;">
-              💳 Donazione PayPal
-            </a>
-            <a href="https://www.buymeacoffee.com/TUO_ACCOUNT" target="_blank" class="btn-sec" style="text-decoration: none; width: auto; padding: 0.6rem 1.2rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem; border-color: var(--accent-cyan); color: var(--accent-cyan);">
-              ☕ Buy Me a Coffee
-            </a>
+
+          <!-- SDK UFFICIALE PAYPAL -->
+          <div id="donate-button-container">
+            <div id="donate-button"></div>
           </div>
         </div>
       </main>
     </div>
 
-    <!-- SEZIONE GUIDA: COME SI LEGGE UNA BOLLETTA -->
+    <!-- SEZIONE GUIDA INTERATTIVA -->
     <section class="guide-section">
       <div class="guide-card">
         <h3 style="font-size: 1.6rem; color: #fff;">📖 Come si legge una bolletta dell'energia?</h3>
@@ -445,7 +536,7 @@
 
   </div>
 
-  <!-- CHECKOUT MODAL -->
+  <!-- CHECKOUT MODAL WIZARD -->
   <div class="modal-overlay" id="checkout-modal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeCheckout()">&times;</button>
@@ -525,7 +616,7 @@
   </div>
 
   <script>
-    let currentTarget = 'res'; // 'res' o 'biz'
+    let currentTarget = 'res';
     let currentType = 'ee';
     let currentFreq = 'year';
     let selectedOffer = null;
@@ -533,7 +624,6 @@
 
     const fornitoriInEvidenza = ["duferco", "acea", "sorgenia", "a2a", "magis", "enel"];
 
-    // DATABASE OFFERTE RESIDENZIALI & BUSINESS
     const mockOffers = {
       res: {
         ee: [
@@ -561,6 +651,17 @@
         ]
       }
     };
+
+    // Render Iniziale SDK Donazione PayPal
+    PayPal.Donation.Button({
+      env: 'production',
+      hosted_button_id: '6WMVS49ECBBN6',
+      image: {
+        src: 'https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif',
+        alt: 'Fai una donazione con il pulsante PayPal',
+        title: 'PayPal - The safer, easier way to pay online!',
+      }
+    }).render('#donate-button');
 
     function setTarget(target) {
       currentTarget = target;
@@ -646,6 +747,8 @@
       let consumption = parseFloat(document.getElementById('consumption').value) || 0;
       let power = parseFloat(document.getElementById('power').value) || 0;
       const priceTypeFilter = document.getElementById('price-type').value;
+      const searchQuery = (document.getElementById('search-provider')?.value || '').toLowerCase();
+      
       const f1 = parseFloat(document.getElementById('f1-val').value) || 0;
       const f2 = parseFloat(document.getElementById('f2-val').value) || 0;
       const f3 = parseFloat(document.getElementById('f3-val').value) || 0;
@@ -656,12 +759,15 @@
 
       container.innerHTML = '';
       
-      // Reset dei vecchi grafici Chart.js per evitare memoria occupata
       Object.keys(chartInstances).forEach(key => chartInstances[key].destroy());
       chartInstances = {};
 
       let offersList = mockOffers[currentTarget][currentType];
-      let filtered = offersList.filter(o => priceTypeFilter === 'all' || o.tariffType === priceTypeFilter);
+      let filtered = offersList.filter(o => {
+        const matchesType = (priceTypeFilter === 'all' || o.tariffType === priceTypeFilter);
+        const matchesSearch = o.supplier.toLowerCase().includes(searchQuery) || o.name.toLowerCase().includes(searchQuery);
+        return matchesType && matchesSearch;
+      });
 
       filtered.sort((a, b) => {
         const aEv = fornitoriInEvidenza.includes(a.supplier.toLowerCase());
@@ -675,7 +781,7 @@
         let qFissa = offer.fixedFee;
         let qPotenza = currentType === 'ee' ? (power * 21.5) : 0;
         let materiaTot = qConsumi + qFissa + qPotenza;
-        let imposteRate = currentTarget === 'biz' ? 0.22 : 0.10; // IVA 22% Business, 10% Casa
+        let imposteRate = currentTarget === 'biz' ? 0.22 : 0.10;
         let imposte = materiaTot * imposteRate;
         let totaleAnnuo = materiaTot + imposte;
         let totaleMostrato = totaleAnnuo / divisor;
@@ -702,18 +808,16 @@
               </div>
             </div>
 
-            <!-- Visual Chart Section -->
             <div class="chart-container">
-              <div style="width: 100%; height: 160px; position: relative;">
+              <div style="width: 100%; height: 140px; position: relative;">
                 <canvas id="${cardId}"></canvas>
               </div>
               <div style="font-size: 0.8rem; color: var(--text-muted);">
-                <strong style="color: #fff; display: block; margin-bottom: 0.4rem;">Ripartizione della Bolletta</strong>
-                Grafico basato sui costi di produzione, commercializzazione ed imposte applicate.
+                <strong style="color: #fff; display: block; margin-bottom: 0.4rem;">Ripartizione Spesa Stimata</strong>
+                Analisi trasparente secondo la struttura ufficiale ARERA.
               </div>
             </div>
 
-            <!-- Dettaglio Ricevuta ARERA -->
             <div class="receipt-wrapper">
               <div class="receipt-header">
                 <span>Dettaglio Trasparenza ARERA</span>
@@ -728,7 +832,6 @@
           </div>
         `;
 
-        // Render del grafico Chart.js dopo aver inserito l'HTML
         setTimeout(() => {
           const ctx = document.getElementById(cardId);
           if (ctx) {
@@ -745,10 +848,8 @@
               options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                  legend: { display: false }
-                },
-                cutout: '70%'
+                plugins: { legend: { display: false } },
+                cutout: '75%'
               }
             });
           }
