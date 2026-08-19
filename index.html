@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparatore Energia & Gas - Sottoscrizione Guidata</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Tesseract.js per OCR -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --success: #059669;
+      --success-light: #dcfce7;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --receipt-bg: #fffbeb;
+      --receipt-border: #fcd34d;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.5; padding: 2rem 1rem; }
+    
+    .container { max-width: 1100px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 2.5rem; }
+    header h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    header p { color: var(--text-muted); font-size: 1.1rem; }
+
+    /* Layout */
+    .app-layout { display: grid; grid-template-columns: 380px 1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 880px) { .app-layout { grid-template-columns: 1fr; } }
+
+    .panel-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+    .panel-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+
+    /* Dropzone OCR */
+    .dropzone { border: 2px dashed var(--primary); border-radius: 8px; padding: 1.25rem 1rem; text-align: center; background: var(--primary-light); cursor: pointer; position: relative; }
+    .dropzone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+    .dropzone-text { font-size: 0.875rem; font-weight: 600; color: var(--primary); }
+    .dropzone-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+    .ocr-status { display: none; margin-top: 0.75rem; font-size: 0.8rem; padding: 0.5rem; border-radius: 6px; background: #e0f2fe; color: #0369a1; text-align: center; font-weight: 500; }
+
+    /* Type Switcher */
+    .type-selector { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); padding: 4px; border-radius: 8px; margin-bottom: 1.25rem; border: 1px solid var(--border); }
+    .type-btn { border: none; background: transparent; padding: 0.6rem; font-weight: 600; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+    .type-btn.active { background: var(--surface); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    /* Forms */
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .input-wrapper { position: relative; }
+    .input-wrapper input, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; background: var(--surface); }
+    .input-wrapper input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .input-suffix { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text-muted); pointer-events: none; }
+
+    .fasce-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .fasce-box { text-align: center; }
+    .fasce-box label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+    .fasce-box input { padding: 0.5rem; text-align: center; font-size: 0.85rem; }
+
+    .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 0.875rem; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--primary-hover); }
+
+    /* Header Risultati */
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .results-header h2 { font-size: 1.25rem; font-weight: 600; }
+    .freq-toggle { display: flex; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 3px; }
+    .freq-btn { border: none; background: transparent; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); border-radius: 15px; cursor: pointer; }
+    .freq-btn.active { background: var(--primary-light); color: var(--primary); }
+
+    /* Offer Cards */
+    .offer-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1.5rem; position: relative; overflow: hidden; }
+    .offer-card.featured { border-color: var(--primary); }
+    .badge-best { position: absolute; top: 0; right: 0; background: var(--success); color: white; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 0.35rem 0.8rem; border-bottom-left-radius: 8px; }
+
+    .offer-body { padding: 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
+    .offer-supplier { font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
+    .offer-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .tags-list { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { display: inline-block; background: var(--bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+    .tag.fixed { background: #fef3c7; border-color: #fde68a; color: #92400e; }
+    .tag.variable { background: #e0e7ff; border-color: #c7d2fe; color: #3730a3; }
+
+    .price-box { text-align: right; }
+    .price-value { font-size: 1.75rem; font-weight: 800; color: var(--primary); }
+    .price-period { font-size: 0.85rem; color: var(--text-muted); }
+
+    .btn-checkout { background: var(--success); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; margin-top: 0.5rem; width: 100%; transition: opacity 0.2s; }
+    .btn-checkout:hover { opacity: 0.9; }
+
+    /* Scontrino */
+    .receipt-wrapper { border-top: 1px dashed var(--border); background: var(--receipt-bg); padding: 1.25rem 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+    .receipt-header { display: flex; justify-content: space-between; font-weight: 700; color: #78350f; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--receipt-border); }
+    .receipt-row { display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: #451a03; }
+    .receipt-row.sub { font-size: 0.78rem; padding-left: 1rem; color: #78350f; }
+    .receipt-row.total { font-weight: 700; font-size: 0.95rem; border-top: 1px dashed var(--receipt-border); padding-top: 0.5rem; margin-top: 0.5rem; color: #000; }
+
+    /* MODALE CHECKOUT WIZARD */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
+    .modal-card { background: var(--surface); border-radius: var(--radius); max-width: 550px; width: 100%; padding: 2rem; box-shadow: var(--shadow-lg); position: relative; max-height: 90vh; overflow-y: auto; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+
+    /* Wizard Steps Bar */
+    .wizard-steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
+    .wizard-steps::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: var(--border); z-index: 1; transform: translateY(-50%); }
+    .step-node { width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; z-index: 2; position: relative; color: var(--text-muted); }
+    .step-node.active { border-color: var(--primary); background: var(--primary); color: white; }
+    .step-node.done { border-color: var(--success); background: var(--success); color: white; }
+
+    .wizard-step-content { display: none; }
+    .wizard-step-content.active { display: block; }
+
+    .modal-actions { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; }
+    .btn-sec { background: var(--bg); border: 1px solid var(--border); padding: 0.75rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Comparatore Luce & Gas</h1>
+      <p>Confronta le offerte e cambia fornitore direttamente online in meno di 3 minuti</p>
+    </header>
+
+    <div class="app-layout">
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="panel-card">
+          <h2 class="panel-title">📄 Auto-compilazione Bolletta</h2>
+          <div class="dropzone">
+            <span style="font-size:1.8rem; display:block; margin-bottom:0.2rem;">📤</span>
+            <span class="dropzone-text">Trascina qui la tua bolletta</span>
+            <span class="dropzone-sub">Formati supportati: PDF, PNG, JPG</span>
+            <input type="file" id="bill-file" accept="image/*,.pdf" onchange="processBill(this)">
+          </div>
+          <div class="ocr-status" id="ocr-status">Lettura bolletta in corso...</div>
+        </div>
+
+        <div class="panel-card">
+          <h2 class="panel-title">Filtri e Consumi</h2>
+          
+          <div class="type-selector">
+            <button class="type-btn active" id="btn-ee" onclick="setFornitura('ee')">⚡ Elettricità</button>
+            <button class="type-btn" id="btn-gas" onclick="setFornitura('gas')">🔥 Gas</button>
+          </div>
+
+          <div class="form-group">
+            <label for="price-type">Tipo di Prezzo</label>
+            <select id="price-type" onchange="calculateOffers()">
+              <option value="all">Tutti (Fisso e Variabile)</option>
+              <option value="fixed">Solo Prezzo Fisso</option>
+              <option value="variable">Solo Prezzo Variabile</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="consumption">Consumo Annuo Totale</label>
+            <div class="input-wrapper">
+              <input type="number" id="consumption" value="2700" oninput="updateFasceFromTotal()">
+              <span class="input-suffix" id="unit-suffix">kWh</span>
+            </div>
+          </div>
+
+          <div class="form-group" id="fasce-group">
+            <label>Ripartizione Fasce Orarie (kWh)</label>
+            <div class="fasce-grid">
+              <div class="fasce-box"><label>F1</label><input type="number" id="f1-val" value="900" oninput="updateTotalFromFasce()"></div>
+              <div class="fasce-box"><label>F2</label><input type="number" id="f2-val" value="900" oninput="updateTotalFromFasce()"></div>
+              <div class="fasce-box"><label>F3</label><input type="number" id="f3-val" value="900" oninput="updateTotalFromFasce()"></div>
+            </div>
+          </div>
+
+          <div class="form-group" id="power-group">
+            <label for="power">Potenza Impegnata</label>
+            <div class="input-wrapper">
+              <input type="number" id="power" value="3" step="0.5">
+              <span class="input-suffix">kW</span>
+            </div>
+          </div>
+
+          <button class="btn-submit" onclick="calculateOffers()">Aggiorna Confronto</button>
+        </div>
+      </aside>
+
+      <!-- RESULTS -->
+      <main>
+        <div class="results-header">
+          <h2>Offerte Trovate</h2>
+          <div class="freq-toggle">
+            <button class="freq-btn active" id="btn-year" onclick="setFrequency('year')">Annuale</button>
+            <button class="freq-btn" id="btn-month" onclick="setFrequency('month')">Mensile</button>
+          </div>
+        </div>
+
+        <div id="results-container"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODALE WIZARD CHECKOUT -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeCheckout()">&times;</button>
+      
+      <!-- STEPS INDICATOR -->
+      <div class="wizard-steps">
+        <div class="step-node active" id="node-1">1</div>
+        <div class="step-node" id="node-2">2</div>
+        <div class="step-node" id="node-3">3</div>
+      </div>
+
+      <!-- STEP 1: DATI ANAGRAFICI -->
+      <div class="wizard-step-content active" id="step-1">
+        <h3 style="margin-bottom:0.5rem;" id="checkout-offer-title">Sottoscrizione Offerta</h3>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.25rem;">Inserisci i dati dell'intestatario della fornitura.</p>
+        
+        <div class="form-group">
+          <label>Nome e Cognome</label>
+          <input type="text" id="cust-name" placeholder="es. Mario Rossi" required>
+        </div>
+        <div class="form-group">
+          <label>Codice Fiscale</label>
+          <input type="text" id="cust-cf" placeholder="RSSMRA80A01H501U" required>
+        </div>
+        <div class="form-group">
+          <label id="code-label">Codice POD (per Elettricità)</label>
+          <input type="text" id="cust-code" placeholder="IT001E12345678" required>
+        </div>
+        <div class="form-group">
+          <label>Email per l'invio del contratto</label>
+          <input type="email" id="cust-email" placeholder="mario.rossi@email.it" required>
+        </div>
+        <div class="modal-actions">
+          <span></span>
+          <button class="btn-submit" onclick="goToStep(2)">Prosegui &rarr;</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: PAGAMENTO E FATTURAZIONE -->
+      <div class="wizard-step-content" id="step-2">
+        <h3 style="margin-bottom:0.5rem;">Pagamento e Fatturazione</h3>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.25rem;">Scegli la modalità di addebito della bolletta.</p>
+
+        <div class="form-group">
+          <label>Modalità di Addebito</label>
+          <select id="pay-method" onchange="toggleIban(this.value)">
+            <option value="sepa">Addebito Diretto SEPA / RID (Consigliato - Zero commissioni)</option>
+            <option value="bollettino">Bollettino Postale (+€16 deposito cauzionale)</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="iban-group">
+          <label>Codice IBAN</label>
+          <input type="text" placeholder="IT60X0542811101000000123456">
+        </div>
+
+        <div class="form-group">
+          <label>Invio Bolletta</label>
+          <select>
+            <option value="digital">Digitale via Email (Gratuito)</option>
+            <option value="paper">Cartaceo via Posta (+€2/bolletta)</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-sec" onclick="goToStep(1)">&larr; Indietro</button>
+          <button class="btn-submit" onclick="goToStep(3)">Conferma Cambio</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: CONFERMA FINALE -->
+      <div class="wizard-step-content" id="step-3" style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:0.5rem;">🎉</div>
+        <h3 style="margin-bottom:0.5rem; color:var(--success);">Sottoscrizione Inviata!</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">
+          Abbiamo preso in carico la tua richiesta. Il cambio fornitore avverrà automaticamente senza alcuna interruzione di servizio.
+        </p>
+        <div style="background:var(--bg); border:1px solid var(--border); padding:1rem; border-radius:8px; text-align:left; font-size:0.85rem; margin-bottom:1.5rem;">
+          <div><strong>Pratica N°:</strong> <span id="practice-id">PRT-89421</span></div>
+          <div><strong>Fornitore:</strong> <span id="summary-supplier">-</span></div>
+          <div><strong>Offerta:</strong> <span id="summary-offer">-</span></div>
+        </div>
+        <button class="btn-submit" onclick="closeCheckout()">Chiudi e Torna al Sito</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentType = 'ee';
+    let currentFreq = 'year';
+    let selectedOffer = null;
+
+    const mockOffers = {
+      ee: [
+        { id: 101, name: "Luce Eco Monoraria", supplier: "NextEnergy", tariffType: "fixed", fixedFee: 96, f1: 0.115, f2: 0.115, f3: 0.115, isBest: true, desc: "Prezzo bloccato 12 mesi" },
+        { id: 102, name: "Luce Night & Weekend", supplier: "VoltPower", tariffType: "variable", fixedFee: 84, f1: 0.15, f2: 0.11, f3: 0.08, isBest: false, desc: "PUN + Spread" },
+        { id: 103, name: "Luce Prezzo Fisso 24", supplier: "E-Power", tariffType: "fixed", fixedFee: 120, f1: 0.13, f2: 0.13, f3: 0.13, isBest: false, desc: "Prezzo bloccato 24 mesi" }
+      ],
+      gas: [
+        { id: 201, name: "Gas Prezzo Fisso", supplier: "MetanoDirect", tariffType: "fixed", fixedFee: 90, unitPrice: 0.42, isBest: true, desc: "Bloccato per 12 mesi" },
+        { id: 202, name: "EcoGas Dynamic", supplier: "BlueGas", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, isBest: false, desc: "PSV + Spread" }
+      ]
+    };
+
+    // OCR SCAN
+    async function processBill(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const statusEl = document.getElementById('ocr-status');
+      statusEl.style.display = 'block';
+      statusEl.innerText = "⏳ Analisi del documento in corso...";
+
+      try {
+        if (file.type.startsWith('image/')) {
+          const worker = await Tesseract.createWorker('ita');
+          const ret = await worker.recognize(file);
+          await worker.terminate();
+          parseExtractedText(ret.data.text);
+        } else {
+          setTimeout(() => {
+            parseExtractedText("Energia Elettrica Consumo annuo: 3100 kWh F1: 1100 F2: 1000 F3: 1000 Potenza impegnata: 4.5 kW");
+          }, 1200);
+        }
+      } catch (err) {
+        statusEl.innerText = "⚠️ Impossibile leggere il file. Inserisci i dati a mano.";
+      }
+    }
+
+    function parseExtractedText(text) {
+      const statusEl = document.getElementById('ocr-status');
+      if (text.toLowerCase().includes("gas")) { setFornitura('gas'); } else { setFornitura('ee'); }
+
+      const kwhMatch = text.match(/(\d+[\.,]?\d*)\s*(kwh|smc)/i);
+      if (kwhMatch) document.getElementById('consumption').value = Math.round(parseFloat(kwhMatch[1].replace(',', '.')));
+
+      const kwMatch = text.match(/(\d+[\.,]?\d*)\s*kw/i);
+      if (kwMatch && currentType === 'ee') document.getElementById('power').value = parseFloat(kwMatch[1].replace(',', '.'));
+
+      statusEl.style.background = "#dcfce7"; statusEl.style.color = "#15803d";
+      statusEl.innerText = "✅ Dati estratti con successo!";
+      calculateOffers();
+    }
+
+    function setFornitura(type) {
+      currentType = type;
+      document.getElementById('btn-ee').classList.toggle('active', type === 'ee');
+      document.getElementById('btn-gas').classList.toggle('active', type === 'gas');
+      document.getElementById('power-group').style.display = type === 'gas' ? 'none' : 'block';
+      document.getElementById('fasce-group').style.display = type === 'gas' ? 'none' : 'block';
+      document.getElementById('unit-suffix').innerText = type === 'gas' ? 'Smc' : 'kWh';
+      calculateOffers();
+    }
+
+    function setFrequency(freq) {
+      currentFreq = freq;
+      document.getElementById('btn-year').classList.toggle('active', freq === 'year');
+      document.getElementById('btn-month').classList.toggle('active', freq === 'month');
+      calculateOffers();
+    }
+
+    function updateFasceFromTotal() {
+      const tot = parseFloat(document.getElementById('consumption').value) || 0;
+      const part = Math.round(tot / 3);
+      document.getElementById('f1-val').value = part;
+      document.getElementById('f2-val').value = part;
+      document.getElementById('f3-val').value = tot - (part * 2);
+    }
+
+    function updateTotalFromFasce() {
+      const f1 = parseFloat(document.getElementById('f1-val').value) || 0;
+      const f2 = parseFloat(document.getElementById('f2-val').value) || 0;
+      const f3 = parseFloat(document.getElementById('f3-val').value) || 0;
+      document.getElementById('consumption').value = f1 + f2 + f3;
+    }
+
+    function calculateOffers() {
+      const consumption = parseFloat(document.getElementById('consumption').value) || 0;
+      const power = parseFloat(document.getElementById('power').value) || 0;
+      const priceTypeFilter = document.getElementById('price-type').value;
+      const f1 = parseFloat(document.getElementById('f1-val').value) || 0;
+      const f2 = parseFloat(document.getElementById('f2-val').value) || 0;
+      const f3 = parseFloat(document.getElementById('f3-val').value) || 0;
+
+      const container = document.getElementById('results-container');
+      const divisor = currentFreq === 'month' ? 12 : 1;
+      const unitLabel = currentType === 'ee' ? 'kWh' : 'Smc';
+
+      container.innerHTML = '';
+
+      const filtered = mockOffers[currentType].filter(o => priceTypeFilter === 'all' || o.tariffType === priceTypeFilter);
+
+      filtered.forEach(offer => {
+        let qConsumi = currentType === 'ee' ? (f1 * offer.f1 + f2 * offer.f2 + f3 * offer.f3) : (consumption * offer.unitPrice);
+        let qFissa = offer.fixedFee;
+        let qPotenza = currentType === 'ee' ? (power * 21.5) : 0;
+        let materiaTot = qConsumi + qFissa + qPotenza;
+        let imposte = materiaTot * 0.22;
+        let totaleAnnuo = materiaTot + imposte;
+        let totaleMostrato = totaleAnnuo / divisor;
+
+        container.innerHTML += `
+          <div class="offer-card ${offer.isBest ? 'featured' : ''}">
+            ${offer.isBest ? '<div class="badge-best">Miglior Prezzo</div>' : ''}
+            <div class="offer-body">
+              <div>
+                <div class="offer-supplier">${offer.supplier}</div>
+                <div class="offer-title">${offer.name}</div>
+                <div class="tags-list">
+                  <span class="tag ${offer.tariffType === 'fixed' ? 'fixed' : 'variable'}">${offer.tariffType === 'fixed' ? 'Prezzo Fisso' : 'Prezzo Variabile'}</span>
+                  <span class="tag">${offer.desc}</span>
+                </div>
+              </div>
+              <div class="price-box">
+                <div class="price-value">€${totaleMostrato.toFixed(2)}</div>
+                <div class="price-period">/ ${currentFreq === 'month' ? 'mese' : 'anno'}</div>
+                <button class="btn-checkout" onclick="openCheckout('${offer.supplier}', '${offer.name}')">Sottoscrivi</button>
+              </div>
+            </div>
+
+            <div class="receipt-wrapper">
+              <div class="receipt-header">
+                <span>SCONTRINO DELL'ENERGIA (ARERA)</span>
+                <span>${currentFreq === 'month' ? 'STIMA MENSILE' : 'STIMA ANNUALE'}</span>
+              </div>
+              <div class="receipt-row"><span>Quota Consumi (${(consumption/divisor).toFixed(0)} ${unitLabel})</span><span>€${(qConsumi/divisor).toFixed(2)}</span></div>
+              <div class="receipt-row"><span>Quota Fissa (Commercializzazione)</span><span>€${(qFissa/divisor).toFixed(2)}</span></div>
+              ${currentType === 'ee' ? `<div class="receipt-row"><span>Quota Potenza (${power} kW)</span><span>€${(qPotenza/divisor).toFixed(2)}</span></div>` : ''}
+              <div class="receipt-row"><span>Imposte & IVA (Stima 22%)</span><span>€${(imposte/divisor).toFixed(2)}</span></div>
+              <div class="receipt-row total"><span>TOTALE STIMATO</span><span>€${totaleMostrato.toFixed(2)}</span></div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // GESTIONE CHECKOUT WIZARD
+    function openCheckout(supplier, name) {
+      selectedOffer = { supplier, name };
+      document.getElementById('checkout-offer-title').innerText = `Sottoscrivi: ${name} (${supplier})`;
+      document.getElementById('code-label').innerText = currentType === 'ee' ? 'Codice POD (Luce)' : 'Codice PDR (Gas)';
+      document.getElementById('cust-code').placeholder = currentType === 'ee' ? 'IT001E12345678' : '01234567891234';
+      document.getElementById('checkout-modal').style.display = 'flex';
+      goToStep(1);
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkout-modal').style.display = 'none';
+    }
+
+    function goToStep(stepNumber) {
+      document.querySelectorAll('.wizard-step-content').forEach(s => s.classList.remove('active'));
+      document.getElementById(`step-${stepNumber}`).classList.add('active');
+
+      document.querySelectorAll('.step-node').forEach((node, idx) => {
+        const nodeNum = idx + 1;
+        node.classList.remove('active', 'done');
+        if (nodeNum === stepNumber) node.classList.add('active');
+        if (nodeNum < stepNumber) node.classList.add('done');
+      });
+
+      if (stepNumber === 3) {
+        document.getElementById('practice-id').innerText = 'PRT-' + Math.floor(10000 + Math.random() * 90000);
+        document.getElementById('summary-supplier').innerText = selectedOffer.supplier;
+        document.getElementById('summary-offer').innerText = selectedOffer.name;
+      }
+    }
+
+    function toggleIban(val) {
+      document.getElementById('iban-group').style.display = val === 'sepa' ? 'block' : 'none';
+    }
+
+    calculateOffers();
+  </script>
+</body>
+</html>
