@@ -4,10 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comparatore Energia & Gas - Next Gen</title>
+  <meta name="description" content="Compara le migliori tariffe Casa e Business per energia elettrica e gas con trasparenza ARERA.">
+  
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Scripts: OCR & Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root {
       --bg-dark: #090d16;
@@ -52,7 +59,31 @@
     }
     header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 400; }
 
-    /* Layout */
+    /* Switcher Casa / Business principale */
+    .target-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .target-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.6rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .target-btn.active {
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: var(--glow);
+    }
+
+    /* Layout Grid */
     .app-layout { display: grid; grid-template-columns: 380px 1fr; gap: 2.5rem; align-items: start; }
     @media (max-width: 900px) { .app-layout { grid-template-columns: 1fr; } }
 
@@ -97,7 +128,7 @@
     .type-btn { border: none; background: transparent; padding: 0.75rem; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.3s; }
     .type-btn.active { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #000; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4); }
 
-    /* Inputs Cyberpunk / Modern Style */
+    /* Inputs */
     .form-group { margin-bottom: 1.25rem; }
     .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-muted); }
     .input-wrapper { position: relative; }
@@ -173,7 +204,8 @@
 
     .offer-body { padding: 2rem; display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center; }
     .offer-supplier { font-size: 0.85rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; color: var(--accent-cyan); margin-bottom: 0.2rem; }
-    .offer-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem; color: #fff; }
+    .offer-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.4rem; color: #fff; }
+    .offer-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem; line-height: 1.4; }
     .tags-list { display: flex; gap: 8px; flex-wrap: wrap; }
     .tag { display: inline-block; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); padding: 0.3rem 0.7rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
     .tag.fixed { border-color: rgba(254, 240, 138, 0.3); color: #fef08a; }
@@ -199,6 +231,18 @@
     }
     .btn-checkout:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0, 245, 160, 0.4); }
 
+    /* Visual Chart Container */
+    .chart-container {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--card-border);
+      background: rgba(0,0,0,0.15);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    @media (max-width: 600px) { .chart-container { grid-template-columns: 1fr; } }
+
     /* ARERA Receipt Futuristic Tech Style */
     .receipt-wrapper {
       border-top: 1px solid var(--card-border);
@@ -210,6 +254,43 @@
     .receipt-header { display: flex; justify-content: space-between; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem; border-bottom: 1px dashed var(--card-border); padding-bottom: 0.4rem; }
     .receipt-row { display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: #cbd5e1; }
     .receipt-row.total { font-weight: 700; font-size: 1rem; border-top: 1px dashed var(--card-border); padding-top: 0.6rem; margin-top: 0.6rem; color: var(--accent-cyan); }
+
+    /* Guida Bolletta & Accordeon */
+    .guide-section {
+      margin-top: 3.5rem;
+    }
+    .guide-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-top: 1rem;
+    }
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .guide-box {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--card-border);
+      padding: 1.25rem;
+      border-radius: 14px;
+    }
+    .guide-box h4 {
+      color: var(--accent-cyan);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .guide-box p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
 
     /* Modale Wizard Dark */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 13, 22, 0.85); backdrop-filter: blur(12px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
@@ -234,6 +315,11 @@
     <header>
       <h1>Comparatore Energia & Gas</h1>
       <p>Algoritmo basato su trasparenza ARERA & Portale100</p>
+
+      <div class="target-switcher">
+        <button class="target-btn active" id="target-res" onclick="setTarget('res')">🏠 Casa / Residenziale</button>
+        <button class="target-btn" id="target-biz" onclick="setTarget('biz')">🏢 Business / P.IVA</button>
+      </div>
     </header>
 
     <div class="app-layout">
@@ -270,7 +356,7 @@
           </div>
 
           <div class="form-group">
-            <label for="consumption">Consumo Annuo Estimato</label>
+            <label for="consumption">Consumo Annuo Stimato</label>
             <div class="input-wrapper">
               <input type="number" id="consumption" value="2700" oninput="updateFasceFromTotal()">
               <span class="input-suffix" id="unit-suffix">kWh</span>
@@ -301,7 +387,7 @@
       <!-- MAIN RESULTS -->
       <main>
         <div class="results-header">
-          <h2>Migliori Offerte Garanzie ARERA</h2>
+          <h2 id="section-title">Migliori Offerte Garanzie ARERA</h2>
           <div class="freq-toggle">
             <button class="freq-btn active" id="btn-year" onclick="setFrequency('year')">Annuale</button>
             <button class="freq-btn" id="btn-month" onclick="setFrequency('month')">Mensile</button>
@@ -309,8 +395,54 @@
         </div>
 
         <div id="results-container"></div>
+
+        <!-- SEZIONE DONAZIONI -->
+        <div class="panel-card donation-card" style="text-align: center; background: linear-gradient(135deg, rgba(127, 0, 255, 0.15), rgba(0, 242, 254, 0.15)); border: 1px solid var(--accent-cyan);">
+          <h3 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #fff;">☕ Ti piace questo progetto?</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+            Questo comparatore è completamente gratuito e trasparente. Se ti ha aiutato a risparmiare sulla bolletta, considera di offrire un caffè allo sviluppatore!
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="https://www.paypal.me/TUO_ACCOUNT" target="_blank" class="btn-submit" style="text-decoration: none; width: auto; padding: 0.6rem 1.2rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+              💳 Donazione PayPal
+            </a>
+            <a href="https://www.buymeacoffee.com/TUO_ACCOUNT" target="_blank" class="btn-sec" style="text-decoration: none; width: auto; padding: 0.6rem 1.2rem; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.5rem; border-color: var(--accent-cyan); color: var(--accent-cyan);">
+              ☕ Buy Me a Coffee
+            </a>
+          </div>
+        </div>
       </main>
     </div>
+
+    <!-- SEZIONE GUIDA: COME SI LEGGE UNA BOLLETTA -->
+    <section class="guide-section">
+      <div class="guide-card">
+        <h3 style="font-size: 1.6rem; color: #fff;">📖 Come si legge una bolletta dell'energia?</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.4rem;">
+          Comprendere la struttura dei costi stabilita da **ARERA** ti permette di scegliere l'offerta migliore senza trucchetti di marketing.
+        </p>
+
+        <div class="guide-grid">
+          <div class="guide-box">
+            <h4>💡 Spesa Materia Prima</h4>
+            <p>È l'unico vero costo competitivo. Si divide in <strong>Quota Fissa</strong> (€/anno per la commercializzazione) e <strong>Quota Energia</strong> (€/kWh o €/Smc in base ai consumi).</p>
+          </div>
+          <div class="guide-box">
+            <h4>⚙️ Trasporto e Gestione Contatore</h4>
+            <p>Costo stabilito direttamente dall'Autorità ARERA per coprire i servizi di rete e i contatori. È identico per tutti i fornitori presenti sul mercato.</p>
+          </div>
+          <div class="guide-box">
+            <h4>🛡️ Oneri di Sistema</h4>
+            <p>Istituiti per legge, coprono i costi generali per il sostegno alle energie rinnovabili e la dismissione delle centrali nucleari. Tariffe fisse definite per legge.</p>
+          </div>
+          <div class="guide-box">
+            <h4>📑 Imposte e IVA</h4>
+            <p>Include le accise erariali sui consumi e l'IVA applicata sul totale delle voci della bolletta (10% per i consumi domestici, 22% per gli usi business/commerciali).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <!-- CHECKOUT MODAL -->
@@ -329,12 +461,12 @@
         <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Inserisci i dati dell'intestatario.</p>
         
         <div class="form-group">
-          <label>Nome e Cognome</label>
-          <div class="input-wrapper"><input type="text" id="cust-name" placeholder="Mario Rossi" required></div>
+          <label id="lbl-name">Nome e Cognome / Ragione Sociale</label>
+          <div class="input-wrapper"><input type="text" id="cust-name" placeholder="Mario Rossi S.r.l." required></div>
         </div>
         <div class="form-group">
-          <label>Codice Fiscale</label>
-          <div class="input-wrapper"><input type="text" id="cust-cf" placeholder="RSSMRA80A01H501U" required></div>
+          <label id="lbl-cf">Codice Fiscale / Partita IVA</label>
+          <div class="input-wrapper"><input type="text" id="cust-cf" placeholder="12345678901" required></div>
         </div>
         <div class="form-group">
           <label id="code-label">Codice POD</label>
@@ -342,7 +474,7 @@
         </div>
         <div class="form-group">
           <label>Email Contratto</label>
-          <div class="input-wrapper"><input type="email" id="cust-email" placeholder="mario.rossi@email.it" required></div>
+          <div class="input-wrapper"><input type="email" id="cust-email" placeholder="amministrazione@azienda.it" required></div>
         </div>
         <div class="modal-actions">
           <span></span>
@@ -393,30 +525,51 @@
   </div>
 
   <script>
+    let currentTarget = 'res'; // 'res' o 'biz'
     let currentType = 'ee';
     let currentFreq = 'year';
     let selectedOffer = null;
+    let chartInstances = {};
 
     const fornitoriInEvidenza = ["duferco", "acea", "sorgenia", "a2a", "magis", "enel"];
 
+    // DATABASE OFFERTE RESIDENZIALI & BUSINESS
     const mockOffers = {
-      ee: [
-        { id: 101, name: "Luce Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 90, f1: 0.12, f2: 0.11, f3: 0.09, desc: "Prezzo Indicizzato" },
-        { id: 102, name: "Acea Luce Web", supplier: "ACEA", tariffType: "fixed", fixedFee: 96, f1: 0.125, f2: 0.125, f3: 0.125, desc: "Prezzo Bloccato 12M" },
-        { id: 103, name: "Sorgenia Next Energy", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.118, f3: 0.105, desc: "Energia 100% Green" },
-        { id: 104, name: "A2A Smart Luce", supplier: "A2A", tariffType: "fixed", fixedFee: 108, f1: 0.13, f2: 0.13, f3: 0.13, desc: "Prezzo Fisso Garantito" },
-        { id: 105, name: "Magis Luce Dynamic", supplier: "Magis", tariffType: "variable", fixedFee: 78, f1: 0.115, f2: 0.110, f3: 0.095, desc: "Trasparenza ARERA" },
-        { id: 106, name: "Enel Move Luce", supplier: "Enel", tariffType: "fixed", fixedFee: 120, f1: 0.135, f2: 0.135, f3: 0.135, desc: "Prezzo Sicuro" }
-      ],
-      gas: [
-        { id: 201, name: "Gas Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 84, unitPrice: 0.39, desc: "PSV + Spread" },
-        { id: 202, name: "Acea Gas Sicuro", supplier: "ACEA", tariffType: "fixed", fixedFee: 90, unitPrice: 0.43, desc: "Prezzo Bloccato" },
-        { id: 203, name: "Sorgenia Next Gas", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Eco Gas" },
-        { id: 204, name: "A2A Easy Gas", supplier: "A2A", tariffType: "fixed", fixedFee: 96, unitPrice: 0.42, desc: "Prezzo Fisso 12 Mesi" },
-        { id: 205, name: "Magis Gas Verde", supplier: "Magis", tariffType: "variable", fixedFee: 72, unitPrice: 0.37, desc: "Gas Certificato" },
-        { id: 206, name: "Enel Sempre Gas", supplier: "Enel", tariffType: "fixed", fixedFee: 108, unitPrice: 0.44, desc: "Protezione Prezzo" }
-      ]
+      res: {
+        ee: [
+          { id: 101, name: "Luce Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 90, f1: 0.12, f2: 0.11, f3: 0.09, desc: "Prezzo Indicizzato al PUN con sconti esclusivi per la casa." },
+          { id: 102, name: "Acea Luce Web", supplier: "ACEA", tariffType: "fixed", fixedFee: 96, f1: 0.125, f2: 0.125, f3: 0.125, desc: "Prezzo Bloccato per 12 Mesi al riparo dalle oscillazioni di mercato." },
+          { id: 103, name: "Sorgenia Next Energy", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.118, f3: 0.105, desc: "Energia 100% Green proveniente da fonti rinnovabili certificate." },
+          { id: 104, name: "A2A Smart Luce", supplier: "A2A", tariffType: "fixed", fixedFee: 108, f1: 0.13, f2: 0.13, f3: 0.13, desc: "Prezzo Fisso Garantito con opzione di monitoraggio dei consumi via app." },
+          { id: 105, name: "Magis Luce Dynamic", supplier: "Magis", tariffType: "variable", fixedFee: 78, f1: 0.115, f2: 0.110, f3: 0.095, desc: "Massima trasparenza ARERA con il prezzo di costo della materia prima." }
+        ],
+        gas: [
+          { id: 201, name: "Gas Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 84, unitPrice: 0.39, desc: "Tariffa indicizzata al PSV con azzeramento dei costi di attivazione." },
+          { id: 202, name: "Acea Gas Sicuro", supplier: "ACEA", tariffType: "fixed", fixedFee: 90, unitPrice: 0.43, desc: "Senza sorprese in bolletta durante i mesi invernali più freddi." },
+          { id: 203, name: "Sorgenia Next Gas", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Inclusa la compensazione delle emissioni di CO2 con progetti green." }
+        ]
+      },
+      biz: {
+        ee: [
+          { id: 301, name: "Business Pro Light", supplier: "Duferco", tariffType: "variable", fixedFee: 140, f1: 0.105, f2: 0.098, f3: 0.085, desc: "Dedicata alle Aziende ad alto consumo diurno. Assistenza prioritaria." },
+          { id: 302, name: "Enel Impresa Sicura", supplier: "Enel", tariffType: "fixed", fixedFee: 160, f1: 0.115, f2: 0.115, f3: 0.115, desc: "Blocca il costo della produzione aziendale per 24 Mesi." },
+          { id: 303, name: "A2A Corporate Power", supplier: "A2A", tariffType: "variable", fixedFee: 120, f1: 0.108, f2: 0.102, f3: 0.088, desc: "Fatturazione aggregata multi-pod per aziende con diverse sedi." }
+        ],
+        gas: [
+          { id: 401, name: "Business Gas Power", supplier: "Duferco", tariffType: "variable", fixedFee: 130, unitPrice: 0.35, desc: "Indicizzazione PSV ottimizzata per aziende e grandi impianti." },
+          { id: 402, name: "Sorgenia Impresa Verde", supplier: "Sorgenia", tariffType: "fixed", fixedFee: 150, unitPrice: 0.38, desc: "Fornitura 100% compensata con certificati ambientali inclusi." }
+        ]
+      }
     };
+
+    function setTarget(target) {
+      currentTarget = target;
+      document.getElementById('target-res').classList.toggle('active', target === 'res');
+      document.getElementById('target-biz').classList.toggle('active', target === 'biz');
+      document.getElementById('consumption').value = target === 'biz' ? 12000 : 2700;
+      updateFasceFromTotal();
+      calculateOffers();
+    }
 
     async function processBill(input) {
       const file = input.files[0];
@@ -448,7 +601,6 @@
       const kwhMatch = text.match(/(\d+[\.,]?\d*)\s*(kwh|smc)/i);
       if (kwhMatch) {
         let parsedVal = parseFloat(kwhMatch[1].replace(',', '.'));
-        if (parsedVal > 20000) parsedVal = 2700;
         document.getElementById('consumption').value = Math.round(parsedVal);
         updateFasceFromTotal();
       }
@@ -498,15 +650,18 @@
       const f2 = parseFloat(document.getElementById('f2-val').value) || 0;
       const f3 = parseFloat(document.getElementById('f3-val').value) || 0;
 
-      if (consumption > 20000) { consumption = 2700; document.getElementById('consumption').value = 2700; }
-
       const container = document.getElementById('results-container');
       const divisor = currentFreq === 'month' ? 12 : 1;
       const unitLabel = currentType === 'ee' ? 'kWh' : 'Smc';
 
       container.innerHTML = '';
+      
+      // Reset dei vecchi grafici Chart.js per evitare memoria occupata
+      Object.keys(chartInstances).forEach(key => chartInstances[key].destroy());
+      chartInstances = {};
 
-      let filtered = mockOffers[currentType].filter(o => priceTypeFilter === 'all' || o.tariffType === priceTypeFilter);
+      let offersList = mockOffers[currentTarget][currentType];
+      let filtered = offersList.filter(o => priceTypeFilter === 'all' || o.tariffType === priceTypeFilter);
 
       filtered.sort((a, b) => {
         const aEv = fornitoriInEvidenza.includes(a.supplier.toLowerCase());
@@ -520,21 +675,24 @@
         let qFissa = offer.fixedFee;
         let qPotenza = currentType === 'ee' ? (power * 21.5) : 0;
         let materiaTot = qConsumi + qFissa + qPotenza;
-        let imposte = materiaTot * 0.22;
+        let imposteRate = currentTarget === 'biz' ? 0.22 : 0.10; // IVA 22% Business, 10% Casa
+        let imposte = materiaTot * imposteRate;
         let totaleAnnuo = materiaTot + imposte;
         let totaleMostrato = totaleAnnuo / divisor;
 
+        const cardId = `chart-${offer.id}`;
+
         container.innerHTML += `
           <div class="offer-card ${isEvidenza ? 'featured' : ''}">
-            ${isEvidenza ? '<div class="badge-evidenza">In Evidenza - Portale100</div>' : ''}
+            ${isEvidenza ? '<div class="badge-evidenza">In Evidenza</div>' : ''}
             <div class="offer-body">
               <div>
                 <div class="offer-supplier">${offer.supplier}</div>
                 <div class="offer-title">${offer.name}</div>
+                <div class="offer-desc">${offer.desc}</div>
                 <div class="tags-list">
                   <span class="tag ${offer.tariffType === 'fixed' ? 'fixed' : 'variable'}">${offer.tariffType === 'fixed' ? 'Prezzo Fisso' : 'Prezzo Variabile'}</span>
-                  <span class="tag portal100">Portale100</span>
-                  <span class="tag">${offer.desc}</span>
+                  <span class="tag portal100">${currentTarget === 'biz' ? 'Business / P.IVA' : 'Residenziale'}</span>
                 </div>
               </div>
               <div class="price-box">
@@ -544,6 +702,18 @@
               </div>
             </div>
 
+            <!-- Visual Chart Section -->
+            <div class="chart-container">
+              <div style="width: 100%; height: 160px; position: relative;">
+                <canvas id="${cardId}"></canvas>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">
+                <strong style="color: #fff; display: block; margin-bottom: 0.4rem;">Ripartizione della Bolletta</strong>
+                Grafico basato sui costi di produzione, commercializzazione ed imposte applicate.
+              </div>
+            </div>
+
+            <!-- Dettaglio Ricevuta ARERA -->
             <div class="receipt-wrapper">
               <div class="receipt-header">
                 <span>Dettaglio Trasparenza ARERA</span>
@@ -552,11 +722,37 @@
               <div class="receipt-row"><span>Quota Consumi (${(consumption/divisor).toFixed(0)} ${unitLabel})</span><span>€${(qConsumi/divisor).toFixed(2)}</span></div>
               <div class="receipt-row"><span>Quota Fissa (Commercializzazione)</span><span>€${(qFissa/divisor).toFixed(2)}</span></div>
               ${currentType === 'ee' ? `<div class="receipt-row"><span>Quota Potenza (${power} kW)</span><span>€${(qPotenza/divisor).toFixed(2)}</span></div>` : ''}
-              <div class="receipt-row"><span>Imposte & IVA (22%)</span><span>€${(imposte/divisor).toFixed(2)}</span></div>
+              <div class="receipt-row"><span>Imposte & IVA (${(imposteRate*100).toFixed(0)}%)</span><span>€${(imposte/divisor).toFixed(2)}</span></div>
               <div class="receipt-row total"><span>TOTALE STIMATO</span><span>€${totaleMostrato.toFixed(2)}</span></div>
             </div>
           </div>
         `;
+
+        // Render del grafico Chart.js dopo aver inserito l'HTML
+        setTimeout(() => {
+          const ctx = document.getElementById(cardId);
+          if (ctx) {
+            chartInstances[cardId] = new Chart(ctx, {
+              type: 'doughnut',
+              data: {
+                labels: ['Materia Prima', 'Quota Fissa', 'Imposte'],
+                datasets: [{
+                  data: [(qConsumi/divisor).toFixed(2), (qFissa/divisor).toFixed(2), (imposte/divisor).toFixed(2)],
+                  backgroundColor: ['#00f2fe', '#7f00ff', '#00f5a0'],
+                  borderWidth: 0
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { display: false }
+                },
+                cutout: '70%'
+              }
+            });
+          }
+        }, 50);
       });
     }
 
