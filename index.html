@@ -3,398 +3,1023 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparatore Offerte Energia</title>
+    <title>EnergyCompare Pro - Il Portale Innovativo per la Comparazione Bollette</title>
+    <!-- Chart.js per la visualizzazione grafica avanzata -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome per la iconografia del portale -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0056b3;
-            --secondary: #28a745;
-            --bg: #f4f7f6;
-            --card-bg: #ffffff;
-            --text: #333;
+            --primary: #0a2540;
+            --primary-accent: #635bff;
+            --secondary: #00d4b1;
+            --warning: #ffab00;
+            --danger: #ff5252;
+            --bg-dark: #080b11;
+            --bg-card: #121824;
+            --bg-card-hover: #1a2333;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #1e293b;
+            --glass-bg: rgba(18, 24, 36, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --neon-glow: 0 0 15px rgba(99, 91, 255, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Background Effects */
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99,91,255,0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+
+        .blob-1 { top: -100px; left: -100px; }
+        .blob-2 { bottom: -100px; right: -100px; background: radial-gradient(circle, rgba(0,212,177,0.12) 0%, rgba(0,0,0,0) 70%); }
+
+        /* Header & Navigation */
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 15px 40px;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--secondary);
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px var(--secondary));
+        }
+
+        .logo span {
+            color: var(--primary-accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Hero & Filters Section */
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        h1 {
-            text-align: center;
-            color: var(--primary);
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            gap: 10px;
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+        }
+
+        /* Segment Switcher Tabs */
+        .tab-switcher {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 30px;
         }
 
         .tab-btn {
-            padding: 10px 20px;
+            padding: 12px 36px;
             border: none;
-            background-color: #ddd;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .tab-btn.active {
-            background-color: var(--primary);
+            background: var(--primary-accent);
             color: white;
+            box-shadow: var(--neon-glow);
         }
 
-        .grid {
+        /* Interactive Filter Bar */
+        .filter-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
+            align-items: center;
         }
 
-        .card {
-            background: var(--card-bg);
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-control {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
+            padding: 10px 14px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-control:focus {
+            border-color: var(--primary-accent);
+        }
+
+        /* Card Grid Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 30px;
+        }
+
+        .offer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            border-top: 5px solid var(--primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
 
-        .card h3 {
-            margin-top: 0;
-            color: var(--primary);
+        .offer-card:hover {
+            transform: translateY(-5px);
+            background: var(--bg-card-hover);
+            border-color: var(--primary-accent);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .price-tag {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--secondary);
-            margin: 10px 0;
-        }
-
-        .btn-action {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        .btn-action:hover {
-            background-color: #003d80;
-        }
-
-        .btn-breakdown {
-            background: none;
-            border: none;
-            color: var(--primary);
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 13px;
-            margin-top: 8px;
-            padding: 0;
-            text-align: left;
-        }
-
-        .load-more-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .btn-load-more {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            font-size: 18px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-        .btn-load-more:hover {
-            background-color: #5a6268;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            overflow: auto;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 4% auto;
-            padding: 25px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 700px;
-            position: relative;
-        }
-
-        .close-btn {
+        .card-badge {
             position: absolute;
+            top: 20px;
             right: 20px;
-            top: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
+            background: rgba(0, 212, 177, 0.15);
+            color: var(--secondary);
+            border: 1px solid rgba(0, 212, 177, 0.3);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
         }
 
-        /* Stile Bolletta Duferco */
-        .bill-header {
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
+        .provider-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 15px;
         }
 
-        .bill-table {
-            width: 100%;
-            border-collapse: collapse;
+        .provider-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary-accent);
+        }
+
+        .provider-name {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .offer-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .price-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .monthly-estimate {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--secondary);
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .monthly-estimate span {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .unit-rates {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .rate-item {
+            color: var(--text-muted);
+        }
+
+        .rate-item strong {
+            color: var(--text-main);
+        }
+
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             margin-top: 15px;
         }
 
-        .bill-table th, .bill-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
+        .btn-breakdown-trigger {
+            background: transparent;
+            border: none;
+            color: var(--primary-accent);
+            font-size: 13px;
+            font-weight: 600;
             text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 0;
+            transition: color 0.2s ease;
         }
 
-        .bill-table th {
-            background-color: #f8f9fa;
+        .btn-breakdown-trigger:hover {
+            color: white;
+            text-decoration: underline;
         }
 
-        .bill-total {
-            background-color: #e9ecef;
-            font-weight: bold;
+        .btn-primary {
+            background: var(--primary-accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
         }
 
-        .highlight-box {
-            background-color: #e7f3fe;
-            border-left: 6px solid var(--primary);
-            padding: 10px;
-            margin: 15px 0;
+        .btn-primary:hover {
+            background: #4f46e5;
+            box-shadow: var(--neon-glow);
+        }
+
+        /* Load More Dynamic Section */
+        .load-more-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-load-more {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-load-more:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-accent);
+        }
+
+        /* Modal Architecture */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 6, 12, 0.85);
+            backdrop-filter: blur(16px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            padding: 35px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        /* Duferco Style Invoice Prospect */
+        .invoice-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .invoice-title-area h2 {
+            font-size: 24px;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .invoice-title-area p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .invoice-badge-duferco {
+            background: linear-gradient(135deg, #0056b3 0%, #002244 100%);
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .metric-banner {
+            background: rgba(99, 91, 255, 0.08);
+            border-left: 4px solid var(--primary-accent);
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-banner .value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .invoice-table-container {
+            overflow-x: auto;
+            margin-bottom: 25px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .invoice-table th {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 16px;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .invoice-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .invoice-table tr.total-row {
+            background: rgba(0, 212, 177, 0.05);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .invoice-table tr.total-row td {
+            color: var(--secondary);
+            border-top: 2px solid var(--border);
+            border-bottom: none;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 250px;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            background: rgba(0,0,0,0.4);
+            border-top: 1px solid var(--border);
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .filter-panel { grid-template-columns: 1fr; }
+            header { padding: 15px 20px; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Comparatore Offerte Luce & Gas</h1>
-
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('residenziale')">Residenziale</button>
-        <button class="tab-btn" onclick="switchTab('business')">Business</button>
+    <div class="ambient-light">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
     </div>
 
-    <div id="offers-grid" class="grid"></div>
-
-    <div class="load-more-container" id="load-more-btn-container" style="display: none;">
-        <button class="btn-load-more" onclick="loadMoreOffers()">... Carica altre offerte</button>
-    </div>
-</div>
-
-<!-- Modal Generale -->
-<div id="infoModal" class="modal">
-    <div class="modal-content" id="modal-body"></div>
-</div>
-
-<script>
-// Database simulato delle offerte (Residenziali e Business)
-const database = {
-    residenziale: [
-        { id: 1, nome: "Luce Casa Relax", fornitore: "EneCorp", prezzoKwh: 0.125, prezzoSmc: 0.45, quotaFissa: 9.00, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 65.50 },
-        { id: 2, nome: "Energia Verde Plus", fornitore: "EcoPower", prezzoKwh: 0.130, prezzoSmc: 0.48, quotaFissa: 8.50, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 68.10 },
-        { id: 3, nome: "Flexi Web Casa", fornitore: "NetGas", prezzoKwh: 0.118, prezzoSmc: 0.42, quotaFissa: 12.00, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 63.80 },
-        { id: 4, nome: "Luce Sicura Fix", fornitore: "SicuraEnergia", prezzoKwh: 0.140, prezzoSmc: 0.50, quotaFissa: 7.00, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 71.00 },
-        { id: 5, nome: "Zero Pensieri Family", fornitore: "OmniaLuce", prezzoKwh: 0.122, prezzoSmc: 0.44, quotaFissa: 10.00, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 66.20 },
-        { id: 6, nome: "Smart Green Dual", fornitore: "GreenLife", prezzoKwh: 0.129, prezzoSmc: 0.46, quotaFissa: 9.50, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 67.90 },
-        { id: 7, nome: "Casa Eco Dynamic", fornitore: "EneCorp", prezzoKwh: 0.115, prezzoSmc: 0.41, quotaFissa: 13.00, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 64.00 },
-        { id: 8, nome: "Luce Night & Weekend", fornitore: "EcoPower", prezzoKwh: 0.120, prezzoSmc: 0.43, quotaFissa: 11.00, trasporto: 0.035, oneri: 0.028, imposte: 0.015, stimaMensile: 65.00 }
-    ],
-    business: [
-        { id: 101, nome: "Impresa Power Pro", fornitore: "EneCorp Business", prezzoKwh: 0.145, prezzoSmc: 0.52, quotaFissa: 18.00, trasporto: 0.030, oneri: 0.025, imposte: 0.020, stimaMensile: 240.00 },
-        { id: 102, nome: "Business Green Flat", fornitore: "EcoPower Biz", prezzoKwh: 0.150, prezzoSmc: 0.55, quotaFissa: 15.00, trasporto: 0.030, oneri: 0.025, imposte: 0.020, stimaMensile: 252.00 },
-        { id: 103, nome: "P.IVA Dynamic XL", fornitore: "NetGas Trade", prezzoKwh: 0.138, prezzoSmc: 0.49, quotaFissa: 22.00, trasporto: 0.030, oneri: 0.025, imposte: 0.020, stimaMensile: 235.00 },
-        { id: 104, nome: "Azienda Continua", fornitore: "SicuraEnergia Biz", prezzoKwh: 0.160, prezzoSmc: 0.58, quotaFissa: 12.00, trasporto: 0.030, oneri: 0.025, imposte: 0.020, stimaMensile: 268.00 },
-        { id: 105, nome: "Retail Flex", fornitore: "OmniaLuce Trade", prezzoKwh: 0.142, prezzoSmc: 0.51, quotaFissa: 20.00, trasporto: 0.030, oneri: 0.025, imposte: 0.020, stimaMensile: 242.00 },
-        { id: 106, nome: "Corporate Sustainability", fornitore: "GreenLife Biz", prezzoKwh: 0.148, prezzoSmc: 0.53, quotaFissa: 16.00, trasporto: 0.030, oneri: 0.025, imposte: 0.020, stimaMensile: 248.00 },
-        { id: 107, nome: "Industry Heavy Direct", fornitore: "EneCorp Business", prezzoKwh: 0.135, prezzoSmc: 0.48, quotaFissa: 25.00, trasporto: 0.030, oneri: 0.025, imposte: 0.020, stimaMensile: 230.00 }
-    ]
-};
-
-let currentTab = 'residenziale';
-let visibleCount = 6;
-
-function switchTab(tab) {
-    currentTab = tab;
-    visibleCount = 6;
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    renderOffers();
-}
-
-function renderOffers() {
-    const grid = document.getElementById('offers-grid');
-    grid.innerHTML = '';
-    const items = database[currentTab].slice(0, visibleCount);
-
-    items.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <div>
-                <small>${item.fornitore}</small>
-                <h3>${item.nome}</h3>
-                <div class="price-tag">~ €${item.stimaMensile.toFixed(2)} / mese</div>
-                <p><strong>Corrispettivo Luce:</strong> €${item.prezzoKwh.toFixed(3)} / kWh</p>
-                <p><strong>Corrispettivo Gas:</strong> €${item.prezzoSmc.toFixed(2)} / Smc</p>
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-bolt-lightning"></i>
+                Energy<span>Compare</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Comparatore</a></li>
+                <li><a href="#">Guida Bolletta</a></li>
+                <li><a href="#">Osservatorio Prezzi</a></li>
+                <li><a href="#">Supporto ARERA</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;">
+                    <i class="fa-solid fa-user"></i> Area Riservata
+                </button>
             </div>
-            <div>
-                <button class="btn-breakdown" onclick="openScontrino(${item.id})">Scontrino Dell'Energia Spiegato Per Ogni Singola Voce</button>
-                <button class="btn-action" onclick="openPreventivo(${item.id})">Vedi Preventivo Dettagliato</button>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
+        </div>
+    </header>
 
-    const loadMoreBtn = document.getElementById('load-more-btn-container');
-    if (visibleCount < database[currentTab].length) {
-        loadMoreBtn.style.display = 'block';
-    } else {
-        loadMoreBtn.style.display = 'none';
-    }
-}
-
-function loadMoreOffers() {
-    visibleCount += 6;
-    renderOffers();
-}
-
-function openScontrino(id) {
-    const offer = findOffer(id);
-    const modalBody = document.getElementById('modal-body');
-    
-    modalBody.innerHTML = `
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h2>Scontrino Dell'Energia Spiegato Per Ogni Singola Voce</h2>
-        <p>Dettaglio trasparente della struttura di costo per l'offerta <strong>${offer.nome}</strong> (${offer.fornitore}):</p>
+    <main class="hero">
+        <h1>Il Confronto Trasparente per la Tua Energia</h1>
+        <p>Analisi quantitativa diretta, scontrino dettagliato e prospetto simulated-bill stile Duferco.</p>
         
-        <ul>
-            <li><strong>Spesa Materia Energia/Gas:</strong> Include il costo d'acquisto della materia prima (€${offer.prezzoKwh}/kWh) e la commercializzazione fissa (€${offer.quotaFissa.toFixed(2)}/mese).</li>
-            <li><strong>Trasporto e Gestione Contatore:</strong> Copre le spese di trasmissione dell'energia sulla rete nazionale e la lettura dei consumi (€${offer.trasporto}/kWh).</li>
-            <li><strong>Oneri di Sistema:</strong> Costi stabiliti per legge per il sostegno alle energie rinnovabili e gli incentivi di settore (€${offer.oneri}/kWh).</li>
-            <li><strong>Imposte e IVA:</strong> Accise erariali e IVA applicata al totale dei consumi.</li>
-        </ul>
-    `;
-    document.getElementById('infoModal').style.display = 'block';
-}
+        <div class="tab-switcher">
+            <button class="tab-btn active" id="tab-residenziale" onclick="switchSegment('residenziale')">
+                <i class="fa-solid fa-house"></i> Residenziale
+            </button>
+            <button class="tab-btn" id="tab-business" onclick="switchSegment('business')">
+                <i class="fa-solid fa-building"></i> Business & P.IVA
+            </button>
+        </div>
+    </main>
 
-function openPreventivo(id) {
-    const offer = findOffer(id);
-    const modalBody = document.getElementById('modal-body');
-    
-    // Calcolo consumi stimati su base mensile media (es. 150 kWh/mese)
-    const kwhStimati = 150;
-    const costoMateria = (kwhStimati * offer.prezzoKwh) + offer.quotaFissa;
-    const costoTrasporto = kwhStimati * offer.trasporto;
-    const costoOneri = kwhStimati * offer.oneri;
-    const subtotale = costoMateria + costoTrasporto + costoOneri;
-    const imposteVal = kwhStimati * offer.imposte;
-    const totaleBolletta = subtotale + imposteVal;
-    const prezzoMedioKwh = totaleBolletta / kwhStimati;
-
-    modalBody.innerHTML = `
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <div class="bill-header">
-            <h2>Prospetto Analitico Preventivo</h2>
-            <p><strong>Offerta:</strong> ${offer.nome} | <strong>Fornitore:</strong> ${offer.fornitore}</p>
+    <section class="main-container">
+        <!-- Dashboard Filtri Avanzati -->
+        <div class="filter-panel">
+            <div class="filter-group">
+                <label><i class="fa-solid fa-filter"></i> Tipologia Prezzo</label>
+                <select class="filter-control" id="filter-type" onchange="applyFilters()">
+                    <option value="all">Tutti i tipi</option>
+                    <option value="fisso">Prezzo Fisso</option>
+                    <option value="variabile">Prezzo Indicizzato (PUN)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fa-solid fa-arrow-down-short-wide"></i> Ordina Per</label>
+                <select class="filter-control" id="filter-sort" onchange="applyFilters()">
+                    <option value="price-asc">Stima Mensile (Crescente)</option>
+                    <option value="price-desc">Stima Mensile (Decrescente)</option>
+                    <option value="kwh-asc">Prezzo kWh (Crescente)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fa-solid fa-plug"></i> Consumo Annuo Stimato (kWh)</label>
+                <input type="number" class="filter-control" id="filter-consumption" value="2700" oninput="recalculateEstimates()">
+            </div>
         </div>
 
-        <div class="highlight-box">
-            <strong>Prezzo Medio Ponderato Stimato:</strong> €${prezzoMedioKwh.toFixed(3)} / kWh
+        <!-- Griglia Schede Comparazione -->
+        <div class="cards-grid" id="offers-grid">
+            <!-- Dynamic Content Injected via JavaScript -->
         </div>
 
-        <h3>Simulazione Bolletta Mensile (Consumo tipo: ${kwhStimati} kWh)</h3>
-        <table class="bill-table">
-            <thead>
-                <tr>
-                    <th>Voce di Spesa</th>
-                    <th>Dettaglio Calcolo</th>
-                    <th>Importo (€)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Spesa per la Materia Energia</td>
-                    <td>(${kwhStimati} kWh × €${offer.prezzoKwh}) + €${offer.quotaFissa.toFixed(2)} fisso</td>
-                    <td>€${costoMateria.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>Spesa Trasporto e Gestione Contatore</td>
-                    <td>${kwhStimati} kWh × €${offer.trasporto}</td>
-                    <td>€${costoTrasporto.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>Spesa Oneri di Sistema</td>
-                    <td>${kwhStimati} kWh × €${offer.oneri}</td>
-                    <td>€${costoOneri.toFixed(2)}</td>
-                </tr>
-                <tr>
-                    <td>Imposte e Accise</td>
-                    <td>${kwhStimati} kWh × €${offer.imposte}</td>
-                    <td>€${imposteVal.toFixed(2)}</td>
-                </tr>
-                <tr class="bill-total">
-                    <td colspan="2">TOTALE STIMATO BOLLETTA (IVA Incl.)</td>
-                    <td>€${totaleBolletta.toFixed(2)}</td>
-                </tr>
-            </tbody>
-        </table>
-    `;
-    document.getElementById('infoModal').style.display = 'block';
-}
+        <!-- Dynamic Load More Section -->
+        <div class="load-more-section" id="load-more-container" style="display: none;">
+            <button class="btn-load-more" onclick="loadMoreOffers()">
+                <i class="fa-solid fa-ellipsis"></i> Carica Altre Offerte (<span id="remaining-count">0</span>)
+            </button>
+        </div>
+    </section>
 
-function findOffer(id) {
-    return database.residenziale.find(o => o.id === id) || database.business.find(o => o.id === id);
-}
+    <!-- Modal Architettura per Scontrino & Preventivo Duferco -->
+    <div class="modal-overlay" id="global-modal">
+        <div class="modal-wrapper">
+            <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div id="modal-dynamic-content">
+                <!-- Injected via Script -->
+            </div>
+        </div>
+    </div>
 
-function closeModal() {
-    document.getElementById('infoModal').style.display = 'none';
-}
+    <footer>
+        <p>&copy; 2026 EnergyCompare Pro - P.IVA 09876543210 - Simulative Analytics Engine integrated with ARERA Data Standard Compliance Framework</p>
+    </footer>
 
-window.onclick = function(event) {
-    const modal = document.getElementById('infoModal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+    <script>
+        // Database Completo Offerte (Residenziale & Business)
+        const offerDatabase = {
+            residenziale: [
+                { id: 1, provider: "EneCorp", name: "Luce Casa Relax", type: "fisso", priceKwh: 0.118, priceSmc: 0.42, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.8 },
+                { id: 2, provider: "EcoPower", name: "Energia Verde Plus", type: "variabile", priceKwh: 0.125, priceSmc: 0.45, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.6 },
+                { id: 3, provider: "NetGas", name: "Flexi Web Casa", type: "variabile", priceKwh: 0.112, priceSmc: 0.40, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.3 },
+                { id: 4, provider: "SicuraEnergia", name: "Luce Sicura Fix", type: "fisso", priceKwh: 0.135, priceSmc: 0.49, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.1 },
+                { id: 5, provider: "OmniaLuce", name: "Zero Pensieri Family", type: "fisso", priceKwh: 0.121, priceSmc: 0.43, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.7 },
+                { id: 6, provider: "GreenLife", name: "Smart Green Dual", type: "variabile", priceKwh: 0.127, priceSmc: 0.46, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.9 },
+                { id: 7, provider: "EneCorp", name: "Casa Eco Dynamic", type: "variabile", priceKwh: 0.109, priceSmc: 0.39, fixedFee: 13.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.4 },
+                { id: 8, provider: "EcoPower", name: "Luce Night & Weekend", type: "fisso", priceKwh: 0.115, priceSmc: 0.41, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.2 },
+                { id: 9, provider: "Voltaic", name: "Volta Direct Home", type: "fisso", priceKwh: 0.123, priceSmc: 0.44, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.0 },
+                { id: 10, provider: "Edison Direct", name: "Luce Leggera", type: "variabile", priceKwh: 0.119, priceSmc: 0.43, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.5 },
+                { id: 11, provider: "A2A Smart", name: "A2A Premium Casa", type: "fisso", priceKwh: 0.130, priceSmc: 0.47, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.6 },
+                { id: 12, provider: "Iren Luce", name: "Iren Revolution", type: "variabile", priceKwh: 0.114, priceSmc: 0.41, fixedFee: 11.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.1 }
+            ],
+            business: [
+                { id: 101, provider: "EneCorp Business", name: "Impresa Power Pro", type: "fisso", priceKwh: 0.142, priceSmc: 0.51, fixedFee: 18.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.9 },
+                { id: 102, provider: "EcoPower Biz", name: "Business Green Flat", type: "fisso", priceKwh: 0.148, priceSmc: 0.54, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.7 },
+                { id: 103, provider: "NetGas Trade", name: "P.IVA Dynamic XL", type: "variabile", priceKwh: 0.135, priceSmc: 0.48, fixedFee: 22.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: false, rating: 4.4 },
+                { id: 104, provider: "SicuraEnergia Biz", name: "Azienda Continua", type: "fisso", priceKwh: 0.155, priceSmc: 0.56, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: false, rating: 4.2 },
+                { id: 105, provider: "OmniaLuce Trade", name: "Retail Flex", type: "variabile", priceKwh: 0.139, priceSmc: 0.50, fixedFee: 20.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.5 },
+                { id: 106, provider: "GreenLife Biz", name: "Corporate Sustainability", type: "fisso", priceKwh: 0.145, priceSmc: 0.52, fixedFee: 16.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.8 },
+                { id: 107, provider: "EneCorp Business", name: "Industry Heavy Direct", type: "variabile", priceKwh: 0.131, priceSmc: 0.47, fixedFee: 25.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.6 },
+                { id: 108, provider: "Enel Biz", name: "Open Energy P.IVA", type: "fisso", priceKwh: 0.150, priceSmc: 0.53, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.3 },
+                { id: 109, provider: "Sorgenia Biz", name: "Next Business Sun", type: "variabile", priceKwh: 0.137, priceSmc: 0.49, fixedFee: 19.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.7 }
+            ]
+        };
 
-// Inizializzazione
-renderOffers();
-</script>
+        // Configuration State
+        let activeSegment = 'residenziale';
+        let visibleItemsCount = 6;
+        let processedOffers = [];
+        let activeChartInstance = null;
 
+        // Switch Business vs Residenziale
+        function switchSegment(segment) {
+            activeSegment = segment;
+            visibleItemsCount = 6;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${segment}`).classList.add('active');
+            applyFilters();
+        }
+
+        // Calculate Monthly Estimate dynamically
+        function calculateMonthlyCost(offer, annualKwh) {
+            const monthlyKwh = annualKwh / 12;
+            const energyCost = (monthlyKwh * offer.priceKwh) + offer.fixedFee;
+            const transportCost = monthlyKwh * offer.transportRate;
+            const systemCost = monthlyKwh * offer.systemRate;
+            const taxes = monthlyKwh * offer.taxRate;
+            return energyCost + transportCost + systemCost + taxes;
+        }
+
+        // Apply Filtering and Sorting Logic
+        function applyFilters() {
+            const typeFilter = document.getElementById('filter-type').value;
+            const sortFilter = document.getElementById('filter-sort').value;
+            const annualKwh = parseFloat(document.getElementById('filter-consumption').value) || 2700;
+
+            let sourceData = [...offerDatabase[activeSegment]];
+
+            // Filter by Type
+            if (typeFilter !== 'all') {
+                sourceData = sourceData.filter(o => o.type === typeFilter);
+            }
+
+            // Map with Calculated Monthly Estimate
+            processedOffers = sourceData.map(offer => {
+                const monthlyEst = calculateMonthlyCost(offer, annualKwh);
+                return { ...offer, calculatedMonthlyEst: monthlyEst };
+            });
+
+            // Sorting
+            if (sortFilter === 'price-asc') {
+                processedOffers.sort((a, b) => a.calculatedMonthlyEst - b.calculatedMonthlyEst);
+            } else if (sortFilter === 'price-desc') {
+                processedOffers.sort((a, b) => b.calculatedMonthlyEst - a.calculatedMonthlyEst);
+            } else if (sortFilter === 'kwh-asc') {
+                processedOffers.sort((a, b) => a.priceKwh - b.priceKwh);
+            }
+
+            renderGrid();
+        }
+
+        function recalculateEstimates() {
+            applyFilters();
+        }
+
+        // Render UI Cards Grid
+        function renderGrid() {
+            const grid = document.getElementById('offers-grid');
+            grid.innerHTML = '';
+
+            const itemsToDisplay = processedOffers.slice(0, visibleItemsCount);
+
+            itemsToDisplay.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'offer-card';
+                card.innerHTML = `
+                    <span class="card-badge">${item.type.toUpperCase()}</span>
+                    <div>
+                        <div class="provider-info">
+                            <div class="provider-icon"><i class="fa-solid fa-bolt"></i></div>
+                            <div>
+                                <div class="provider-name">${item.provider}</div>
+                                <div class="offer-title">${item.name}</div>
+                            </div>
+                        </div>
+                        <div class="price-container">
+                            <div class="monthly-estimate">
+                                €${item.calculatedMonthlyEst.toFixed(2)} <span>/ mese*</span>
+                            </div>
+                            <div class="unit-rates">
+                                <div class="rate-item">Luce: <strong>€${item.priceKwh.toFixed(3)}/kWh</strong></div>
+                                <div class="rate-item">Fisso: <strong>€${item.fixedFee.toFixed(2)}/mo</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-breakdown-trigger" onclick="openScontrinoModal(${item.id})">
+                            <i class="fa-solid fa-circle-info"></i> Scontrino Dell'Energia Spiegato Per Ogni Singola Voce
+                        </button>
+                        <button class="btn-primary" onclick="openPreventivoDufercoModal(${item.id})">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> Vedi Preventivo Dettagliato
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Load More Pagination Management
+            const loadMoreContainer = document.getElementById('load-more-container');
+            const remaining = processedOffers.length - visibleItemsCount;
+
+            if (remaining > 0) {
+                loadMoreContainer.style.display = 'block';
+                document.getElementById('remaining-count').innerText = remaining;
+            } else {
+                loadMoreContainer.style.display = 'none';
+            }
+        }
+
+        function loadMoreOffers() {
+            visibleItemsCount += 6;
+            renderGrid();
+        }
+
+        // Modal Execution Functions
+        function openScontrinoModal(id) {
+            const offer = findOfferById(id);
+            const container = document.getElementById('modal-dynamic-content');
+
+            container.innerHTML = `
+                <div style="margin-bottom:20px;">
+                    <h2 style="color:var(--text-main); font-size:22px; margin-bottom:8px;">
+                        <i class="fa-solid fa-receipt" style="color:var(--secondary);"></i> Scontrino Dell'Energia Spiegato Per Ogni Singola Voce
+                    </h2>
+                    <p style="color:var(--text-muted); font-size:14px;">
+                        Disaggregazione trasparente dei costi di struttura dell'offerta <strong>${offer.name}</strong> erogata da <strong>${offer.provider}</strong>.
+                    </p>
+                </div>
+                <div style="display:grid; gap:15px; margin-bottom:20px;">
+                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">1. Spesa per la Materia Energia</div>
+                        <div style="color:var(--text-muted); font-size:13px;">Comprende l'acquisto dell'energia elettrica sul mercato all'ingrosso (€${offer.priceKwh.toFixed(3)}/kWh) e le spese di commercializzazione fissa (€${offer.fixedFee.toFixed(2)}/mese).</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">2. Spesa per il Trasporto e Gestione Contatore</div>
+                        <div style="color:var(--text-muted); font-size:13px;">Costo stabilito per la consegna dell'energia attraverso le reti di trasmissione e distribuzione locale, inclusa la misurazione dei consumi (€${offer.transportRate.toFixed(3)}/kWh).</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">3. Spesa per Oneri di Sistema</div>
+                        <div style="color:var(--text-muted); font-size:13px;">Corrispettivi fissati per legge destinati al finanziamento di obiettivi di interesse generale del sistema elettrico nazionale (€${offer.systemRate.toFixed(3)}/kWh).</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">4. Imposte ed Accise Erariali</div>
+                        <div style="color:var(--text-muted); font-size:13px;">Imposta erariale sul consumo e IVA applicata all'imponibile complessivo della fornitura (€${offer.taxRate.toFixed(3)}/kWh).</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('global-modal').classList.add('active');
+        }
+
+        function openPreventivoDufercoModal(id) {
+            const offer = findOfferById(id);
+            const annualKwh = parseFloat(document.getElementById('filter-consumption').value) || 2700;
+            const monthlyKwh = annualKwh / 12;
+
+            const costMateriaVal = (monthlyKwh * offer.priceKwh) + offer.fixedFee;
+            const costTransportVal = monthlyKwh * offer.transportRate;
+            const costSystemVal = monthlyKwh * offer.systemRate;
+            const costTaxesVal = monthlyKwh * offer.taxRate;
+            const totalBill = costMateriaVal + costTransportVal + costSystemVal + costTaxesVal;
+            const weightedAveragePrice = totalBill / monthlyKwh;
+
+            const container = document.getElementById('modal-dynamic-content');
+
+            container.innerHTML = `
+                <div class="invoice-header">
+                    <div class="invoice-title-area">
+                        <h2>Prospetto Analitico Preventivo</h2>
+                        <p>Simulazione Fatturazione stile Bolletta Duferco | Fornitore: <strong>${offer.provider}</strong></p>
+                    </div>
+                    <span class="invoice-badge-duferco">Duferco-Standard Layout</span>
+                </div>
+
+                <div class="metric-banner">
+                    <div>
+                        <div style="font-size:12px; color:var(--text-muted); font-weight:600;">PREZZO MEDIO PONDERATO KWH</div>
+                        <div class="value">€${weightedAveragePrice.toFixed(4)} / kWh</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:12px; color:var(--text-muted); font-weight:600;">CONSUMO MENSILE STIMATO</div>
+                        <div style="font-size:18px; font-weight:700; color:white;">${monthlyKwh.toFixed(0)} kWh</div>
+                    </div>
+                </div>
+
+                <div class="invoice-table-container">
+                    <table class="invoice-table">
+                        <thead>
+                            <tr>
+                                <th>Voce di Spesa</th>
+                                <th>Parametro Applicato</th>
+                                <th>Totale Mensile (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Spesa Materia Energia</td>
+                                <td>(${monthlyKwh.toFixed(0)} kWh × €${offer.priceKwh.toFixed(3)}) + €${offer.fixedFee.toFixed(2)} quota fissa</td>
+                                <td>€${costMateriaVal.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Trasporto & Gestione Contatore</td>
+                                <td>${monthlyKwh.toFixed(0)} kWh × €${offer.transportRate.toFixed(3)}</td>
+                                <td>€${costTransportVal.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Oneri di Sistema</td>
+                                <td>${monthlyKwh.toFixed(0)} kWh × €${offer.systemRate.toFixed(3)}</td>
+                                <td>€${costSystemVal.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td>Imposte e Accise</td>
+                                <td>${monthlyKwh.toFixed(0)} kWh × €${offer.taxRate.toFixed(3)}</td>
+                                <td>€${costTaxesVal.toFixed(2)}</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="2">TOTALE STIMATO BOLLETTA (IVA Incl.)</td>
+                                <td>€${totalBill.toFixed(2)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="font-size:16px; margin-top:20px; color:var(--text-main);">Ripartizione Percentuale Costi</h3>
+                <div class="chart-wrapper">
+                    <canvas id="costBreakdownChart"></canvas>
+                </div>
+            `;
+
+            document.getElementById('global-modal').classList.add('active');
+
+            // Render Chart.js Dynamic Graph
+            setTimeout(() => {
+                const ctx = document.getElementById('costBreakdownChart').getContext('2d');
+                if (activeChartInstance) activeChartInstance.destroy();
+
+                activeChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Materia Energia', 'Trasporto & Contatore', 'Oneri di Sistema', 'Imposte'],
+                        datasets: [{
+                            data: [costMateriaVal, costTransportVal, costSystemVal, costTaxesVal],
+                            backgroundColor: ['#635bff', '#00d4b1', '#ffab00', '#ff5252'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#94a3b8', font: { size: 12 } }
+                            }
+                        }
+                    }
+                });
+            }, 100);
+        }
+
+        function findOfferById(id) {
+            return offerDatabase.residenziale.find(o => o.id === id) || offerDatabase.business.find(o => o.id === id);
+        }
+
+        function closeModal() {
+            document.getElementById('global-modal').classList.remove('active');
+        }
+
+        // Global Modal Event listener for outer click
+        window.onclick = function(e) {
+            const modal = document.getElementById('global-modal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Initialize Engine
+        applyFilters();
+    </script>
 </body>
 </html>
