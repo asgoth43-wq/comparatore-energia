@@ -128,7 +128,7 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 0.6rem;
     }
-    header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 400; max-width: 600px; margin: 0 auto; }
+    header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 400; max-width: 650px; margin: 0 auto; }
 
     /* Switcher Casa / Business */
     .target-switcher {
@@ -363,7 +363,7 @@
     }
     @media (max-width: 600px) { .chart-container { grid-template-columns: 1fr; } }
 
-    /* ARERA Receipt - NUOVO FONT MODERNO (JetBrains Mono) */
+    /* ARERA Receipt */
     .receipt-wrapper {
       border-top: 1px solid var(--card-border);
       background: rgba(4, 10, 24, 0.75);
@@ -399,7 +399,7 @@
       color: #ffffff;
     }
 
-    /* SEZIONE DONAZIONE PAYPAL UNICA E CORRETTA */
+    /* SEZIONE DONAZIONE PAYPAL */
     .donation-card {
       text-align: center;
       background: linear-gradient(135deg, rgba(127, 0, 255, 0.15), rgba(0, 242, 254, 0.1));
@@ -487,7 +487,7 @@
     .blog-excerpt { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1rem; }
     .blog-date { font-size: 0.75rem; color: var(--accent-green); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
 
-    /* MODALI WIZARD E PREVENTIVO DUFERCO STILE PREVIEWS */
+    /* MODALI WIZARD E PREVENTIVO CUSTOM */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 19, 0.88); backdrop-filter: blur(15px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
     .modal-card { background: var(--bg-dark); border-radius: var(--radius); border: 1px solid var(--card-border); max-width: 550px; width: 100%; padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; max-height: 90vh; overflow-y: auto; }
     .modal-card.wide { max-width: 800px; }
@@ -504,8 +504,8 @@
     .modal-actions { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
     .btn-sec { background: transparent; border: 1px solid var(--card-border); color: #fff; padding: 0.85rem 1.5rem; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-    /* STYLE PREVENTIVO DUFERCO STILE */
-    .duferco-receipt {
+    /* PREVENTIVO CUSTOM WHITE-LABEL */
+    .custom-receipt {
       font-family: 'JetBrains Mono', monospace;
       background: #020612;
       border: 1px solid var(--card-border);
@@ -515,16 +515,16 @@
       color: #e2e8f0;
       margin-top: 1rem;
     }
-    .duferco-header {
+    .custom-header {
       border-bottom: 2px solid var(--accent-cyan);
       padding-bottom: 0.8rem;
       margin-bottom: 1rem;
       display: flex;
       justify-content: space-between;
     }
-    .duferco-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; }
-    .duferco-table th, .duferco-table td { text-align: left; padding: 0.4rem 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .duferco-table th { color: var(--accent-cyan); font-weight: 700; }
+    .custom-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; }
+    .custom-table th, .custom-table td { text-align: left; padding: 0.4rem 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .custom-table th { color: var(--accent-cyan); font-weight: 700; }
     
     /* Paywall Lock */
     .paywall-blur {
@@ -560,9 +560,9 @@
 
   <div class="container">
     <header>
-      <div class="brand-badge">⚡ Trasparenza Garanzia ARERA</div>
+      <div class="brand-badge">⚡ Tariffe trasparenti, condizioni chiare</div>
       <h1>Comparatore Energia & Gas</h1>
-      <p>Trova la tariffa ideale per la tua casa o azienda confrontando i costi reali senza costi nascosti.</p>
+      <p>La precisione della regolamentazione ARERA al servizio della tua scelta. Confronta i costi reali senza costi nascosti.</p>
 
       <div class="target-switcher">
         <button class="target-btn active" id="target-res" onclick="setTarget('res')">🏠 Casa / Residenziale</button>
@@ -635,7 +635,7 @@
       <!-- MAIN RESULTS -->
       <main>
         <div class="results-header">
-          <h2 id="section-title">Migliori Offerte Garanzie ARERA</h2>
+          <h2 id="section-title">Migliori Offerte Garantite ARERA</h2>
           <div class="freq-toggle">
             <button class="freq-btn active" id="btn-year" onclick="setFrequency('year')">Annuale</button>
             <button class="freq-btn" id="btn-month" onclick="setFrequency('month')">Mensile</button>
@@ -643,7 +643,7 @@
         </div>
 
         <div class="filter-bar">
-          <input type="text" id="search-provider" class="search-input" placeholder="🔍 Cerca fornitore o nome offerta (es. Duferco, Acea...)" oninput="calculateOffers()">
+          <input type="text" id="search-provider" class="search-input" placeholder="🔍 Cerca fornitore o nome offerta (es. Acea, Sorgenia, A2A...)" oninput="calculateOffers()">
         </div>
 
         <div id="results-container"></div>
@@ -731,6 +731,21 @@
       </div>
     </section>
 
+    <!-- FOOTER CLAUSOLA TRASPARENZA E CONFORMITÀ REGOLATORIA -->
+    <footer style="margin-top: 4rem; border-top: 1px solid var(--card-border); padding-top: 2rem; padding-bottom: 2rem; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6;">
+      <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--card-border); padding: 1.5rem; border-radius: 16px; backdrop-filter: blur(10px);">
+        <h4 style="color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">
+          ⚖️ Trasparenza e Tutela Regolatoria
+        </h4>
+        <p style="margin-bottom: 0.8rem; font-style: italic; color: #fff; font-size: 0.9rem;">
+          "Tariffe trasparenti, condizioni chiare: la precisione della regolamentazione ARERA al servizio della tua scelta."
+        </p>
+        <p>
+          <strong>Clausola di Trasparenza e Conformità Regolatoria:</strong> Il presente prospetto costituisce una simulazione meramente indicativa della spesa annua, elaborata applicando i parametri della struttura tariffaria prescelta ai dati di consumo dichiarati dall'utente. Le componenti di spesa relative ai servizi di rete (trasporto e gestione del contatore) e agli oneri generali di sistema sono applicate in stretta conformità con le delibere e i criteri definiti dall'Autorità di Regolazione per Energia Reti e Ambiente (ARERA). Resta inteso che il presente documento non costituisce proposta contrattuale vincolante né offerta al pubblico ai sensi dell'art. 1336 c.c., ma una stima comparativa trasparente resa ai sensi della normativa vigente in materia di tutela del consumatore.
+        </p>
+      </div>
+    </footer>
+
   </div>
 
   <!-- CHECKOUT MODAL WIZARD -->
@@ -812,7 +827,7 @@
     </div>
   </div>
 
-  <!-- MODALE PREVENTIVO DETTAGLIATO STILE DUFERCO (FEATURE PREMIUM) -->
+  <!-- MODALE PREVENTIVO DETTAGLIATO CUSTOM -->
   <div class="modal-overlay" id="pdf-modal">
     <div class="modal-card wide">
       <button class="modal-close" onclick="closePdfModal()">&times;</button>
@@ -829,33 +844,33 @@
     let currentFreq = 'year';
     let selectedOffer = null;
     let chartInstances = {};
-    let isUnlocked = false; // Stato sblocco preventivo completo
+    let isUnlocked = false;
 
-    const fornitoriInEvidenza = ["duferco", "acea", "sorgenia", "a2a", "magis", "enel"];
+    const fornitoriInEvidenza = ["acea", "sorgenia", "a2a", "magis", "enel"];
 
     const mockOffers = {
       res: {
         ee: [
-          { id: 101, name: "Luce Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 90, f1: 0.12, f2: 0.11, f3: 0.09, desc: "Prezzo Indicizzato al PUN con sconti esclusivi per la casa." },
+          { id: 101, name: "Evergreen Flex", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.110, f3: 0.092, desc: "La tariffa online a prezzo indicizzato più conveniente per la casa." },
           { id: 102, name: "Acea Luce Web", supplier: "ACEA", tariffType: "fixed", fixedFee: 96, f1: 0.125, f2: 0.125, f3: 0.125, desc: "Prezzo Bloccato per 12 Mesi al riparo dalle oscillazioni di mercato." },
           { id: 103, name: "Sorgenia Next Energy", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.118, f3: 0.105, desc: "Energia 100% Green proveniente da fonti rinnovabili certificate." },
           { id: 104, name: "A2A Smart Luce", supplier: "A2A", tariffType: "fixed", fixedFee: 108, f1: 0.13, f2: 0.13, f3: 0.13, desc: "Prezzo Fisso Garantito con opzione di monitoraggio dei consumi via app." },
           { id: 105, name: "Magis Luce Dynamic", supplier: "Magis", tariffType: "variable", fixedFee: 78, f1: 0.115, f2: 0.110, f3: 0.095, desc: "Massima trasparenza ARERA con il prezzo di costo della materia prima." }
         ],
         gas: [
-          { id: 201, name: "Gas Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 84, unitPrice: 0.39, desc: "Tariffa indicizzata al PSV con azzeramento dei costi di attivazione." },
+          { id: 201, name: "Evergreen Gas Flex", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Tariffa indicizzata al PSV con azzeramento dei costi di attivazione." },
           { id: 202, name: "Acea Gas Sicuro", supplier: "ACEA", tariffType: "fixed", fixedFee: 90, unitPrice: 0.43, desc: "Senza sorprese in bolletta durante i mesi invernali più freddi." },
           { id: 203, name: "Sorgenia Next Gas", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Inclusa la compensazione delle emissioni di CO2 con progetti green." }
         ]
       },
       biz: {
         ee: [
-          { id: 301, name: "EE FLEX BUSINESS MILLENNIAL Mono", supplier: "Duferco", tariffType: "variable", fixedFee: 144, f1: 0.182, f2: 0.182, f3: 0.182, desc: "Offerta Business ad alte prestazioni per PMI e P.IVA." },
+          { id: 301, name: "Evergreen Business Mono", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 144, f1: 0.178, f2: 0.178, f3: 0.178, desc: "Offerta Business ad alte prestazioni per PMI e P.IVA." },
           { id: 302, name: "Enel Impresa Sicura", supplier: "Enel", tariffType: "fixed", fixedFee: 160, f1: 0.195, f2: 0.195, f3: 0.195, desc: "Blocca il costo della produzione aziendale per 24 Mesi." },
           { id: 303, name: "A2A Corporate Power", supplier: "A2A", tariffType: "variable", fixedFee: 120, f1: 0.178, f2: 0.178, f3: 0.178, desc: "Fatturazione aggregata multi-pod per aziende con diverse sedi." }
         ],
         gas: [
-          { id: 401, name: "Business Gas Power", supplier: "Duferco", tariffType: "variable", fixedFee: 130, unitPrice: 0.35, desc: "Indicizzazione PSV ottimizzata per aziende e grandi impianti." },
+          { id: 401, name: "Business Gas Evergreen", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 130, unitPrice: 0.35, desc: "Indicizzazione PSV ottimizzata per aziende e grandi impianti." },
           { id: 402, name: "Sorgenia Impresa Verde", supplier: "Sorgenia", tariffType: "fixed", fixedFee: 150, unitPrice: 0.38, desc: "Fornitura 100% compensata con certificati ambientali inclusi." }
         ]
       }
@@ -1056,7 +1071,7 @@
       });
     }
 
-    /* GESTIONE PREVENTIVO STILE DUFERCO CON PAYWALL 1 EURO */
+    /* GESTIONE PREVENTIVO CUSTOM WHITE-LABEL CON PAYWALL 1 EURO */
     function openPdfModal(offerId) {
       let consumption = parseFloat(document.getElementById('consumption').value) || 2700;
       let power = parseFloat(document.getElementById('power').value) || 3;
@@ -1080,10 +1095,10 @@
           <div class="paywall-box">
             <h3 style="color:#fff; font-size:1.4rem; margin-bottom:0.5rem;">🔒 Sblocca il Preventivo Dettagliato Personalizzato</h3>
             <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
-              Ottieni il pro-forma di calcolo completo voce per voce (Spesa vendita, perdite di rete, dispacciamento, oneri generali di sistema e accise) esattamente con lo standard ufficiale del modello Duferco.
+              Ottieni il pro-forma di calcolo completo voce per voce (Spesa vendita, perdite di rete, dispacciamento, oneri generali di sistema e accise) secondo gli standard ufficiali ARERA.
             </p>
             <div style="background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:10px; margin-bottom:1.2rem; font-size:0.85rem; color:var(--accent-green);">
-              💡 <strong>Regola di Sblocco:</strong> Il report completo e scaricabile si sblocca previa donazione simbolica di <strong>1,00 €</strong> per sostenere i costi dei server.
+              💡 <strong>Regola di Sblocco:</strong> Il report completo e scaricabile si sblocca previa donazione simbolica di <strong>1,00 €</strong> per sostenere i costi del servizio.
             </div>
             <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" onclick="unlockPreventivo()" class="paypal-btn-direct" style="margin-top:0;">
               💳 Donazione 1,00 € e Sblocca Preventivo
@@ -1091,10 +1106,10 @@
           </div>
 
           <div class="paywall-blur">
-            <div class="duferco-receipt">
-              <div class="duferco-header">
+            <div class="custom-receipt">
+              <div class="custom-header">
                 <div>
-                  <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier} ENERGIA</strong><br>
+                  <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier.toUpperCase()}</strong><br>
                   Simulazione Bolletta / Preventivo Custom
                 </div>
                 <div style="text-align:right;">
@@ -1104,13 +1119,13 @@
               </div>
 
               <p><strong>Riepilogo Simulazione Voci di Spesa:</strong></p>
-              <table class="duferco-table">
+              <table class="custom-table">
                 <thead>
                   <tr><th>Voce di Spesa</th><th>Quantità</th><th>Prezzo Medio</th><th>Importo (€)</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Spesa Vendita Energia</td><td>${consumption} kWh</td><td>€0,1820</td><td>€${qConsumi.toFixed(2)}</td></tr>
-                  <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} kWh</td><td>€0,1820</td><td>€${perdite.toFixed(2)}</td></tr>
+                  <tr><td>Spesa Vendita Energia</td><td>${consumption} kWh</td><td>€0,1180</td><td>€${qConsumi.toFixed(2)}</td></tr>
+                  <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} kWh</td><td>€0,1180</td><td>€${perdite.toFixed(2)}</td></tr>
                   <tr><td>Dispacciamento EE</td><td>${consumption} kWh</td><td>€0,0105</td><td>€${dispacciamento.toFixed(2)}</td></tr>
                   <tr><td>Quota Fissa Commercializzazione</td><td>12 mesi</td><td>€${(qFissa/12).toFixed(2)}/mese</td><td>€${qFissa.toFixed(2)}</td></tr>
                   <tr><td>Rete e Oneri di Sistema (ARERA)</td><td>-</td><td>-</td><td>€${reteOneri.toFixed(2)}</td></tr>
@@ -1130,11 +1145,11 @@
             <button class="btn-submit" style="width:auto; padding:0.5rem 1rem;" onclick="window.print()">🖨️ Stampa / Salva PDF</button>
           </div>
 
-          <div class="duferco-receipt">
-            <div class="duferco-header">
+          <div class="custom-receipt">
+            <div class="custom-header">
               <div>
-                <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier.toUpperCase()} ENERGIA</strong><br>
-                Preventivo Ufficiale Calcolo Analitico
+                <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier.toUpperCase()}</strong><br>
+                Preventivo Analitico Trasparanza ARERA
               </div>
               <div style="text-align:right;">
                 <strong>OFFERTA:</strong> ${offer.name}<br>
@@ -1151,13 +1166,13 @@
             </div>
 
             <p style="color:var(--accent-cyan); font-weight:700;">DETTAGLIO SCONTRINO DELL'ENERGIA:</p>
-            <table class="duferco-table">
+            <table class="custom-table">
               <thead>
                 <tr><th>Voce di Spesa</th><th>Quantità</th><th>Prezzo Unitario</th><th>Importo Totale</th></tr>
               </thead>
               <tbody>
-                <tr><td>Spesa Materia Prima Energia</td><td>${consumption} ${unitLabel}</td><td>€0,182038</td><td>€${qConsumi.toFixed(2)}</td></tr>
-                <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} ${unitLabel}</td><td>€0,182038</td><td>€${perdite.toFixed(2)}</td></tr>
+                <tr><td>Spesa Materia Prima Energia</td><td>${consumption} ${unitLabel}</td><td>€0,118038</td><td>€${qConsumi.toFixed(2)}</td></tr>
+                <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} ${unitLabel}</td><td>€0,118038</td><td>€${perdite.toFixed(2)}</td></tr>
                 <tr><td>Dispacciamento EE</td><td>${consumption} ${unitLabel}</td><td>€0,010501</td><td>€${dispacciamento.toFixed(2)}</td></tr>
                 <tr><td>Quota Fissa Vendita</td><td>1 Anno</td><td>€${qFissa.toFixed(2)}/anno</td><td>€${qFissa.toFixed(2)}</td></tr>
                 ${currentType === 'ee' ? `<tr><td>Quota Potenza (${power} kW)</td><td>${power} kW</td><td>€21,50/kW/anno</td><td>€${qPotenza.toFixed(2)}</td></tr>` : ''}
