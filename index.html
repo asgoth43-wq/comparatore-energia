@@ -3,334 +3,547 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PortalEnergy - Dashboard Next-Gen</title>
+  <title>PortalEnergy - Il Comparatore Trasparente Ultima Generazione</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #090d16;
-      --panel: #111827;
-      --panel-border: #1f293d;
-      --accent-cyan: #06b6d4;
-      --accent-green: #10b981;
-      --accent-purple: #8b5cf6;
-      --accent-orange: #f97316;
-      --text: #f3f4f6;
+      --bg: #030712;
+      --card-bg: rgba(17, 24, 39, 0.75);
+      --card-border: rgba(56, 189, 248, 0.15);
+      
+      --cyan: #38bdf8;
+      --neon-green: #22c55e;
+      --purple: #a855f7;
+      --orange: #f97316;
+      --gold: #eab308;
+      
+      --text-main: #f9fafb;
       --text-sub: #9ca3af;
-      --radius: 20px;
+      --radius: 24px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      padding-bottom: 4rem;
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-bottom: 5rem;
     }
 
-    /* TOP BAR CONTAINER */
-    .top-nav {
-      max-width: 1200px;
+    /* BACKGROUND GLOW SFONDO */
+    .bg-glow {
+      position: fixed;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      filter: blur(150px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+    .glow-1 { top: -200px; left: -100px; background: var(--cyan); }
+    .glow-2 { top: 40%; right: -200px; background: var(--purple); }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 1.5rem;
+      padding: 0 1.5rem;
+    }
+
+    /* NAVBAR */
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--panel-border);
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--card-border);
     }
-    .brand { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
-    .brand span { color: var(--accent-cyan); }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
     .nav-pills {
-      background: var(--panel);
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid var(--card-border);
       padding: 4px;
-      border-radius: 30px;
-      border: 1px solid var(--panel-border);
+      border-radius: 40px;
       display: flex;
     }
     .pill-btn {
       background: transparent;
       border: none;
       color: var(--text-sub);
-      padding: 0.5rem 1.2rem;
-      border-radius: 20px;
+      padding: 0.6rem 1.4rem;
+      border-radius: 30px;
       font-weight: 700;
       font-size: 0.85rem;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .pill-btn.active { background: var(--accent-cyan); color: #000; }
-
-    .main-wrapper { max-width: 1200px; margin: 2rem auto 0 auto; padding: 0 1.5rem; }
-
-    /* SEZIONE HERO: PROSPETTO COMPLETO DA 1 EURO */
-    .hero-euro-section {
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.05));
-      border: 1px solid var(--panel-border);
-      border-radius: var(--radius);
-      padding: 2.5rem;
-      margin-bottom: 2.5rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    .pill-btn.active {
+      background: linear-gradient(135deg, var(--cyan), #0284c7);
+      color: #000;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
     }
-    .hero-euro-header { text-align: center; margin-bottom: 2rem; }
-    .hero-euro-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; }
-    .hero-euro-header p { color: var(--text-sub); font-size: 1rem; }
 
-    .breakdown-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.2rem;
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 2rem 1rem;
     }
-    .breakdown-card {
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
-      border-radius: 16px;
-      padding: 1.2rem;
-      position: relative;
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      background: linear-gradient(180deg, #ffffff 40%, #9ca3af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
     }
-    .breakdown-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 3px;
-      border-top-left-radius: 16px; border-top-right-radius: 16px;
+    .hero p {
+      color: var(--text-sub);
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
     }
-    .card-materia::before { background: var(--accent-cyan); }
-    .card-rete::before { background: var(--accent-purple); }
-    .card-oneri::before { background: var(--accent-orange); }
-    .card-imposte::before { background: var(--accent-green); }
 
-    .breakdown-card label { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--text-sub); display: block; }
-    .breakdown-card .val { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; margin: 0.3rem 0; }
-    .breakdown-card p { font-size: 0.8rem; color: var(--text-sub); }
-
-    /* BARRA CONFIGURATORE ORIZZONTALE */
+    /* CONFIGURATORE STRIP */
     .config-strip {
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 1.2rem 1.8rem;
+      padding: 1.5rem 2rem;
       display: flex;
       flex-wrap: wrap;
       gap: 1.5rem;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 2.5rem;
+      margin: 2rem 0 3rem 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
-    .config-group { display: flex; align-items: center; gap: 0.8rem; }
-    .config-group label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-sub); }
+    .config-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .config-group label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--cyan); letter-spacing: 0.8px; }
     .config-input {
       background: var(--bg);
-      border: 1px solid var(--panel-border);
+      border: 1px solid var(--card-border);
       color: #fff;
-      padding: 0.6rem 1rem;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
       outline: none;
+      transition: all 0.2s;
     }
+    .config-input:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
 
     /* BENTO GRID OFFERTE */
-    .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-    .section-head h2 { font-size: 1.5rem; font-weight: 800; }
-
-    .offers-bento {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3.5rem;
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
     }
-    .offer-bento-card {
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
+
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .offer-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 1.8rem;
+      padding: 2rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+      transition: all 0.3s ease;
     }
-    .offer-bento-card:hover { transform: translateY(-4px); border-color: var(--accent-cyan); }
-    
-    .supplier-tag { color: var(--accent-cyan); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-    .offer-title { font-size: 1.3rem; font-weight: 800; margin: 0.2rem 0 0.5rem 0; }
-    .offer-desc { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 1.2rem; }
+    .offer-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--cyan);
+      box-shadow: 0 15px 30px rgba(56, 189, 248, 0.15);
+    }
+    .supplier-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .offer-name { font-size: 1.4rem; font-weight: 800; margin: 0.3rem 0; }
+    .offer-desc { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 1.5rem; }
 
-    .price-tag-wrap { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--panel-border); display: flex; justify-content: space-between; align-items: flex-end; }
-    .price-amount { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 800; color: var(--accent-green); }
-    .btn-action {
-      background: var(--accent-cyan);
+    .price-box {
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .price-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--neon-green);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), #0284c7);
       color: #000;
       border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 10px;
+      padding: 0.75rem 1.4rem;
+      border-radius: 12px;
       font-weight: 800;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { transform: scale(1.03); }
+
+    /* SEZIONE PAYWALL PREVENTIVO COMPLETO (1 EURO) */
+    .paywall-wrapper {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(56, 189, 248, 0.05));
+      border: 2px dashed var(--purple);
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-bottom: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .paywall-badge {
+      background: var(--gold);
+      color: #000;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .paywall-wrapper h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem; }
+    .paywall-wrapper p { color: var(--text-sub); max-width: 650px; margin: 0 auto 2rem auto; font-size: 1.05rem; }
+
+    .btn-unlock {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: #000;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 40px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(234, 179, 8, 0.3);
+      transition: all 0.3s ease;
+    }
+    .btn-unlock:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(234, 179, 8, 0.5); }
+
+    /* SCHEDA ANALITICA COMPLETA STILE DUFERCO CUSTOM CON FRECCE */
+    .detailed-breakdown-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 4rem;
+      display: none; /* Attivata con il Paywall */
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .duferco-header {
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
-    /* BLOG GRID */
-    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3.5rem; }
-    .blog-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius); padding: 1.5rem; }
-    .blog-card span { color: var(--accent-purple); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
-    .blog-card h3 { font-size: 1.1rem; font-weight: 700; margin: 0.4rem 0; }
+    .duferco-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .duferco-box {
+      background: rgba(3, 7, 18, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .duferco-arrow {
+      font-size: 1.5rem;
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+      display: inline-block;
+      font-weight: 800;
+    }
+    .duferco-title {
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .duferco-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+    }
+    .duferco-desc {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    /* BLOG INTEGRATO */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+    }
+    .blog-tag { font-size: 0.75rem; font-weight: 800; color: var(--purple); text-transform: uppercase; margin-bottom: 0.5rem; display: block; }
+    .blog-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
     .blog-card p { font-size: 0.85rem; color: var(--text-sub); }
 
-    /* SEZIONE DONAZIONE PAYPAL */
-    .paypal-banner {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
-      border: 1px dashed var(--accent-purple);
+    /* DONATION PAYPAL */
+    .donation-box {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(168, 85, 247, 0.1));
+      border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 2rem;
+      padding: 2.5rem;
       text-align: center;
     }
-    .paypal-btn {
-      display: inline-block;
+    .donation-box h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .donation-box p { color: var(--text-sub); max-width: 550px; margin: 0 auto 1.5rem auto; font-size: 0.95rem; }
+    
+    .btn-paypal {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       background: #0070ba;
       color: #fff;
       font-weight: 800;
       text-decoration: none;
-      padding: 0.8rem 2rem;
-      border-radius: 30px;
-      margin-top: 1rem;
+      padding: 0.85rem 2rem;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+    }
+    .btn-paypal:hover { background: #005ea6; box-shadow: 0 8px 20px rgba(0, 112, 186, 0.4); }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: var(--text-sub);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 2rem;
     }
   </style>
 </head>
 <body>
 
-  <header class="top-nav">
-    <div class="brand">PORTAL<span>ENERGY</span></div>
-    <div class="nav-pills">
-      <button class="pill-btn active" id="btn-res" onclick="setTarget('res')">🏠 Casa</button>
-      <button class="pill-btn" id="btn-biz" onclick="setTarget('biz')">🏢 Business</button>
-    </div>
-  </header>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
 
-  <div class="main-wrapper">
-    
-    <!-- HERO: ANALISI PREVENTIVO COMPLETO SULLA BASE DI 1 EURO -->
-    <section class="hero-euro-section">
-      <div class="hero-euro-header">
-        <h1>Anatomia del Preventivo (Base 1,00 €)</h1>
-        <p>Come viene ripartito ogni singolo euro che paghi in bolletta secondo gli standard regolamentati ARERA.</p>
+  <div class="wrapper">
+    <!-- NAVBAR -->
+    <header>
+      <div class="logo">
+        ⚡ <span class="logo-badge">PORTAL</span>ENERGY
       </div>
+      <div class="nav-pills">
+        <button class="pill-btn active" id="btn-res" onclick="setTarget('res')">🏠 Privat/Casa</button>
+        <button class="pill-btn" id="btn-biz" onclick="setTarget('biz')">🏢 Business</button>
+      </div>
+    </header>
 
-      <div class="breakdown-row">
-        <div class="breakdown-card card-materia">
-          <label>Spesa Materia</label>
-          <div class="val" style="color: var(--accent-cyan);">0,58 €</div>
-          <p>La quota dell'energia o gas prodotta, soggetta a concorrenza.</p>
-        </div>
-        <div class="breakdown-card card-rete">
-          <label>Trasporto & Rete</label>
-          <div class="val" style="color: var(--accent-purple);">0,18 €</div>
-          <p>I costi per la consegna e la gestione del contatore locale.</p>
-        </div>
-        <div class="breakdown-card card-oneri">
-          <label>Oneri di Sistema</label>
-          <div class="val" style="color: var(--accent-orange);">0,12 €</div>
-          <p>Oneri fissati per legge a sostegno del sistema energetico.</p>
-        </div>
-        <div class="breakdown-card card-imposte">
-          <label>Imposte & IVA</label>
-          <div class="val" style="color: var(--accent-green);">0,12 €</div>
-          <p>Tasse statali applicate sul totale del servizio fruito.</p>
-        </div>
-      </div>
+    <!-- HERO -->
+    <section class="hero">
+      <h1>Il Comparatore Energetico Senza Filtri</h1>
+      <p>Trasparenza pura, algoritmi ufficiali e analisi minuziosa per ogni voce di spesa in bolletta.</p>
     </section>
 
-    <!-- BARRA CONFIGURATORE -->
+    <!-- CONFIGURATORE STRIP -->
     <div class="config-strip">
       <div class="config-group">
-        <label>Servizio</label>
+        <label>Fornitura</label>
         <select class="config-input" id="cfg-service" onchange="render()">
-          <option value="ee">⚡ Energia Elettrica</option>
+          <option value="ee">⚡ Luce / Energia Elettrica</option>
           <option value="gas">🔥 Gas Naturale</option>
         </select>
       </div>
 
       <div class="config-group">
-        <label>Tariffa</label>
+        <label>Tipo Tariffa</label>
         <select class="config-input" id="cfg-type" onchange="render()">
-          <option value="all">Tutte</option>
-          <option value="fixed">Prezzo Fisso</option>
-          <option value="variable">Indicizzato (PUN/PSV)</option>
+          <option value="all">Tutte le tipologie</option>
+          <option value="fixed">Prezzo Bloccato/Fisso</option>
+          <option value="variable">Prezzo Indicizzato (PUN/PSV)</option>
         </select>
       </div>
 
       <div class="config-group">
-        <label>Consumo Anno</label>
-        <input type="number" class="config-input" id="cfg-cons" value="2700" style="width: 100px;" oninput="render()">
+        <label>Consumo Annuo</label>
+        <input type="number" class="config-input" id="cfg-cons" value="2700" style="width: 120px;" oninput="render()">
       </div>
 
       <div class="config-group">
-        <label>Visualizzazione</label>
+        <label>Periodo Prospetto</label>
         <select class="config-input" id="cfg-freq" onchange="render()">
-          <option value="year">Totale Annuo</option>
-          <option value="month">Quota Mensile</option>
+          <option value="year">Totale Anno (€/yr)</option>
+          <option value="month">Quota Mese (€/mo)</option>
         </select>
       </div>
     </div>
 
-    <!-- GRIGLIA OFFERTE BENTO -->
-    <div class="section-head">
-      <h2>Offerte Disponibili</h2>
-      <input type="text" id="search-input" class="config-input" placeholder="🔍 Cerca fornitore..." oninput="render()" style="width: 220px;">
+    <!-- LISTA OFFERTE BENTO GRID -->
+    <div class="section-title">
+      <span>🔥</span> Offerte Selezionate & Comparate
+    </div>
+    <div class="offers-grid" id="offers-container"></div>
+
+    <!-- PAYWALL PREVENTIVO COMPLETO 1€ -->
+    <div class="paywall-wrapper">
+      <span class="paywall-badge">Analisi Certificata</span>
+      <h2>Sblocca il Preventivo Completo & Dettagliato</h2>
+      <p>Ottieni l'esploso completo della bolletta calcolato al centesimo, basato sulle componenti ARERA ufficiali al costo simbolico di <strong>1,00 €</strong>.</p>
+      <button class="btn-unlock" onclick="unlockQuote()">🔓 Sblocca Preventivo Completo (1,00 €)</button>
     </div>
 
-    <div class="offers-bento" id="offers-container"></div>
+    <!-- SCHEDA DETTAGLIATA STILE DUFERCO CUSTOM CON FRECCE -->
+    <div class="detailed-breakdown-section" id="detailed-section">
+      <div class="duferco-header">
+        <div>
+          <h2 style="font-size: 1.8rem; font-weight: 800;">🔍 Prospetto Analitico Personalizzato</h2>
+          <p style="color: var(--text-sub);">Dettaglio tecnico completo calcolato sui tuoi parametri di consumo</p>
+        </div>
+        <span style="background: var(--neon-green); color: #000; font-weight: 800; padding: 0.4rem 1rem; border-radius: 30px; font-size: 0.85rem;">PREVENTIVO ATTIVO</span>
+      </div>
 
-    <!-- SEZIONE BLOG -->
-    <div class="section-head">
-      <h2>Guide & Trasparenza</h2>
+      <div class="duferco-grid">
+        <div class="duferco-box">
+          <span class="duferco-arrow">➔</span>
+          <div class="duferco-title" style="color: var(--cyan);">1. Spesa Materia Energia</div>
+          <div class="duferco-val" id="val-materia">0.00 €</div>
+          <div class="duferco-desc">Comprende il costo dell'energia acquistata al punto di dispacciamento + i costi fissa di commercializzazione (CCV) stabiliti dal fornitore.</div>
+        </div>
+
+        <div class="duferco-box">
+          <span class="duferco-arrow">➔</span>
+          <div class="duferco-title" style="color: var(--purple);">2. Trasporto e Gestione Contatore</div>
+          <div class="duferco-val" id="val-rete">0.00 €</div>
+          <div class="duferco-desc">Quota fissa e variabile destinata ai gestori di rete locali per il trasporto dell'energia e la lettura dei consumi.</div>
+        </div>
+
+        <div class="duferco-box">
+          <span class="duferco-arrow">➔</span>
+          <div class="duferco-title" style="color: var(--orange);">3. Oneri Generali di Sistema</div>
+          <div class="duferco-val" id="val-oneri">0.00 €</div>
+          <div class="duferco-desc">Corrispettivi fissati per legge destinati al sostegno delle energie rinnovabili e ad interventi di efficienza energetica.</div>
+        </div>
+
+        <div class="duferco-box">
+          <span class="duferco-arrow">➔</span>
+          <div class="duferco-title" style="color: var(--neon-green);">4. Imposte & IVA Applicata</div>
+          <div class="duferco-val" id="val-imposte">0.00 €</div>
+          <div class="duferco-desc">Include le accise sui consumi totali ed IVA di legge (10% uso domestico / 22% uso professionale).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEZIONE BLOG / GUIDE -->
+    <div class="section-title">
+      <span>📚</span> Guide & Trasparenza Energetica
     </div>
     <div class="blog-grid">
       <div class="blog-card">
-        <span>Guida Mercato</span>
-        <h3>Differenza tra Prezzo Fisso e Indicizzato</h3>
-        <p>Il prezzo fisso ti tutela dai rialzi del mercato. L'indicizzato segue l'andamento mensile di PUN e PSV, ideale quando i costi energia sono in calo.</p>
+        <span class="blog-tag">Trasparenza</span>
+        <h3>Come leggere le voci nascoste della bolletta</h3>
+        <p>Impara a distinguere la materia prima dai costi di trasporto e commerciali per evitare brutte sorprese.</p>
       </div>
       <div class="blog-card">
-        <span>Voce in Bolletta</span>
-        <h3>Cosa sono i costi CCV?</h3>
-        <p>Sono i costi fisso-mensili di commercializzazione e vendita che il fornitore richiede per la gestione amministrativa del contratto.</p>
+        <span class="blog-tag">Mercato Libero</span>
+        <h3>Fisso vs Indicizzato: Quale conviene?</h3>
+        <p>Analisi delle curve dei prezzi PUN e PSV per capire il momento perfetto per cambiare contratto.</p>
       </div>
       <div class="blog-card">
-        <span>Consigli</span>
-        <h3>Come leggere il contatore della luce</h3>
-        <p>Monitorare la ripartizione dei consumi nelle tre fasce orarie F1, F2 ed F3 ti permette di scegliere la tariffa multioraria più adatta alle tue abitudini.</p>
+        <span class="blog-tag">Consigli Utili</span>
+        <h3>I picchi d'uso e le fasce orarie F1, F2, F3</h3>
+        <p>Come pianificare l'uso dei grandi elettrodomestici per tagliare la spesa energetica complessiva.</p>
       </div>
     </div>
 
-    <!-- BANNER PAYPAL -->
-    <div class="paypal-banner">
-      <h3>Ti è stata utile questa analisi?</h3>
-      <p style="color: var(--text-sub); margin-top: 0.3rem;">Il comparatore è totalmente gratuito e indipendente. Se ti va, offrimi un caffè!</p>
-      <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" class="paypal-btn">Sostieni con PayPal</a>
+    <!-- DONAZIONE PAYPAL -->
+    <div class="donation-box">
+      <h3>💙 Supporta l'Indipendenza del Progetto</h3>
+      <p>Questo comparatore è autonomo e svincolato dalle logiche dei grandi gruppi energetici. Se ti è stato utile, sostienimi con una piccola donazione libera.</p>
+      <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" class="btn-paypal">
+        Sostieni il Progetto con PayPal
+      </a>
     </div>
 
+    <footer>
+      <p>© 2026 PortalEnergy - Tutti i diritti riservati. Algoritmi basati sulle specifiche ARERA.</p>
+    </footer>
   </div>
 
   <script>
     const database = {
       ee: [
-        { name: "Sorgenia Next Energy Sun", supplier: "Sorgenia", type: "fixed", target: "res", kwh: 0.118, ccv: 96, desc: "Energia 100% verde da fonti rinnovabili con gestione digitale tramite app." },
-        { name: "Acea Prezzo Fisso Web", supplier: "Acea", type: "fixed", target: "res", kwh: 0.122, ccv: 90, desc: "Blocca il costo della materia prima energia per un anno intero." },
-        { name: "Duferco Dynamic Flex", supplier: "Duferco", type: "variable", target: "res", kwh: 0.105, ccv: 84, desc: "Prezzo indicizzato al PUN con spread ridotto al minimo." },
-        { name: "Enel Flex Impresa", supplier: "Enel", type: "variable", target: "biz", kwh: 0.112, ccv: 120, desc: "Pensata per piccole imprese con consumi flessibili." }
+        { name: "Sorgenia Next Energy Sun", supplier: "Sorgenia", type: "fixed", target: "res", kwh: 0.118, ccv: 96, desc: "Energia 100% da fonti rinnovabili con gestione nativa da App." },
+        { name: "Acea Web Light", supplier: "Acea", type: "fixed", target: "res", kwh: 0.122, ccv: 90, desc: "Prezzo bloccato sulla componente energia per 12 mesi." },
+        { name: "Duferco Dynamic Flex", supplier: "Duferco", type: "variable", target: "res", kwh: 0.105, ccv: 84, desc: "Prezzo indicizzato al PUN con spread ridotto e servizio dedicato." },
+        { name: "Enel Business Flex", supplier: "Enel", type: "variable", target: "biz", kwh: 0.112, ccv: 120, desc: "Configurazione flessibile adatta a negozi e studi professionali." }
       ],
       gas: [
-        { name: "Sorgenia Next Energy Gas", supplier: "Sorgenia", type: "fixed", target: "res", kwh: 0.42, ccv: 96, desc: "Tariffa a prezzo fisso sul gas per riscaldamento e uso cucina." },
-        { name: "Plenitude Trend Gas", supplier: "Plenitude", type: "variable", target: "res", kwh: 0.38, ccv: 108, desc: "Segui il prezzo del mercato all'ingrosso PSV." }
+        { name: "Sorgenia Next Energy Gas", supplier: "Sorgenia", type: "fixed", target: "res", kwh: 0.42, ccv: 96, desc: "Costo gas bloccato per evitare i picchi della stagione invernale." },
+        { name: "Plenitude Trend Gas", supplier: "Plenitude", type: "variable", target: "res", kwh: 0.38, ccv: 108, desc: "Prezzo agganciato all'indice PSV mensile del mercato all'ingrosso." }
       ]
     };
 
     let currentTarget = 'res';
 
-    function setTarget(t) {
-      currentTarget = t;
-      document.getElementById('btn-res').classList.toggle('active', t === 'res');
-      document.getElementById('btn-biz').classList.toggle('active', t === 'biz');
+    function setTarget(target) {
+      currentTarget = target;
+      document.getElementById('btn-res').classList.toggle('active', target === 'res');
+      document.getElementById('btn-biz').classList.toggle('active', target === 'biz');
       render();
     }
 
@@ -340,46 +553,64 @@
       const type = document.getElementById('cfg-type').value;
       const cons = parseFloat(document.getElementById('cfg-cons').value) || 0;
       const freq = document.getElementById('cfg-freq').value;
-      const search = document.getElementById('search-input').value.toLowerCase();
 
       let list = database[service].filter(o => o.target === currentTarget);
       if (type !== 'all') list = list.filter(o => o.type === type);
-      if (search) list = list.filter(o => o.name.toLowerCase().includes(search) || o.supplier.toLowerCase().includes(search));
 
       container.innerHTML = '';
-
-      if (list.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-sub);">Nessun risultato disponibile per i parametri selezionati.</p>';
-        return;
-      }
 
       list.forEach(item => {
         let materia = (cons * item.kwh) + item.ccv;
         let rete = service === 'ee' ? (20 + (3 * 21) + (cons * 0.04)) : (45 + (cons * 0.15));
         let oneri = cons * (service === 'ee' ? 0.03 : 0.05);
         let tot = (materia + rete + oneri) * (currentTarget === 'biz' ? 1.22 : 1.10);
-        
-        let displayVal = freq === 'year' ? tot : (tot / 12);
-        let displayLabel = freq === 'year' ? '/ anno' : '/ mese';
+
+        let finalValue = freq === 'year' ? tot : (tot / 12);
+        let label = freq === 'year' ? '/ anno' : '/ mese';
 
         const card = document.createElement('div');
-        card.className = 'offer-bento-card';
+        card.className = 'offer-card';
         card.innerHTML = `
           <div>
-            <span class="supplier-tag">${item.supplier}</span>
-            <div class="offer-title">${item.name}</div>
+            <span class="supplier-badge">${item.supplier}</span>
+            <div class="offer-name">${item.name}</div>
             <div class="offer-desc">${item.desc}</div>
           </div>
-          <div class="price-tag-wrap">
+          <div class="price-box">
             <div>
-              <div class="price-amount">${displayVal.toFixed(2)} €</div>
-              <span style="font-size: 0.75rem; color: var(--text-sub);">${displayLabel}</span>
+              <div class="price-val">${finalValue.toFixed(2)} €</div>
+              <span style="font-size:0.8rem; color:var(--text-sub);">${label}</span>
             </div>
-            <button class="btn-action" onclick="alert('Richiesta avviata!')">Scegli</button>
+            <button class="btn-primary" onclick="alert('Richiesta attivazione inviata!')">Seleziona</button>
           </div>
         `;
         container.appendChild(card);
       });
+
+      // Calcola e aggiorna la scheda dettagliata stile Duferco se attiva
+      updateDetailedBreakdown(cons, service);
+    }
+
+    function updateDetailedBreakdown(cons, service) {
+      let materia = (cons * 0.118) + 96;
+      let rete = service === 'ee' ? (20 + (3 * 21) + (cons * 0.04)) : (45 + (cons * 0.15));
+      let oneri = cons * (service === 'ee' ? 0.03 : 0.05);
+      let imposte = (materia + rete + oneri) * (currentTarget === 'biz' ? 0.22 : 0.10);
+
+      document.getElementById('val-materia').innerText = materia.toFixed(2) + ' €';
+      document.getElementById('val-rete').innerText = rete.toFixed(2) + ' €';
+      document.getElementById('val-oneri').innerText = oneri.toFixed(2) + ' €';
+      document.getElementById('val-imposte').innerText = imposte.toFixed(2) + ' €';
+    }
+
+    function unlockQuote() {
+      if (confirm("Vuoi simulare lo sblocco del preventivo completo per 1,00 €?")) {
+        document.getElementById('detailed-section').style.display = 'block';
+        window.scrollTo({
+          top: document.getElementById('detailed-section').offsetTop - 50,
+          behavior: 'smooth'
+        });
+      }
     }
 
     render();
