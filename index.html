@@ -44,7 +44,7 @@
       overflow-x: hidden;
     }
 
-    /* SFONDO TEMATICO ENERGIA E GAS CON DISEGNI VETTORIALI */
+    /* SFONDO TEMATICO ENERGIA E GAS */
     .bg-theme-container {
       position: fixed;
       top: 0;
@@ -243,6 +243,19 @@
     }
     .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 242, 254, 0.45); }
 
+    /* Admin Auth Toggle */
+    .admin-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 245, 160, 0.05);
+      border: 1px dashed var(--accent-green);
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+    }
+
     /* Results Header & Barra Ricerca */
     .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     .results-header h2 { font-size: 1.5rem; font-weight: 800; }
@@ -429,68 +442,10 @@
       background: linear-gradient(135deg, #007bc8, #00569c);
     }
 
-    /* Guida Bolletta */
-    .guide-section { margin-top: 4rem; }
-    .guide-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 2.2rem;
-      backdrop-filter: blur(20px);
-    }
-    .guide-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    .guide-box {
-      background: rgba(0,0,0,0.3);
-      border: 1px solid var(--card-border);
-      padding: 1.25rem;
-      border-radius: 16px;
-      transition: all 0.3s;
-    }
-    .guide-box:hover { border-color: var(--accent-cyan); transform: translateY(-3px); }
-    .guide-box h4 { color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-    .guide-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
-
-    /* SEZIONE BLOG ENERGIA SETTIMANALE */
-    .blog-section { margin-top: 3.5rem; }
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    .blog-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      backdrop-filter: blur(15px);
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .blog-card:hover { border-color: var(--accent-cyan); transform: translateY(-3px); }
-    .blog-tag {
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 0.5rem;
-    }
-    .blog-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.6rem; }
-    .blog-excerpt { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1rem; }
-    .blog-date { font-size: 0.75rem; color: var(--accent-green); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
-
     /* MODALI WIZARD E PREVENTIVO CUSTOM */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 19, 0.88); backdrop-filter: blur(15px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
     .modal-card { background: var(--bg-dark); border-radius: var(--radius); border: 1px solid var(--card-border); max-width: 550px; width: 100%; padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; max-height: 90vh; overflow-y: auto; }
-    .modal-card.wide { max-width: 800px; }
+    .modal-card.wide { max-width: 850px; }
     .modal-close { position: absolute; top: 1.2rem; right: 1.2rem; border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
 
     .wizard-steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
@@ -504,7 +459,7 @@
     .modal-actions { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
     .btn-sec { background: transparent; border: 1px solid var(--card-border); color: #fff; padding: 0.85rem 1.5rem; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-    /* PREVENTIVO CUSTOM WHITE-LABEL */
+    /* PREVENTIVO CUSTOM ANTEPRIMA & UNLOCK */
     .custom-receipt {
       font-family: 'JetBrains Mono', monospace;
       background: #020612;
@@ -523,29 +478,42 @@
       justify-content: space-between;
     }
     .custom-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; }
-    .custom-table th, .custom-table td { text-align: left; padding: 0.4rem 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .custom-table th, .custom-table td { text-align: left; padding: 0.5rem 0.3rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .custom-table th { color: var(--accent-cyan); font-weight: 700; }
-    
-    /* Paywall Lock */
-    .paywall-blur {
-      filter: blur(5px);
-      pointer-events: none;
-      user-select: none;
+
+    .paywall-preview-container {
+      position: relative;
+      margin-top: 1rem;
+    }
+    .paywall-blur-overlay {
+      position: absolute;
+      top: 100px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 100px);
+      backdrop-filter: blur(6px);
+      background: rgba(6, 9, 19, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      z-index: 10;
     }
     .paywall-box {
-      background: linear-gradient(135deg, rgba(127, 0, 255, 0.25), rgba(0, 242, 254, 0.2));
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(6, 9, 19, 0.95));
       border: 1px solid var(--accent-cyan);
       border-radius: 16px;
-      padding: 1.5rem;
+      padding: 1.8rem;
       text-align: center;
-      margin-bottom: 1rem;
-      box-shadow: var(--glow);
+      max-width: 500px;
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.3);
     }
   </style>
 </head>
 <body>
 
-  <!-- SFONDO DINAMICO TEMATICO -->
+  <!-- SFONDO DINAMICO -->
   <div class="bg-theme-container">
     <div class="bg-grid"></div>
     <div class="blob blob-1"></div>
@@ -573,6 +541,12 @@
     <div class="app-layout">
       <!-- SIDEBAR PARAMETRI -->
       <aside>
+        <!-- Modalità Admin autorizzazione -->
+        <div class="admin-bar">
+          <span>👑 Modalità Amministratore</span>
+          <button id="admin-toggle-btn" class="btn-sec" style="padding:0.3rem 0.6rem; font-size:0.75rem;" onclick="toggleAdminPermission()">Sblocca Gratuiti: OFF</button>
+        </div>
+
         <div class="panel-card">
           <h2 class="panel-title">⚡ Auto-Scan Bolletta</h2>
           <div class="dropzone">
@@ -643,7 +617,7 @@
         </div>
 
         <div class="filter-bar">
-          <input type="text" id="search-provider" class="search-input" placeholder="🔍 Cerca fornitore o nome offerta (es. Acea, Sorgenia, A2A...)" oninput="calculateOffers()">
+          <input type="text" id="search-provider" class="search-input" placeholder="🔍 Cerca fornitore o nome offerta (es. Duferco, Acea, Sorgenia...)" oninput="calculateOffers()">
         </div>
 
         <div id="results-container"></div>
@@ -662,74 +636,6 @@
         </div>
       </main>
     </div>
-
-    <!-- SEZIONE GUIDA INTERATTIVA -->
-    <section class="guide-section">
-      <div class="guide-card">
-        <h3 style="font-size: 1.6rem; color: #fff;">📖 Come si legge una bolletta dell'energia?</h3>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.4rem;">
-          Comprendere la struttura dei costi stabilita da **ARERA** ti permette di scegliere l'offerta migliore senza trucchetti di marketing.
-        </p>
-
-        <div class="guide-grid">
-          <div class="guide-box">
-            <h4>💡 Spesa Materia Prima</h4>
-            <p>È l'unico vero costo competitivo. Si divide in <strong>Quota Fissa</strong> (€/anno per la commercializzazione) e <strong>Quota Energia</strong> (€/kWh o €/Smc in base ai consumi).</p>
-          </div>
-          <div class="guide-box">
-            <h4>⚙️ Trasporto e Gestione Contatore</h4>
-            <p>Costo stabilito direttamente dall'Autorità ARERA per coprire i servizi di rete e i contatori. È identico per tutti i fornitori presenti sul mercato.</p>
-          </div>
-          <div class="guide-box">
-            <h4>🛡️ Oneri di Sistema</h4>
-            <p>Istituiti per legge, coprono i costi generali per il sostegno alle energie rinnovabili e la dismissione delle centrali nucleari. Tariffe fisse definite per legge.</p>
-          </div>
-          <div class="guide-box">
-            <h4>📑 Imposte e IVA</h4>
-            <p>Include le accise erariali sui consumi e l'IVA applicata sul totale delle voci della bolletta (10% per i consumi domestici, 22% per gli usi business/commerciali).</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEZIONE BLOG ENERGIA AGGIORNATA SETTIMANALMENTE -->
-    <section class="blog-section">
-      <div class="panel-card" style="margin-bottom:0;">
-        <h3 style="font-size: 1.6rem; color: #fff;">📰 Notizie & Aggiornamenti Energia</h3>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.4rem;">
-          Aggiornamenti settimanali dai principali canali d'informazione del mercato energetico e decisioni ARERA.
-        </p>
-
-        <div class="blog-grid">
-          <div class="blog-card">
-            <div>
-              <div class="blog-tag">ARERA & Mercato</div>
-              <div class="blog-title">Andamento PUN e PSV: Aggiornamento Settimanale</div>
-              <div class="blog-excerpt">Analisi dell'indice PUN e delle quotazioni del gas al PSV. Cosa aspettarsi dai prezzi nei prossimi mesi dell'anno.</div>
-            </div>
-            <div class="blog-date">📅 Settimana Corrente • Notizie ANSA / Sole24Ore</div>
-          </div>
-
-          <div class="blog-card">
-            <div>
-              <div class="blog-tag">Normativa & Bonus</div>
-              <div class="blog-title">Riforma degli Oneri di Sistema per Imprese e Famiglie</div>
-              <div class="blog-excerpt">Le nuove direttive dell'Autorità sulla redistribuzione dei costi di rete e le agevolazioni per le aziende BTA4 e domestiche.</div>
-            </div>
-            <div class="blog-date">📅 Aggiornato Venerdì scorso • Staff Energia</div>
-          </div>
-
-          <div class="blog-card">
-            <div>
-              <div class="blog-tag">Efficienza Energetica</div>
-              <div class="blog-title">Contatori 2G e Monitoraggio Orario: Come Risparmiare</div>
-              <div class="blog-excerpt">Sfruttare le fasce orarie F1, F2 ed F3 con le misurazioni di seconda generazione per tagliare i consumi di picco.</div>
-            </div>
-            <div class="blog-date">📅 3 Giorni Fa • Staff Tecnico</div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- FOOTER CLAUSOLA TRASPARENZA E CONFORMITÀ REGOLATORIA -->
     <footer style="margin-top: 4rem; border-top: 1px solid var(--card-border); padding-top: 2rem; padding-bottom: 2rem; color: var(--text-muted); font-size: 0.82rem; line-height: 1.6;">
@@ -764,11 +670,11 @@
         <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem;">Inserisci i dati dell'intestatario.</p>
         
         <div class="form-group">
-          <label id="lbl-name">Nome e Cognome / Ragione Sociale</label>
+          <label>Nome e Cognome / Ragione Sociale</label>
           <div class="input-wrapper"><input type="text" id="cust-name" placeholder="Mario Rossi S.r.l." required></div>
         </div>
         <div class="form-group">
-          <label id="lbl-cf">Codice Fiscale / Partita IVA</label>
+          <label>Codice Fiscale / Partita IVA</label>
           <div class="input-wrapper"><input type="text" id="cust-cf" placeholder="12345678901" required></div>
         </div>
         <div class="form-group">
@@ -844,37 +750,51 @@
     let currentFreq = 'year';
     let selectedOffer = null;
     let chartInstances = {};
-    let isUnlocked = false;
+    let isAdminUnlocked = false; // Autorizzazione speciale gratuita per te
 
-    const fornitoriInEvidenza = ["acea", "sorgenia", "a2a", "magis", "enel"];
+    const fornitoriInEvidenza = ["duferco energia", "acea", "sorgenia", "a2a", "magis", "enel"];
 
     const mockOffers = {
       res: {
         ee: [
-          { id: 101, name: "Evergreen Flex", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.110, f3: 0.092, desc: "La tariffa online a prezzo indicizzato più conveniente per la casa." },
+          { id: 101, name: "Evergreen Flex", supplier: "Duferco Energia", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.110, f3: 0.092, desc: "La tariffa online a prezzo indicizzato più conveniente per la casa." },
           { id: 102, name: "Acea Luce Web", supplier: "ACEA", tariffType: "fixed", fixedFee: 96, f1: 0.125, f2: 0.125, f3: 0.125, desc: "Prezzo Bloccato per 12 Mesi al riparo dalle oscillazioni di mercato." },
           { id: 103, name: "Sorgenia Next Energy", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.118, f3: 0.105, desc: "Energia 100% Green proveniente da fonti rinnovabili certificate." },
           { id: 104, name: "A2A Smart Luce", supplier: "A2A", tariffType: "fixed", fixedFee: 108, f1: 0.13, f2: 0.13, f3: 0.13, desc: "Prezzo Fisso Garantito con opzione di monitoraggio dei consumi via app." },
           { id: 105, name: "Magis Luce Dynamic", supplier: "Magis", tariffType: "variable", fixedFee: 78, f1: 0.115, f2: 0.110, f3: 0.095, desc: "Massima trasparenza ARERA con il prezzo di costo della materia prima." }
         ],
         gas: [
-          { id: 201, name: "Evergreen Gas Flex", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Tariffa indicizzata al PSV con azzeramento dei costi di attivazione." },
+          { id: 201, name: "Evergreen Gas Flex", supplier: "Duferco Energia", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Tariffa indicizzata al PSV con azzeramento dei costi di attivazione." },
           { id: 202, name: "Acea Gas Sicuro", supplier: "ACEA", tariffType: "fixed", fixedFee: 90, unitPrice: 0.43, desc: "Senza sorprese in bolletta durante i mesi invernali più freddi." },
           { id: 203, name: "Sorgenia Next Gas", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Inclusa la compensazione delle emissioni di CO2 con progetti green." }
         ]
       },
       biz: {
         ee: [
-          { id: 301, name: "Evergreen Business Mono", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 144, f1: 0.178, f2: 0.178, f3: 0.178, desc: "Offerta Business ad alte prestazioni per PMI e P.IVA." },
+          { id: 301, name: "Evergreen Business Mono", supplier: "Duferco Energia", tariffType: "variable", fixedFee: 144, f1: 0.178, f2: 0.178, f3: 0.178, desc: "Offerta Business ad alte prestazioni per PMI e P.IVA." },
           { id: 302, name: "Enel Impresa Sicura", supplier: "Enel", tariffType: "fixed", fixedFee: 160, f1: 0.195, f2: 0.195, f3: 0.195, desc: "Blocca il costo della produzione aziendale per 24 Mesi." },
           { id: 303, name: "A2A Corporate Power", supplier: "A2A", tariffType: "variable", fixedFee: 120, f1: 0.178, f2: 0.178, f3: 0.178, desc: "Fatturazione aggregata multi-pod per aziende con diverse sedi." }
         ],
         gas: [
-          { id: 401, name: "Business Gas Evergreen", supplier: "Fornitore Partner", tariffType: "variable", fixedFee: 130, unitPrice: 0.35, desc: "Indicizzazione PSV ottimizzata per aziende e grandi impianti." },
+          { id: 401, name: "Business Gas Evergreen", supplier: "Duferco Energia", tariffType: "variable", fixedFee: 130, unitPrice: 0.35, desc: "Indicizzazione PSV ottimizzata per aziende e grandi impianti." },
           { id: 402, name: "Sorgenia Impresa Verde", supplier: "Sorgenia", tariffType: "fixed", fixedFee: 150, unitPrice: 0.38, desc: "Fornitura 100% compensata con certificati ambientali inclusi." }
         ]
       }
     };
+
+    function toggleAdminPermission() {
+      isAdminUnlocked = !isAdminUnlocked;
+      const btn = document.getElementById('admin-toggle-btn');
+      if (isAdminUnlocked) {
+        btn.innerText = "Sblocca Gratuiti: ON (ADMIN)";
+        btn.style.borderColor = "var(--accent-green)";
+        btn.style.color = "var(--accent-green)";
+      } else {
+        btn.innerText = "Sblocca Gratuiti: OFF";
+        btn.style.borderColor = "var(--card-border)";
+        btn.style.color = "#fff";
+      }
+    }
 
     function setTarget(target) {
       currentTarget = target;
@@ -1071,14 +991,14 @@
       });
     }
 
-    /* GESTIONE PREVENTIVO CUSTOM WHITE-LABEL CON PAYWALL 1 EURO */
+    /* PREVENTIVO DETTAGLIATO CON ESEMPIO VISIBILE PER IL CLIENTE */
     function openPdfModal(offerId) {
       let consumption = parseFloat(document.getElementById('consumption').value) || 2700;
       let power = parseFloat(document.getElementById('power').value) || 3;
       let offersList = mockOffers[currentTarget][currentType];
       let offer = offersList.find(o => o.id === offerId);
 
-      let qConsumi = currentType === 'ee' ? (consumption * (offer.f1 || offer.unitPrice || 0.12)) : (consumption * offer.unitPrice);
+      let qConsumi = currentType === 'ee' ? (consumption * (offer.f1 || offer.unitPrice || 0.118)) : (consumption * offer.unitPrice);
       let qFissa = offer.fixedFee;
       let qPotenza = currentType === 'ee' ? (power * 21.5) : 0;
       let perdite = qConsumi * 0.10;
@@ -1089,100 +1009,67 @@
       let totale = subtotale + imposte;
 
       const modalContent = document.getElementById('pdf-modal-content');
+      const unitLabel = currentType === 'ee' ? 'kWh' : 'Smc';
 
-      if (!isUnlocked) {
+      // Se l'Admin ha attivato il bypass oppure è già sbloccato
+      if (isAdminUnlocked) {
+        modalContent.innerHTML = renderFullUnblockedReceipt(offer, consumption, power, unitLabel, qConsumi, perdite, dispacciamento, qFissa, qPotenza, reteOneri, imposte, totale, true);
+      } else {
         modalContent.innerHTML = `
-          <div class="paywall-box">
-            <h3 style="color:#fff; font-size:1.4rem; margin-bottom:0.5rem;">🔒 Sblocca il Preventivo Dettagliato Personalizzato</h3>
-            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
-              Ottieni il pro-forma di calcolo completo voce per voce (Spesa vendita, perdite di rete, dispacciamento, oneri generali di sistema e accise) secondo gli standard ufficiali ARERA.
-            </p>
-            <div style="background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:10px; margin-bottom:1.2rem; font-size:0.85rem; color:var(--accent-green);">
-              💡 <strong>Regola di Sblocco:</strong> Il report completo e scaricabile si sblocca previa donazione simbolica di <strong>1,00 €</strong> per sostenere i costi del servizio.
-            </div>
-            <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" onclick="unlockPreventivo()" class="paypal-btn-direct" style="margin-top:0;">
-              💳 Donazione 1,00 € e Sblocca Preventivo
-            </a>
-          </div>
+          <h3 style="color:#fff; font-size:1.3rem; margin-bottom:0.5rem;">📄 Anteprima Pro-Forma Preventivo Completo</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">
+            Vedi sotto l'esempio della struttura analitica delle voci ARERA. Per scaricarlo ed esportarlo completo di intestazione libera la versione PDF sbloccata a soli 1,00 €.
+          </p>
 
-          <div class="paywall-blur">
+          <div class="paywall-preview-container">
+            <div class="paywall-blur-overlay">
+              <div class="paywall-box">
+                <h3 style="color:#fff; font-size:1.35rem; margin-bottom:0.5rem;">🔒 Sblocca il Report PDF Completo</h3>
+                <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.2rem;">
+                  Ottieni il prospetto senza watermark, completo di tutte le voci ed esportabile per la tua fornitura.
+                </p>
+                <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" onclick="forceUnlockCustomer()" class="paypal-btn-direct" style="margin-top:0;">
+                  💳 Sblocca Preventivo (1,00 €)
+                </a>
+              </div>
+            </div>
+
             <div class="custom-receipt">
               <div class="custom-header">
                 <div>
                   <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier.toUpperCase()}</strong><br>
-                  Simulazione Bolletta / Preventivo Custom
+                  Preventivo Analitico Trasparanza ARERA (Anteprima)
                 </div>
                 <div style="text-align:right;">
                   <strong>OFFERTA:</strong> ${offer.name}<br>
-                  <strong>POD/PDR:</strong> IT001E04795780
+                  <strong>MERCATO:</strong> ${currentTarget.toUpperCase()}<br>
+                  <strong>TIPO PREZZO:</strong> ${offer.tariffType.toUpperCase()}
                 </div>
               </div>
 
-              <p><strong>Riepilogo Simulazione Voci di Spesa:</strong></p>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:0.8rem; background:rgba(255,255,255,0.03); padding:0.6rem; border-radius:8px;">
+                <div><strong>Consumo Fatturato:</strong> ${consumption} ${unitLabel}</div>
+                <div><strong>Potenza Impegnata:</strong> ${power} kW</div>
+              </div>
+
               <table class="custom-table">
                 <thead>
-                  <tr><th>Voce di Spesa</th><th>Quantità</th><th>Prezzo Medio</th><th>Importo (€)</th></tr>
+                  <tr><th>Voce di Spesa (Dettaglio ARERA)</th><th>Quantità</th><th>Prezzo Unit.</th><th>Importo</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>Spesa Vendita Energia</td><td>${consumption} kWh</td><td>€0,1180</td><td>€${qConsumi.toFixed(2)}</td></tr>
-                  <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} kWh</td><td>€0,1180</td><td>€${perdite.toFixed(2)}</td></tr>
-                  <tr><td>Dispacciamento EE</td><td>${consumption} kWh</td><td>€0,0105</td><td>€${dispacciamento.toFixed(2)}</td></tr>
-                  <tr><td>Quota Fissa Commercializzazione</td><td>12 mesi</td><td>€${(qFissa/12).toFixed(2)}/mese</td><td>€${qFissa.toFixed(2)}</td></tr>
-                  <tr><td>Rete e Oneri di Sistema (ARERA)</td><td>-</td><td>-</td><td>€${reteOneri.toFixed(2)}</td></tr>
-                  <tr><td>Accise Erariali e IVA</td><td>-</td><td>-</td><td>€${imposte.toFixed(2)}</td></tr>
+                  <tr><td>Spesa Materia Prima Energia</td><td>${consumption} ${unitLabel}</td><td>€0,1180</td><td>€${qConsumi.toFixed(2)}</td></tr>
+                  <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} ${unitLabel}</td><td>€0,1180</td><td>€${perdite.toFixed(2)}</td></tr>
+                  <tr><td>Dispacciamento EE</td><td>${consumption} ${unitLabel}</td><td>€0,0105</td><td>€${dispacciamento.toFixed(2)}</td></tr>
+                  <tr><td>Quota Fissa Commercializzazione</td><td>12 Mesi</td><td>€${(qFissa/12).toFixed(2)}/m</td><td>€${qFissa.toFixed(2)}</td></tr>
+                  ${currentType === 'ee' ? `<tr><td>Quota Potenza Impegnata (${power} kW)</td><td>${power} kW</td><td>€21,50/kW</td><td>€${qPotenza.toFixed(2)}</td></tr>` : ''}
+                  <tr><td>Trasporto, Gestione Contatore & Oneri</td><td>Fisso + Vol.</td><td>Standard ARERA</td><td>€${reteOneri.toFixed(2)}</td></tr>
+                  <tr><td>Accise Erariali e IVA</td><td>Di legge</td><td>${currentTarget === 'biz' ? '22%' : '10%'}</td><td>€${imposte.toFixed(2)}</td></tr>
                 </tbody>
               </table>
-              <div style="margin-top:1rem; font-weight:800; font-size:1.2rem; text-align:right; color:var(--accent-cyan);">
-                TOTALE PREVENTIVO SIMULATO: €${totale.toFixed(2)}
+
+              <div style="margin-top:1rem; font-weight:800; font-size:1.1rem; text-align:right; color:var(--accent-green);">
+                TOTALE PREVENTIVO CALCOLATO: €${totale.toFixed(2)}
               </div>
-            </div>
-          </div>
-        `;
-      } else {
-        modalContent.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-            <h3 style="color:var(--accent-green); font-size:1.3rem;">✅ Preventivo Dettagliato Sbloccato</h3>
-            <button class="btn-submit" style="width:auto; padding:0.5rem 1rem;" onclick="window.print()">🖨️ Stampa / Salva PDF</button>
-          </div>
-
-          <div class="custom-receipt">
-            <div class="custom-header">
-              <div>
-                <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier.toUpperCase()}</strong><br>
-                Preventivo Analitico Trasparanza ARERA
-              </div>
-              <div style="text-align:right;">
-                <strong>OFFERTA:</strong> ${offer.name}<br>
-                <strong>MERCATO:</strong> Libero - ${currentTarget.toUpperCase()}<br>
-                <strong>TIPO PREZZO:</strong> ${offer.tariffType.toUpperCase()}
-              </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; background:rgba(255,255,255,0.03); padding:0.8rem; border-radius:8px;">
-              <div><strong>Consumo Fatturato:</strong> ${consumption} ${currentType === 'ee' ? 'kWh' : 'Smc'}</div>
-              <div><strong>Potenza Impegnata:</strong> ${power} kW</div>
-              <div><strong>Data Simulazione:</strong> ${new Date().toLocaleDateString('it-IT')}</div>
-              <div><strong>IVA Applicata:</strong> ${currentTarget === 'biz' ? '22%' : '10%'}</div>
-            </div>
-
-            <p style="color:var(--accent-cyan); font-weight:700;">DETTAGLIO SCONTRINO DELL'ENERGIA:</p>
-            <table class="custom-table">
-              <thead>
-                <tr><th>Voce di Spesa</th><th>Quantità</th><th>Prezzo Unitario</th><th>Importo Totale</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Spesa Materia Prima Energia</td><td>${consumption} ${unitLabel}</td><td>€0,118038</td><td>€${qConsumi.toFixed(2)}</td></tr>
-                <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} ${unitLabel}</td><td>€0,118038</td><td>€${perdite.toFixed(2)}</td></tr>
-                <tr><td>Dispacciamento EE</td><td>${consumption} ${unitLabel}</td><td>€0,010501</td><td>€${dispacciamento.toFixed(2)}</td></tr>
-                <tr><td>Quota Fissa Vendita</td><td>1 Anno</td><td>€${qFissa.toFixed(2)}/anno</td><td>€${qFissa.toFixed(2)}</td></tr>
-                ${currentType === 'ee' ? `<tr><td>Quota Potenza (${power} kW)</td><td>${power} kW</td><td>€21,50/kW/anno</td><td>€${qPotenza.toFixed(2)}</td></tr>` : ''}
-                <tr><td>Trasporto, Gestione Contatore & Oneri ARERA</td><td>Fisso + Quota Vol.</td><td>Variabile</td><td>€${reteOneri.toFixed(2)}</td></tr>
-                <tr><td>Imposte, Accise & IVA</td><td>A Norma di Legge</td><td>${currentTarget === 'biz' ? '22%' : '10%'}</td><td>€${imposte.toFixed(2)}</td></tr>
-              </tbody>
-            </table>
-
-            <div style="margin-top:1.5rem; font-weight:800; font-size:1.3rem; text-align:right; color:var(--accent-green); border-top:1px dashed var(--accent-cyan); padding-top:0.8rem;">
-              TOTALE PREVENTIVO COMPLETO: €${totale.toFixed(2)}
             </div>
           </div>
         `;
@@ -1191,11 +1078,60 @@
       document.getElementById('pdf-modal').style.display = 'flex';
     }
 
-    function unlockPreventivo() {
+    function renderFullUnblockedReceipt(offer, consumption, power, unitLabel, qConsumi, perdite, dispacciamento, qFissa, qPotenza, reteOneri, imposte, totale, isAdmin) {
+      return `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <h3 style="color:var(--accent-green); font-size:1.3rem;">✅ Preventivo Dettagliato Sbloccato ${isAdmin ? '(Gratis Admin)' : ''}</h3>
+          <button class="btn-submit" style="width:auto; padding:0.5rem 1rem;" onclick="window.print()">🖨️ Stampa / Salva PDF</button>
+        </div>
+
+        <div class="custom-receipt">
+          <div class="custom-header">
+            <div>
+              <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier.toUpperCase()}</strong><br>
+              Preventivo Analitico Trasparenza ARERA
+            </div>
+            <div style="text-align:right;">
+              <strong>OFFERTA:</strong> ${offer.name}<br>
+              <strong>MERCATO:</strong> Libero - ${currentTarget.toUpperCase()}<br>
+              <strong>TIPO PREZZO:</strong> ${offer.tariffType.toUpperCase()}
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; background:rgba(255,255,255,0.03); padding:0.8rem; border-radius:8px;">
+            <div><strong>Consumo Fatturato:</strong> ${consumption} ${unitLabel}</div>
+            <div><strong>Potenza Impegnata:</strong> ${power} kW</div>
+            <div><strong>Data Simulazione:</strong> ${new Date().toLocaleDateString('it-IT')}</div>
+            <div><strong>IVA Applicata:</strong> ${currentTarget === 'biz' ? '22%' : '10%'}</div>
+          </div>
+
+          <p style="color:var(--accent-cyan); font-weight:700;">DETTAGLIO SCONTRINO DELL'ENERGIA:</p>
+          <table class="custom-table">
+            <thead>
+              <tr><th>Voce di Spesa</th><th>Quantità</th><th>Prezzo Unitario</th><th>Importo Totale</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Spesa Materia Prima Energia</td><td>${consumption} ${unitLabel}</td><td>€0,118038</td><td>€${qConsumi.toFixed(2)}</td></tr>
+              <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} ${unitLabel}</td><td>€0,118038</td><td>€${perdite.toFixed(2)}</td></tr>
+              <tr><td>Dispacciamento EE</td><td>${consumption} ${unitLabel}</td><td>€0,010501</td><td>€${dispacciamento.toFixed(2)}</td></tr>
+              <tr><td>Quota Fissa Vendita</td><td>1 Anno</td><td>€${qFissa.toFixed(2)}/anno</td><td>€${qFissa.toFixed(2)}</td></tr>
+              ${currentType === 'ee' ? `<tr><td>Quota Potenza (${power} kW)</td><td>${power} kW</td><td>€21,50/kW/anno</td><td>€${qPotenza.toFixed(2)}</td></tr>` : ''}
+              <tr><td>Trasporto, Gestione Contatore & Oneri ARERA</td><td>Fisso + Quota Vol.</td><td>Variabile</td><td>€${reteOneri.toFixed(2)}</td></tr>
+              <tr><td>Imposte, Accise & IVA</td><td>A Norma di Legge</td><td>${currentTarget === 'biz' ? '22%' : '10%'}</td><td>€${imposte.toFixed(2)}</td></tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:1.5rem; font-weight:800; font-size:1.3rem; text-align:right; color:var(--accent-green); border-top:1px dashed var(--accent-cyan); padding-top:0.8rem;">
+            TOTALE PREVENTIVO COMPLETO: €${totale.toFixed(2)}
+          </div>
+        </div>
+      `;
+    }
+
+    function forceUnlockCustomer() {
       setTimeout(() => {
-        isUnlocked = true;
-        alert("Grazie per la donazione! Il preventivo analitico completo è stato sbloccato.");
-        closePdfModal();
+        alert("Preventivo sbloccato con successo!");
+        toggleAdminPermission(); // Sblocca temporaneamente
       }, 1000);
     }
 
