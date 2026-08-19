@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome per la iconografia del portale -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SDK Donazioni PayPal -->
+    <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
     <style>
         :root {
             --primary: #0a2540;
@@ -46,7 +48,7 @@
             position: relative;
         }
 
-        /* Dynamic Energy Dynamic Canvas & Background Overlay */
+        /* SFONDO A TEMA ENERGIA */
         .energy-bg-overlay {
             position: fixed;
             top: 0;
@@ -63,7 +65,6 @@
             background-blend-mode: screen, overlay, normal, normal;
         }
 
-        /* SVG Grid Background Effect */
         .energy-grid {
             position: fixed;
             top: 0;
@@ -78,7 +79,7 @@
             background-size: 50px 50px;
         }
 
-        /* Header & Navigation */
+        /* HEADER */
         header {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -115,10 +116,6 @@
             filter: drop-shadow(0 0 10px var(--secondary));
         }
 
-        .logo span {
-            color: var(--primary-accent);
-        }
-
         .nav-links {
             display: flex;
             align-items: center;
@@ -142,34 +139,24 @@
             text-shadow: 0 0 8px rgba(255,255,255,0.5);
         }
 
-        /* Paypal Donation Button */
-        .paypal-donate-btn {
-            background: linear-gradient(135deg, #ffc439 0%, #ff9400 100%);
-            color: #003087 !important;
-            font-weight: 700 !important;
-            padding: 8px 16px;
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(255, 196, 57, 0.3);
-            transition: all 0.3s ease !important;
-            border: 1px solid #ffe082;
+        /* CONTAINER PULSANTE PAYPAL INTEGRATO */
+        #donate-button-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
         }
 
-        .paypal-donate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 196, 57, 0.5);
-            color: #001c48 !important;
-        }
-
-        /* Hero & Sections */
+        /* HERO & SELEZIONE SEGMENTO/SERVIZIO */
         .hero {
-            padding: 50px 20px 20px;
+            padding: 40px 20px 20px;
             text-align: center;
             max-width: 1000px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: 46px;
+            font-size: 42px;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 15px;
@@ -179,34 +166,40 @@
         }
 
         .hero p {
-            font-size: 17px;
+            font-size: 16px;
             color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-
-        /* Segment Switcher Tabs */
-        .tab-switcher {
-            display: inline-flex;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px;
-            border-radius: 40px;
-            border: 1px solid var(--glass-border);
             margin-bottom: 25px;
         }
 
+        .controls-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tab-switcher {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+        }
+
         .tab-btn {
-            padding: 12px 32px;
+            padding: 10px 24px;
             border: none;
             background: transparent;
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .tab-btn.active {
@@ -215,10 +208,39 @@
             box-shadow: var(--neon-glow);
         }
 
-        /* Upload Card Section */
+        .service-switcher {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .service-btn {
+            padding: 8px 18px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .service-btn.active {
+            background: var(--secondary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 10px rgba(0, 212, 177, 0.3);
+        }
+
+        /* CARICAMENTO BOLLETTA */
         .upload-section {
             max-width: 1200px;
-            margin: 0 auto 35px;
+            margin: 0 auto 30px;
             padding: 0 20px;
         }
 
@@ -226,7 +248,7 @@
             background: linear-gradient(135deg, rgba(99, 91, 255, 0.12) 0%, rgba(0, 212, 177, 0.08) 100%);
             border: 2px dashed var(--secondary);
             border-radius: 20px;
-            padding: 30px 25px;
+            padding: 25px 20px;
             text-align: center;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
@@ -240,22 +262,22 @@
         }
 
         .upload-icon {
-            font-size: 40px;
+            font-size: 36px;
             color: var(--secondary);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .upload-title {
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             color: var(--text-main);
         }
 
         .upload-desc {
             font-size: 13px;
             color: var(--text-muted);
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
 
         .file-input {
@@ -265,54 +287,49 @@
         .btn-upload-trigger {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: var(--secondary);
             color: var(--bg-dark);
-            padding: 10px 24px;
+            padding: 9px 20px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s ease;
         }
 
-        .btn-upload-trigger:hover {
-            box-shadow: var(--neon-glow);
-            transform: translateY(-2px);
-        }
-
         .upload-status {
-            margin-top: 15px;
-            font-size: 14px;
+            margin-top: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--secondary);
             display: none;
         }
 
-        /* Interactive Filter Bar */
+        /* FILTRI */
         .filter-panel {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            padding: 20px 25px;
+            padding: 18px 22px;
             max-width: 1200px;
-            margin: 0 auto 35px;
+            margin: 0 auto 30px;
             box-shadow: var(--shadow);
             backdrop-filter: blur(10px);
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            gap: 18px;
             align-items: center;
         }
 
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             text-align: left;
         }
 
         .filter-group label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -323,9 +340,9 @@
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 10px 14px;
+            padding: 9px 12px;
             color: white;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
             transition: border-color 0.3s ease;
         }
@@ -334,7 +351,7 @@
             border-color: var(--secondary);
         }
 
-        /* Card Grid Layout */
+        /* GRIGLIA OFFERTE */
         .main-container {
             max-width: 1400px;
             margin: 0 auto 50px;
@@ -344,21 +361,20 @@
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 22px;
         }
 
         .offer-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 18px;
-            padding: 22px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
         }
 
         .offer-card:hover {
@@ -370,14 +386,14 @@
 
         .card-badge {
             position: absolute;
-            top: 18px;
-            right: 18px;
+            top: 16px;
+            right: 16px;
             background: rgba(0, 212, 177, 0.15);
             color: var(--secondary);
             border: 1px solid rgba(0, 212, 177, 0.3);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            padding: 4px 10px;
+            padding: 4px 8px;
             border-radius: 20px;
             text-transform: uppercase;
         }
@@ -390,40 +406,40 @@
         }
 
         .provider-icon {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             color: var(--secondary);
         }
 
         .provider-name {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
             font-weight: 500;
         }
 
         .offer-title {
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: var(--text-main);
         }
 
         .price-container {
             background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 18px;
+            padding: 12px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .monthly-estimate {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--secondary);
             display: flex;
@@ -432,17 +448,17 @@
         }
 
         .monthly-estimate span {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
             font-weight: 400;
         }
 
         .unit-rates {
-            margin-top: 8px;
+            margin-top: 6px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .rate-item {
@@ -456,8 +472,7 @@
         .card-actions {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
         }
 
         .btn-breakdown-trigger {
@@ -472,7 +487,6 @@
             align-items: center;
             gap: 6px;
             padding: 4px 0;
-            transition: color 0.2s ease;
         }
 
         .btn-breakdown-trigger:hover {
@@ -485,7 +499,7 @@
             color: white;
             border: none;
             border-radius: 10px;
-            padding: 11px 18px;
+            padding: 10px 16px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
@@ -502,21 +516,49 @@
             box-shadow: var(--neon-glow);
         }
 
-        /* Blog Section Layout */
+        /* PAGINAZIONE A TRE PUNTINI (CARICA ALTRE) */
+        .load-more-container {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .btn-load-more {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-load-more:hover {
+            background: var(--primary-accent);
+            border-color: var(--primary-accent);
+            box-shadow: var(--neon-glow);
+            transform: translateY(-2px);
+        }
+
+        /* SEZIONE BLOG */
         .blog-section {
             max-width: 1400px;
-            margin: 60px auto;
+            margin: 40px auto 60px;
             padding: 0 20px;
         }
 
         .blog-header {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
+            padding-bottom: 12px;
         }
 
         .blog-header h2 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--text-main);
             display: flex;
@@ -524,15 +566,9 @@
             gap: 10px;
         }
 
-        .blog-header p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
@@ -540,16 +576,10 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s ease;
-        }
-
-        .blog-card:hover {
-            border-color: var(--secondary);
-            transform: translateY(-4px);
         }
 
         .blog-tag {
@@ -557,23 +587,22 @@
             font-weight: 700;
             color: var(--secondary);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .blog-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             line-height: 1.4;
         }
 
         .blog-excerpt {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
             line-height: 1.5;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .blog-meta {
@@ -582,10 +611,10 @@
             display: flex;
             justify-content: space-between;
             border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 10px;
+            padding-top: 8px;
         }
 
-        /* Modal Architecture */
+        /* MODALE PROSPETTO & SCONTRINO */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -613,30 +642,29 @@
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            padding: 30px;
+            padding: 25px;
         }
 
         .modal-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 18px;
+            right: 18px;
             background: rgba(255, 255, 255, 0.05);
             border: none;
             color: var(--text-muted);
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            transition: all 0.2s ease;
+            font-size: 16px;
         }
 
         .modal-close:hover {
@@ -644,100 +672,98 @@
             color: white;
         }
 
-        /* Invoice Prospect Styles */
+        /* TABELLA PREVENTIVO */
         .invoice-header {
             border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
         }
 
         .invoice-title-area h2 {
-            font-size: 22px;
+            font-size: 20px;
             color: var(--text-main);
             margin-bottom: 4px;
         }
 
         .invoice-title-area p {
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .metric-banner {
             background: rgba(0, 212, 177, 0.08);
             border-left: 4px solid var(--secondary);
-            padding: 12px 18px;
-            border-radius: 0 10px 10px 0;
-            margin-bottom: 20px;
+            padding: 10px 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .metric-banner .value {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             color: var(--secondary);
         }
 
         .invoice-table-container {
             overflow-x: auto;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .invoice-table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .invoice-table th {
             background: rgba(255, 255, 255, 0.03);
-            padding: 10px 14px;
+            padding: 9px 12px;
             color: var(--text-muted);
             font-weight: 600;
             border-bottom: 1px solid var(--border);
         }
 
         .invoice-table td {
-            padding: 12px 14px;
+            padding: 10px 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .invoice-table tr.total-row {
             background: rgba(0, 212, 177, 0.05);
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .invoice-table tr.total-row td {
             color: var(--secondary);
             border-top: 2px solid var(--border);
-            border-bottom: none;
         }
 
         .chart-wrapper {
             position: relative;
-            height: 220px;
-            margin-top: 15px;
+            height: 200px;
+            margin-top: 12px;
         }
 
-        /* Footer */
         footer {
             margin-top: auto;
             background: rgba(0,0,0,0.5);
             border-top: 1px solid var(--border);
-            padding: 25px 20px;
+            padding: 20px;
             text-align: center;
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
+            .hero h1 { font-size: 30px; }
             .filter-panel { grid-template-columns: 1fr; }
             header { padding: 15px 20px; }
-            .nav-links { display: none; }
+            .nav-links { gap: 15px; }
         }
     </style>
 </head>
@@ -754,16 +780,24 @@
             </a>
             <ul class="nav-links">
                 <li><a href="#" class="active"><i class="fa-solid fa-chart-simple"></i> Comparatore</a></li>
-                <!-- External Links Verificati e Funzionanti -->
-                <li><a href="https://www.arera.it/it/schede/O/schedag.htm" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-book-open"></i> Guida Bolletta</a></li>
                 <li><a href="https://www.ilportaleofferte.it/portaleOfferte/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-gauge-high"></i> Osservatorio Prezzi</a></li>
-                <li><a href="https://www.arera.it/it/callcenter.htm" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-headset"></i> Supporto ARERA</a></li>
                 <li><a href="#blog-section"><i class="fa-solid fa-newspaper"></i> Blog</a></li>
-                <!-- Pulsante Donazione Paypal -->
+                <!-- INTEGRAZIONE DONAZIONE PAYPAL SCRIPT -->
                 <li>
-                    <a href="https://www.paypal.com/donate" target="_blank" rel="noopener noreferrer" class="paypal-donate-btn">
-                        <i class="fa-brands fa-paypal"></i> Donazione
-                    </a>
+                    <div id="donate-button-container">
+                        <div id="donate-button"></div>
+                        <script>
+                        PayPal.Donation.Button({
+                        env:'production',
+                        hosted_button_id:'6WMVS49ECBBN6',
+                        image: {
+                        src:'https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif',
+                        alt:'Fai una donazione con il pulsante PayPal',
+                        title:'PayPal - The safer, easier way to pay online!',
+                        }
+                        }).render('#donate-button');
+                        </script>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -771,15 +805,28 @@
 
     <main class="hero">
         <h1>Il Confronto Trasparente per la Tua Energia</h1>
-        <p>Analisi quantitativa diretta e prospetto preventivo dettagliato senza costi nascosti.</p>
+        <p>Seleziona la tua tipologia di utenza e confronta le migliori offerte aggiornate.</p>
         
-        <div class="tab-switcher">
-            <button class="tab-btn active" id="tab-residenziale" onclick="switchSegment('residenziale')">
-                <i class="fa-solid fa-house"></i> Residenziale
-            </button>
-            <button class="tab-btn" id="tab-business" onclick="switchSegment('business')">
-                <i class="fa-solid fa-building"></i> Business & P.IVA
-            </button>
+        <div class="controls-wrapper">
+            <!-- Segmento Switcher (Residenziale vs Business) -->
+            <div class="tab-switcher">
+                <button class="tab-btn active" id="tab-residenziale" onclick="switchSegment('residenziale')">
+                    <i class="fa-solid fa-house"></i> Residenziale
+                </button>
+                <button class="tab-btn" id="tab-business" onclick="switchSegment('business')">
+                    <i class="fa-solid fa-building"></i> Business & P.IVA
+                </button>
+            </div>
+
+            <!-- Servizio Switcher (Luce vs Gas) -->
+            <div class="service-switcher">
+                <button class="service-btn active" id="service-luce" onclick="switchService('luce')">
+                    <i class="fa-solid fa-lightbulb"></i> Luce
+                </button>
+                <button class="service-btn" id="service-gas" onclick="switchService('gas')">
+                    <i class="fa-solid fa-fire"></i> Gas
+                </button>
+            </div>
         </div>
     </main>
 
@@ -788,7 +835,7 @@
         <div class="upload-card" onclick="document.getElementById('bill-upload-input').click()">
             <i class="fa-solid fa-file-arrow-up upload-icon"></i>
             <div class="upload-title">Carica la tua Bolletta per una Comparazione Rapida</div>
-            <div class="upload-desc">Trascina qui il tuo file PDF o la foto della tua bolletta. L'algoritmo rileverà i consumi in automatico!</div>
+            <div class="upload-desc">Trascina qui il tuo file PDF o la foto della tua bolletta per l'estrazione automatica dei consumi.</div>
             <span class="btn-upload-trigger"><i class="fa-solid fa-upload"></i> Carica Bolletta (PDF/Immagine)</span>
             <input type="file" id="bill-upload-input" class="file-input" accept=".pdf,image/*" onchange="handleFileUpload(event)">
             <div class="upload-status" id="upload-status-text"></div>
@@ -796,14 +843,14 @@
     </section>
 
     <section class="main-container">
-        <!-- Dashboard Filtri Avanzati -->
+        <!-- Dashboard Filtri -->
         <div class="filter-panel">
             <div class="filter-group">
                 <label><i class="fa-solid fa-filter"></i> Tipologia Prezzo</label>
                 <select class="filter-control" id="filter-type" onchange="applyFilters()">
                     <option value="all">Tutti i tipi</option>
                     <option value="fisso">Prezzo Fisso</option>
-                    <option value="variabile">Prezzo Indicizzato (PUN)</option>
+                    <option value="variabile">Prezzo Indicizzato</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -811,11 +858,11 @@
                 <select class="filter-control" id="filter-sort" onchange="applyFilters()">
                     <option value="price-asc">Stima Mensile (Crescente)</option>
                     <option value="price-desc">Stima Mensile (Decrescente)</option>
-                    <option value="kwh-asc">Prezzo kWh (Crescente)</option>
+                    <option value="unit-asc">Prezzo Unitario (Crescente)</option>
                 </select>
             </div>
             <div class="filter-group">
-                <label><i class="fa-solid fa-plug"></i> Consumo Annuo Stimato (kWh)</label>
+                <label id="consumption-label"><i class="fa-solid fa-plug"></i> Consumo Annuo Stimato (kWh)</label>
                 <input type="number" class="filter-control" id="filter-consumption" value="2700" oninput="recalculateEstimates()">
             </div>
         </div>
@@ -824,20 +871,26 @@
         <div class="cards-grid" id="offers-grid">
             <!-- Dynamic Content Injected via JavaScript -->
         </div>
+
+        <!-- Pulsante Tre Puntini per Caricare Altre Offerte (Paginazione a 6 a 6) -->
+        <div class="load-more-container" id="load-more-container">
+            <button class="btn-load-more" onclick="loadMoreOffers()">
+                <i class="fa-solid fa-ellipsis"></i> Carica Altre Offerte
+            </button>
+        </div>
     </section>
 
-    <!-- Sezione Blog e News Energia -->
+    <!-- Sezione Blog -->
     <section class="blog-section" id="blog-section">
         <div class="blog-header">
             <h2><i class="fa-solid fa-newspaper" style="color:var(--secondary);"></i> Notizie & Trend Energia</h2>
-            <p>Aggiornamenti settimanali sui mercati, delibere e consigli di risparmio.</p>
         </div>
         <div class="blog-grid" id="blog-grid">
             <!-- Injected Dynamic Blog Posts -->
         </div>
     </section>
 
-    <!-- Modal Architettura per Scontrino & Preventivo -->
+    <!-- Modal per Scontrino & Preventivo -->
     <div class="modal-overlay" id="global-modal">
         <div class="modal-wrapper">
             <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -852,43 +905,88 @@
     </footer>
 
     <script>
-        // Database Offerte
+        // DATABASE COMPLETO OFFERTE (12 OFFERTE PER OGNI COMBINAZIONE PER PERMETTERE IL CARICAMENTO A 6 A 6)
         const offerDatabase = {
-            residenziale: [
-                { id: 1, provider: "EneCorp", name: "Luce Casa Relax", type: "fisso", priceKwh: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                { id: 2, provider: "EcoPower", name: "Energia Verde Plus", type: "variabile", priceKwh: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                { id: 3, provider: "NetGas", name: "Flexi Web Casa", type: "variabile", priceKwh: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                { id: 4, provider: "SicuraEnergia", name: "Luce Sicura Fix", type: "fisso", priceKwh: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                { id: 5, provider: "OmniaLuce", name: "Zero Pensieri Family", type: "fisso", priceKwh: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                { id: 6, provider: "GreenLife", name: "Smart Green Dual", type: "variabile", priceKwh: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 }
-            ],
-            business: [
-                { id: 101, provider: "EneCorp Business", name: "Impresa Power Pro", type: "fisso", priceKwh: 0.142, fixedFee: 18.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                { id: 102, provider: "EcoPower Biz", name: "Business Green Flat", type: "fisso", priceKwh: 0.148, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                { id: 103, provider: "NetGas Trade", name: "P.IVA Dynamic XL", type: "variabile", priceKwh: 0.135, fixedFee: 22.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                { id: 104, provider: "SicuraEnergia Biz", name: "Azienda Continua", type: "fisso", priceKwh: 0.155, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 }
-            ]
+            residenziale: {
+                luce: [
+                    { id: 101, provider: "EneCorp", name: "Luce Casa Relax", type: "fisso", priceUnit: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 102, provider: "EcoPower", name: "Energia Verde Plus", type: "variabile", priceUnit: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 103, provider: "NetGas", name: "Flexi Web Luce", type: "variabile", priceUnit: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 104, provider: "SicuraEnergia", name: "Luce Sicura Fix", type: "fisso", priceUnit: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 105, provider: "OmniaLuce", name: "Zero Pensieri Luce", type: "fisso", priceUnit: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 106, provider: "GreenLife", name: "Smart Green Light", type: "variabile", priceUnit: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 107, provider: "AuraEnergy", name: "Luce Bioraria Smart", type: "variabile", priceUnit: 0.110, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 108, provider: "VoltaPower", name: "Fix Eco Luce", type: "fisso", priceUnit: 0.130, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 109, provider: "EdisonLight", name: "Prezzo Chiaro Luce", type: "fisso", priceUnit: 0.122, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 110, provider: "NovaLuce", name: "Dynamic Home Light", type: "variabile", priceUnit: 0.115, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 111, provider: "FuturaEnergy", name: "Sostenibile 100%", type: "fisso", priceUnit: 0.129, fixedFee: 8.90, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                    { id: 112, provider: "ZenithLuce", name: "Sconto Digital Luce", type: "variabile", priceUnit: 0.119, fixedFee: 7.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 }
+                ],
+                gas: [
+                    { id: 201, provider: "EneCorp", name: "Gas Casa Relax", type: "fisso", priceUnit: 0.48, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 202, provider: "EcoPower", name: "Gas Eco Smart", type: "variabile", priceUnit: 0.42, fixedFee: 11.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 203, provider: "NetGas", name: "Flexi Gas Web", type: "variabile", priceUnit: 0.39, fixedFee: 13.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 204, provider: "SicuraEnergia", name: "Gas Sicuro Fix", type: "fisso", priceUnit: 0.52, fixedFee: 8.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 205, provider: "OmniaGas", name: "Riscaldamento Zero Ansie", type: "fisso", priceUnit: 0.46, fixedFee: 9.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 206, provider: "GreenGas", name: "Green Climate Gas", type: "variabile", priceUnit: 0.44, fixedFee: 10.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 207, provider: "BlueGas", name: "Gas Casa Facile", type: "variabile", priceUnit: 0.41, fixedFee: 12.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 208, provider: "TermoPower", name: "Fix Calore Casa", type: "fisso", priceUnit: 0.50, fixedFee: 9.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 209, provider: "ItalGas Direct", name: "Trasparente Gas", type: "variabile", priceUnit: 0.40, fixedFee: 11.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 210, provider: "ClimaSafe", name: "Gas Inverno Tranquillo", type: "fisso", priceUnit: 0.49, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 211, provider: "EkoTermo", name: "Bio Gas Plus", type: "variabile", priceUnit: 0.43, fixedFee: 8.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
+                    { id: 212, provider: "SempioneGas", name: "Gas Flat Web", type: "fisso", priceUnit: 0.47, fixedFee: 12.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 }
+                ]
+            },
+            business: {
+                luce: [
+                    { id: 301, provider: "EneCorp Biz", name: "Impresa Power Pro", type: "fisso", priceUnit: 0.142, fixedFee: 18.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 302, provider: "EcoPower Biz", name: "Business Green Flat", type: "fisso", priceUnit: 0.148, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 303, provider: "NetGas Trade", name: "P.IVA Dynamic XL", type: "variabile", priceUnit: 0.135, fixedFee: 22.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 304, provider: "SicuraEnergia Biz", name: "Azienda Continua", type: "fisso", priceUnit: 0.155, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 305, provider: "InduPower", name: "Luce Aziende Triase", type: "variabile", priceUnit: 0.138, fixedFee: 20.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 306, provider: "MasterLuce", name: "Business Prime Fix", type: "fisso", priceUnit: 0.145, fixedFee: 16.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 307, provider: "ProEnergia", name: "P.IVA Green Light", type: "variabile", priceUnit: 0.132, fixedFee: 19.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 308, provider: "OmniaBiz", name: "Corporate Light Fix", type: "fisso", priceUnit: 0.150, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 309, provider: "DynaBiz", name: "Flexi Business Luce", type: "variabile", priceUnit: 0.136, fixedFee: 21.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 310, provider: "EuroLuce Trade", name: "Impresa Sicura XL", type: "fisso", priceUnit: 0.141, fixedFee: 17.50, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 311, provider: "Vortex Biz", name: "Energia P.IVA Direct", type: "variabile", priceUnit: 0.130, fixedFee: 25.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                    { id: 312, provider: "AstraEnergy", name: "Azienda Verde Fix", type: "fisso", priceUnit: 0.147, fixedFee: 15.50, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 }
+                ],
+                gas: [
+                    { id: 401, provider: "EneCorp Biz", name: "Gas Business Pro", type: "fisso", priceUnit: 0.55, fixedFee: 20.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 402, provider: "EcoPower Biz", name: "Gas Impresa Green", type: "variabile", priceUnit: 0.49, fixedFee: 22.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 403, provider: "NetGas Trade", name: "Flexi Gas P.IVA", type: "variabile", priceUnit: 0.46, fixedFee: 25.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 404, provider: "SicuraEnergia Biz", name: "Gas Calore Continuo", type: "fisso", priceUnit: 0.58, fixedFee: 18.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 405, provider: "InduGas", name: "Gas Industriale XL", type: "variabile", priceUnit: 0.45, fixedFee: 30.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 406, provider: "MasterGas", name: "Corporate Gas Fix", type: "fisso", priceUnit: 0.53, fixedFee: 21.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 407, provider: "ProGas Trade", name: "P.IVA Clima Fix", type: "fisso", priceUnit: 0.54, fixedFee: 19.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 408, provider: "OmniaGas Biz", name: "Azienda Gas Relax", type: "variabile", priceUnit: 0.48, fixedFee: 24.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 409, provider: "DynaGas", name: "Dynamic Trade Gas", type: "variabile", priceUnit: 0.47, fixedFee: 26.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 410, provider: "EuroGas Trade", name: "Gas Impresa Chiaro", type: "fisso", priceUnit: 0.52, fixedFee: 22.50, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 411, provider: "Vortex Gas", name: "P.IVA Gas Direct", type: "variabile", priceUnit: 0.44, fixedFee: 28.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
+                    { id: 412, provider: "AstraGas", name: "Gas Calore Pro", type: "fisso", priceUnit: 0.56, fixedFee: 17.50, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 }
+                ]
+            }
         };
 
-        // Blog Database
         const blogPosts = [
             {
-                title: "Andamento PUN 2026: Guida alla Scelta del Prezzo Fisso o Variabile",
-                excerpt: "Analisi completa sui trend dell'energia elettrica e suggerimenti per proteggere la propria bolletta nei prossimi mesi.",
-                date: "Settimana Corrente",
+                title: "Andamento Mercati 2026: Guida alla Scelta Prezzo",
+                excerpt: "Analisi sui trend dell'energia elettrica e del gas per ottimizzare i costi aziendali e domestici.",
+                date: "Aggiornato",
                 category: "Mercati",
                 readTime: "4 min"
             },
             {
-                title: "Trasparenza in Bolletta: Come Verificare i Costi della Materia Prima",
-                excerpt: "I consigli fondamentali per individuare le voci nascoste e confrontare correttamente le offerte dei fornitori.",
-                date: "Settimana Corrente",
+                title: "Trasparenza in Bolletta: Come Verificare i Costi",
+                excerpt: "I consigli fondamentali per individuare le voci di spesa e confrontare le offerte sul mercato.",
+                date: "Aggiornato",
                 category: "Guida Pratica",
                 readTime: "3 min"
             },
             {
                 title: "Oneri di Sistema ed Efficienza Energetica",
-                excerpt: "Tutto quello che c'è da sapere sulle componenti di rete e sulle ultime disposizioni dell'autorità di regolazione.",
+                excerpt: "Tutto quello che c'è da sapere sulle componenti di rete e sulle ultime disposizioni normative.",
                 date: "Aggiornato",
                 category: "Normativa",
                 readTime: "5 min"
@@ -896,65 +994,82 @@
         ];
 
         let activeSegment = 'residenziale';
-        let processedOffers = [];
+        let activeService = 'luce';
+        let visibleCount = 6; // Carica 6 schede alla volta
+        let filteredOffersList = [];
         let activeChartInstance = null;
-
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const status = document.getElementById('upload-status-text');
-                status.style.display = 'block';
-                status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Elaborazione file ${file.name}... Estrazione dati in corso...`;
-                
-                setTimeout(() => {
-                    const simulatedConsumption = Math.floor(Math.random() * (3400 - 2200 + 1)) + 2200;
-                    document.getElementById('filter-consumption').value = simulatedConsumption;
-                    status.innerHTML = `<i class="fa-solid fa-circle-check"></i> Bolletta analizzata! Consumo annuo rilevato: <strong>${simulatedConsumption} kWh</strong>. Offerte ricalcolate.`;
-                    recalculateEstimates();
-                }, 1400);
-            }
-        }
 
         function switchSegment(segment) {
             activeSegment = segment;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`tab-${segment}`).classList.add('active');
+            
+            // Imposta valore standard consumo a seconda del segmento/servizio
+            adjustDefaultConsumption();
+            visibleCount = 6;
             applyFilters();
         }
 
-        function calculateMonthlyCost(offer, annualKwh) {
-            const monthlyKwh = annualKwh / 12;
-            const energyCost = (monthlyKwh * offer.priceKwh) + offer.fixedFee;
-            const transportCost = monthlyKwh * offer.transportRate;
-            const systemCost = monthlyKwh * offer.systemRate;
-            const taxes = monthlyKwh * offer.taxRate;
+        function switchService(service) {
+            activeService = service;
+            document.querySelectorAll('.service-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`service-${service}`).classList.add('active');
+            
+            adjustDefaultConsumption();
+            visibleCount = 6;
+            applyFilters();
+        }
+
+        function adjustDefaultConsumption() {
+            const input = document.getElementById('filter-consumption');
+            const label = document.getElementById('consumption-label');
+            if (activeService === 'luce') {
+                label.innerHTML = `<i class="fa-solid fa-plug"></i> Consumo Annuo Stimato (kWh)`;
+                input.value = activeSegment === 'residenziale' ? "2700" : "10000";
+            } else {
+                label.innerHTML = `<i class="fa-solid fa-fire"></i> Consumo Annuo Stimato (Smc)`;
+                input.value = activeSegment === 'residenziale' ? "1400" : "4000";
+            }
+        }
+
+        function calculateMonthlyCost(offer, annualUnits) {
+            const monthlyUnits = annualUnits / 12;
+            const energyCost = (monthlyUnits * offer.priceUnit) + offer.fixedFee;
+            const transportCost = monthlyUnits * offer.transportRate;
+            const systemCost = monthlyUnits * offer.systemRate;
+            const taxes = monthlyUnits * offer.taxRate;
             return energyCost + transportCost + systemCost + taxes;
         }
 
         function applyFilters() {
             const typeFilter = document.getElementById('filter-type').value;
             const sortFilter = document.getElementById('filter-sort').value;
-            const annualKwh = parseFloat(document.getElementById('filter-consumption').value) || 2700;
+            const annualUnits = parseFloat(document.getElementById('filter-consumption').value) || (activeService === 'luce' ? 2700 : 1400);
 
-            let sourceData = [...offerDatabase[activeSegment]];
+            let sourceData = [...offerDatabase[activeSegment][activeService]];
 
             if (typeFilter !== 'all') {
                 sourceData = sourceData.filter(o => o.type === typeFilter);
             }
 
-            processedOffers = sourceData.map(offer => {
-                const monthlyEst = calculateMonthlyCost(offer, annualKwh);
+            filteredOffersList = sourceData.map(offer => {
+                const monthlyEst = calculateMonthlyCost(offer, annualUnits);
                 return { ...offer, calculatedMonthlyEst: monthlyEst };
             });
 
             if (sortFilter === 'price-asc') {
-                processedOffers.sort((a, b) => a.calculatedMonthlyEst - b.calculatedMonthlyEst);
+                filteredOffersList.sort((a, b) => a.calculatedMonthlyEst - b.calculatedMonthlyEst);
             } else if (sortFilter === 'price-desc') {
-                processedOffers.sort((a, b) => b.calculatedMonthlyEst - a.calculatedMonthlyEst);
-            } else if (sortFilter === 'kwh-asc') {
-                processedOffers.sort((a, b) => a.priceKwh - b.priceKwh);
+                filteredOffersList.sort((a, b) => b.calculatedMonthlyEst - a.calculatedMonthlyEst);
+            } else if (sortFilter === 'unit-asc') {
+                filteredOffersList.sort((a, b) => a.priceUnit - b.priceUnit);
             }
 
+            renderGrid();
+        }
+
+        function loadMoreOffers() {
+            visibleCount += 6; // Incrementa di 6 alla volta
             renderGrid();
         }
 
@@ -966,14 +1081,18 @@
             const grid = document.getElementById('offers-grid');
             grid.innerHTML = '';
 
-            processedOffers.forEach(item => {
+            const itemsToShow = filteredOffersList.slice(0, visibleCount);
+
+            itemsToShow.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'offer-card';
+                const unitMeasure = activeService === 'luce' ? 'kWh' : 'Smc';
+                
                 card.innerHTML = `
                     <span class="card-badge">${item.type.toUpperCase()}</span>
                     <div>
                         <div class="provider-info">
-                            <div class="provider-icon"><i class="fa-solid fa-bolt"></i></div>
+                            <div class="provider-icon"><i class="fa-solid ${activeService === 'luce' ? 'fa-bolt' : 'fa-fire'}"></i></div>
                             <div>
                                 <div class="provider-name">${item.provider}</div>
                                 <div class="offer-title">${item.name}</div>
@@ -984,7 +1103,7 @@
                                 €${item.calculatedMonthlyEst.toFixed(2)} <span>/ mese*</span>
                             </div>
                             <div class="unit-rates">
-                                <div class="rate-item">Luce: <strong>€${item.priceKwh.toFixed(3)}/kWh</strong></div>
+                                <div class="rate-item">${activeService === 'luce' ? 'Luce' : 'Gas'}: <strong>€${item.priceUnit.toFixed(3)}/${unitMeasure}</strong></div>
                                 <div class="rate-item">Fisso: <strong>€${item.fixedFee.toFixed(2)}/mese</strong></div>
                             </div>
                         </div>
@@ -1000,6 +1119,14 @@
                 `;
                 grid.appendChild(card);
             });
+
+            // Gestione pulsante Carica Altre
+            const loadMoreBtnContainer = document.getElementById('load-more-container');
+            if (visibleCount >= filteredOffersList.length) {
+                loadMoreBtnContainer.style.display = 'none';
+            } else {
+                loadMoreBtnContainer.style.display = 'block';
+            }
         }
 
         function renderBlog() {
@@ -1023,35 +1150,54 @@
             });
         }
 
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const status = document.getElementById('upload-status-text');
+                status.style.display = 'block';
+                status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Elaborazione file ${file.name}... Rilevamento dati in corso...`;
+                
+                setTimeout(() => {
+                    const simulatedVal = activeService === 'luce' ? 
+                        Math.floor(Math.random() * (3500 - 2000 + 1)) + 2000 : 
+                        Math.floor(Math.random() * (1800 - 1000 + 1)) + 1000;
+                    document.getElementById('filter-consumption').value = simulatedVal;
+                    status.innerHTML = `<i class="fa-solid fa-circle-check"></i> Bolletta analizzata! Consumo annuo stimato: <strong>${simulatedVal} ${activeService === 'luce' ? 'kWh' : 'Smc'}</strong>. Offerte aggiornate.`;
+                    recalculateEstimates();
+                }, 1200);
+            }
+        }
+
         function openScontrinoModal(id) {
             const offer = findOfferById(id);
             const container = document.getElementById('modal-dynamic-content');
+            const unitMeasure = activeService === 'luce' ? 'kWh' : 'Smc';
 
             container.innerHTML = `
                 <div style="margin-bottom:20px;">
                     <h2 style="color:var(--text-main); font-size:22px; margin-bottom:8px;">
-                        <i class="fa-solid fa-receipt" style="color:var(--secondary);"></i> Scontrino dell'Energia
+                        <i class="fa-solid fa-receipt" style="color:var(--secondary);"></i> Scontrino dell'Energia (${activeService.toUpperCase()})
                     </h2>
-                    <p style="color:var(--text-muted); font-size:14px;">
-                        Dettaglio analitico dei costi per l'offerta <strong>${offer.name}</strong> (${offer.provider}).
+                    <p style="color:var(--text-muted); font-size:13px;">
+                        Dettaglio analitico delle voci di spesa per l'offerta <strong>${offer.name}</strong> (${offer.provider}).
                     </p>
                 </div>
                 <div style="display:grid; gap:12px; margin-bottom:20px;">
                     <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
-                        <div style="color:var(--secondary); font-weight:700;">1. Spesa Materia Prima Energia</div>
-                        <div style="color:var(--text-muted); font-size:13px;">€${offer.priceKwh.toFixed(3)}/kWh + Quota fissa di €${offer.fixedFee.toFixed(2)}/mese.</div>
+                        <div style="color:var(--secondary); font-weight:700;">1. Materia Prima ${activeService === 'luce' ? 'Energia' : 'Gas'}</div>
+                        <div style="color:var(--text-muted); font-size:12px;">€${offer.priceUnit.toFixed(3)}/${unitMeasure} + Quota fissa di €${offer.fixedFee.toFixed(2)}/mese.</div>
                     </div>
                     <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
                         <div style="color:var(--secondary); font-weight:700;">2. Trasporto e Gestione Contatore</div>
-                        <div style="color:var(--text-muted); font-size:13px;">Tariffa stimata di €${offer.transportRate.toFixed(3)}/kWh.</div>
+                        <div style="color:var(--text-muted); font-size:12px;">Tariffa regolamentata applicata: €${offer.transportRate.toFixed(3)}/${unitMeasure}.</div>
                     </div>
                     <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
                         <div style="color:var(--secondary); font-weight:700;">3. Oneri di Sistema</div>
-                        <div style="color:var(--text-muted); font-size:13px;">Componente fissa di legge pari a €${offer.systemRate.toFixed(3)}/kWh.</div>
+                        <div style="color:var(--text-muted); font-size:12px;">Componente fissa di legge: €${offer.systemRate.toFixed(3)}/${unitMeasure}.</div>
                     </div>
                     <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
                         <div style="color:var(--secondary); font-weight:700;">4. Imposte ed Accise</div>
-                        <div style="color:var(--text-muted); font-size:13px;">Quota fiscale calcolata su base consumi a €${offer.taxRate.toFixed(3)}/kWh.</div>
+                        <div style="color:var(--text-muted); font-size:12px;">Aliquota fiscale calcolata su base consumi: €${offer.taxRate.toFixed(3)}/${unitMeasure}.</div>
                     </div>
                 </div>
             `;
@@ -1059,18 +1205,18 @@
             document.getElementById('global-modal').classList.add('active');
         }
 
-        // Preventivo Dettagliato (Senza la dicitura Duferco)
         function openPreventivoModal(id) {
             const offer = findOfferById(id);
-            const annualKwh = parseFloat(document.getElementById('filter-consumption').value) || 2700;
-            const monthlyKwh = annualKwh / 12;
+            const annualUnits = parseFloat(document.getElementById('filter-consumption').value) || (activeService === 'luce' ? 2700 : 1400);
+            const monthlyUnits = annualUnits / 12;
+            const unitMeasure = activeService === 'luce' ? 'kWh' : 'Smc';
 
-            const costMateriaVal = (monthlyKwh * offer.priceKwh) + offer.fixedFee;
-            const costTransportVal = monthlyKwh * offer.transportRate;
-            const costSystemVal = monthlyKwh * offer.systemRate;
-            const costTaxesVal = monthlyKwh * offer.taxRate;
+            const costMateriaVal = (monthlyUnits * offer.priceUnit) + offer.fixedFee;
+            const costTransportVal = monthlyUnits * offer.transportRate;
+            const costSystemVal = monthlyUnits * offer.systemRate;
+            const costTaxesVal = monthlyUnits * offer.taxRate;
             const totalBill = costMateriaVal + costTransportVal + costSystemVal + costTaxesVal;
-            const weightedAveragePrice = totalBill / monthlyKwh;
+            const weightedAveragePrice = totalBill / monthlyUnits;
 
             const container = document.getElementById('modal-dynamic-content');
 
@@ -1084,12 +1230,12 @@
 
                 <div class="metric-banner">
                     <div>
-                        <div style="font-size:11px; color:var(--text-muted); font-weight:600;">PREZZO MEDIO KWH</div>
-                        <div class="value">€${weightedAveragePrice.toFixed(4)} / kWh</div>
+                        <div style="font-size:11px; color:var(--text-muted); font-weight:600;">PREZZO MEDIO UNITARIO</div>
+                        <div class="value">€${weightedAveragePrice.toFixed(4)} / ${unitMeasure}</div>
                     </div>
                     <div style="text-align:right;">
-                        <div style="font-size:11px; color:var(--text-muted); font-weight:600;">STIMA CONSUMO MENSILE</div>
-                        <div style="font-size:16px; font-weight:700; color:white;">${monthlyKwh.toFixed(0)} kWh</div>
+                        <div style="font-size:11px; color:var(--text-muted); font-weight:600;">CONSUMO MENSILE STIMATO</div>
+                        <div style="font-size:16px; font-weight:700; color:white;">${monthlyUnits.toFixed(0)} ${unitMeasure}</div>
                     </div>
                 </div>
 
@@ -1104,23 +1250,23 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Spesa Materia Energia</td>
-                                <td>(${monthlyKwh.toFixed(0)} kWh × €${offer.priceKwh.toFixed(3)}) + €${offer.fixedFee.toFixed(2)} fisso</td>
+                                <td>Materia Prima ${activeService === 'luce' ? 'Energia' : 'Gas'}</td>
+                                <td>(${monthlyUnits.toFixed(0)} ${unitMeasure} × €${offer.priceUnit.toFixed(3)}) + €${offer.fixedFee.toFixed(2)} fisso</td>
                                 <td>€${costMateriaVal.toFixed(2)}</td>
                             </tr>
                             <tr>
                                 <td>Trasporto & Gestione Contatore</td>
-                                <td>${monthlyKwh.toFixed(0)} kWh × €${offer.transportRate.toFixed(3)}</td>
+                                <td>${monthlyUnits.toFixed(0)} ${unitMeasure} × €${offer.transportRate.toFixed(3)}</td>
                                 <td>€${costTransportVal.toFixed(2)}</td>
                             </tr>
                             <tr>
                                 <td>Oneri di Sistema</td>
-                                <td>${monthlyKwh.toFixed(0)} kWh × €${offer.systemRate.toFixed(3)}</td>
+                                <td>${monthlyUnits.toFixed(0)} ${unitMeasure} × €${offer.systemRate.toFixed(3)}</td>
                                 <td>€${costSystemVal.toFixed(2)}</td>
                             </tr>
                             <tr>
                                 <td>Imposte e Accise</td>
-                                <td>${monthlyKwh.toFixed(0)} kWh × €${offer.taxRate.toFixed(3)}</td>
+                                <td>${monthlyUnits.toFixed(0)} ${unitMeasure} × €${offer.taxRate.toFixed(3)}</td>
                                 <td>€${costTaxesVal.toFixed(2)}</td>
                             </tr>
                             <tr class="total-row">
@@ -1131,7 +1277,7 @@
                     </table>
                 </div>
 
-                <h3 style="font-size:15px; margin-top:15px; color:var(--text-main);">Ripartizione Costi</h3>
+                <h3 style="font-size:14px; margin-top:12px; color:var(--text-main);">Grafico Ripartizione Costi</h3>
                 <div class="chart-wrapper">
                     <canvas id="costBreakdownChart"></canvas>
                 </div>
@@ -1146,7 +1292,7 @@
                 activeChartInstance = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Materia Energia', 'Trasporto & Contatore', 'Oneri di Sistema', 'Imposte'],
+                        labels: ['Materia Prima', 'Trasporto & Contatore', 'Oneri di Sistema', 'Imposte'],
                         datasets: [{
                             data: [costMateriaVal, costTransportVal, costSystemVal, costTaxesVal],
                             backgroundColor: ['#635bff', '#00d4b1', '#ffab00', '#ff5252'],
@@ -1159,7 +1305,7 @@
                         plugins: {
                             legend: {
                                 position: 'bottom',
-                                labels: { color: '#94a3b8', font: { size: 12 } }
+                                labels: { color: '#94a3b8', font: { size: 11 } }
                             }
                         }
                     }
@@ -1168,7 +1314,7 @@
         }
 
         function findOfferById(id) {
-            return offerDatabase.residenziale.find(o => o.id === id) || offerDatabase.business.find(o => o.id === id);
+            return offerDatabase[activeSegment][activeService].find(o => o.id === id);
         }
 
         function closeModal() {
@@ -1182,6 +1328,7 @@
             }
         };
 
+        // Inizializzazione
         applyFilters();
         renderBlog();
     </script>
