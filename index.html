@@ -516,6 +516,28 @@
             box-shadow: var(--neon-glow);
         }
 
+        .btn-activate {
+            background: linear-gradient(135deg, #00d4b1 0%, #00b395 100%);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 10px;
+            padding: 11px 16px;
+            font-weight: 700;
+            font-size: 13px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-activate:hover {
+            box-shadow: 0 0 15px rgba(0, 212, 177, 0.6);
+            transform: translateY(-1px);
+        }
+
         /* PAGINAZIONE A TRE PUNTINI (CARICA ALTRE) */
         .load-more-container {
             text-align: center;
@@ -905,66 +927,66 @@
     </footer>
 
     <script>
-        // DATABASE COMPLETO OFFERTE (12 OFFERTE PER OGNI COMBINAZIONE PER PERMETTERE IL CARICAMENTO A 6 A 6)
+        // DATABASE COMPLETO OFFERTE CON LINK DI ATTIVAZIONE DIRETTI
         const offerDatabase = {
             residenziale: {
                 luce: [
-                    { id: 101, provider: "EneCorp", name: "Luce Casa Relax", type: "fisso", priceUnit: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 102, provider: "EcoPower", name: "Energia Verde Plus", type: "variabile", priceUnit: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 103, provider: "NetGas", name: "Flexi Web Luce", type: "variabile", priceUnit: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 104, provider: "SicuraEnergia", name: "Luce Sicura Fix", type: "fisso", priceUnit: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 105, provider: "OmniaLuce", name: "Zero Pensieri Luce", type: "fisso", priceUnit: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 106, provider: "GreenLife", name: "Smart Green Light", type: "variabile", priceUnit: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 107, provider: "AuraEnergy", name: "Luce Bioraria Smart", type: "variabile", priceUnit: 0.110, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 108, provider: "VoltaPower", name: "Fix Eco Luce", type: "fisso", priceUnit: 0.130, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 109, provider: "EdisonLight", name: "Prezzo Chiaro Luce", type: "fisso", priceUnit: 0.122, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 110, provider: "NovaLuce", name: "Dynamic Home Light", type: "variabile", priceUnit: 0.115, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 111, provider: "FuturaEnergy", name: "Sostenibile 100%", type: "fisso", priceUnit: 0.129, fixedFee: 8.90, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
-                    { id: 112, provider: "ZenithLuce", name: "Sconto Digital Luce", type: "variabile", priceUnit: 0.119, fixedFee: 7.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 }
+                    { id: 101, provider: "EneCorp", name: "Luce Casa Relax", type: "fisso", priceUnit: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/enecorp-luce-casa" },
+                    { id: 102, provider: "EcoPower", name: "Energia Verde Plus", type: "variabile", priceUnit: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/ecopower-verde-plus" },
+                    { id: 103, provider: "NetGas", name: "Flexi Web Luce", type: "variabile", priceUnit: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/netgas-flexi-luce" },
+                    { id: 104, provider: "SicuraEnergia", name: "Luce Sicura Fix", type: "fisso", priceUnit: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/sicura-luce-fix" },
+                    { id: 105, provider: "OmniaLuce", name: "Zero Pensieri Luce", type: "fisso", priceUnit: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/omnia-zero-pensieri" },
+                    { id: 106, provider: "GreenLife", name: "Smart Green Light", type: "variabile", priceUnit: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/greenlife-smart-light" },
+                    { id: 107, provider: "AuraEnergy", name: "Luce Bioraria Smart", type: "variabile", priceUnit: 0.110, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/aura-bioraria" },
+                    { id: 108, provider: "VoltaPower", name: "Fix Eco Luce", type: "fisso", priceUnit: 0.130, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/volta-fix-eco" },
+                    { id: 109, provider: "EdisonLight", name: "Prezzo Chiaro Luce", type: "fisso", priceUnit: 0.122, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/edison-prezzo-chiaro" },
+                    { id: 110, provider: "NovaLuce", name: "Dynamic Home Light", type: "variabile", priceUnit: 0.115, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/novaluce-dynamic" },
+                    { id: 111, provider: "FuturaEnergy", name: "Sostenibile 100%", type: "fisso", priceUnit: 0.129, fixedFee: 8.90, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/futura-sostenibile" },
+                    { id: 112, provider: "ZenithLuce", name: "Sconto Digital Luce", type: "variabile", priceUnit: 0.119, fixedFee: 7.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://example.com/attiva/zenith-sconto-digital" }
                 ],
                 gas: [
-                    { id: 201, provider: "EneCorp", name: "Gas Casa Relax", type: "fisso", priceUnit: 0.48, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 202, provider: "EcoPower", name: "Gas Eco Smart", type: "variabile", priceUnit: 0.42, fixedFee: 11.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 203, provider: "NetGas", name: "Flexi Gas Web", type: "variabile", priceUnit: 0.39, fixedFee: 13.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 204, provider: "SicuraEnergia", name: "Gas Sicuro Fix", type: "fisso", priceUnit: 0.52, fixedFee: 8.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 205, provider: "OmniaGas", name: "Riscaldamento Zero Ansie", type: "fisso", priceUnit: 0.46, fixedFee: 9.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 206, provider: "GreenGas", name: "Green Climate Gas", type: "variabile", priceUnit: 0.44, fixedFee: 10.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 207, provider: "BlueGas", name: "Gas Casa Facile", type: "variabile", priceUnit: 0.41, fixedFee: 12.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 208, provider: "TermoPower", name: "Fix Calore Casa", type: "fisso", priceUnit: 0.50, fixedFee: 9.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 209, provider: "ItalGas Direct", name: "Trasparente Gas", type: "variabile", priceUnit: 0.40, fixedFee: 11.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 210, provider: "ClimaSafe", name: "Gas Inverno Tranquillo", type: "fisso", priceUnit: 0.49, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 211, provider: "EkoTermo", name: "Bio Gas Plus", type: "variabile", priceUnit: 0.43, fixedFee: 8.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 },
-                    { id: 212, provider: "SempioneGas", name: "Gas Flat Web", type: "fisso", priceUnit: 0.47, fixedFee: 12.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20 }
+                    { id: 201, provider: "EneCorp", name: "Gas Casa Relax", type: "fisso", priceUnit: 0.48, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/enecorp-gas-casa" },
+                    { id: 202, provider: "EcoPower", name: "Gas Eco Smart", type: "variabile", priceUnit: 0.42, fixedFee: 11.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/ecopower-gas-smart" },
+                    { id: 203, provider: "NetGas", name: "Flexi Gas Web", type: "variabile", priceUnit: 0.39, fixedFee: 13.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/netgas-flexi-gas" },
+                    { id: 204, provider: "SicuraEnergia", name: "Gas Sicuro Fix", type: "fisso", priceUnit: 0.52, fixedFee: 8.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/sicura-gas-fix" },
+                    { id: 205, provider: "OmniaGas", name: "Riscaldamento Zero Ansie", type: "fisso", priceUnit: 0.46, fixedFee: 9.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/omnia-zero-ansie" },
+                    { id: 206, provider: "GreenGas", name: "Green Climate Gas", type: "variabile", priceUnit: 0.44, fixedFee: 10.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/greengas-climate" },
+                    { id: 207, provider: "BlueGas", name: "Gas Casa Facile", type: "variabile", priceUnit: 0.41, fixedFee: 12.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/bluegas-casa-facile" },
+                    { id: 208, provider: "TermoPower", name: "Fix Calore Casa", type: "fisso", priceUnit: 0.50, fixedFee: 9.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/termopower-fix-calore" },
+                    { id: 209, provider: "ItalGas Direct", name: "Trasparente Gas", type: "variabile", priceUnit: 0.40, fixedFee: 11.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/italgas-trasparente" },
+                    { id: 210, provider: "ClimaSafe", name: "Gas Inverno Tranquillo", type: "fisso", priceUnit: 0.49, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/climasafe-inverno" },
+                    { id: 211, provider: "EkoTermo", name: "Bio Gas Plus", type: "variabile", priceUnit: 0.43, fixedFee: 8.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/ekotermo-bio-gas" },
+                    { id: 212, provider: "SempioneGas", name: "Gas Flat Web", type: "fisso", priceUnit: 0.47, fixedFee: 12.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.20, activationUrl: "https://example.com/attiva/sempione-gas-flat" }
                 ]
             },
             business: {
                 luce: [
-                    { id: 301, provider: "EneCorp Biz", name: "Impresa Power Pro", type: "fisso", priceUnit: 0.142, fixedFee: 18.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 302, provider: "EcoPower Biz", name: "Business Green Flat", type: "fisso", priceUnit: 0.148, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 303, provider: "NetGas Trade", name: "P.IVA Dynamic XL", type: "variabile", priceUnit: 0.135, fixedFee: 22.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 304, provider: "SicuraEnergia Biz", name: "Azienda Continua", type: "fisso", priceUnit: 0.155, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 305, provider: "InduPower", name: "Luce Aziende Triase", type: "variabile", priceUnit: 0.138, fixedFee: 20.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 306, provider: "MasterLuce", name: "Business Prime Fix", type: "fisso", priceUnit: 0.145, fixedFee: 16.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 307, provider: "ProEnergia", name: "P.IVA Green Light", type: "variabile", priceUnit: 0.132, fixedFee: 19.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 308, provider: "OmniaBiz", name: "Corporate Light Fix", type: "fisso", priceUnit: 0.150, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 309, provider: "DynaBiz", name: "Flexi Business Luce", type: "variabile", priceUnit: 0.136, fixedFee: 21.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 310, provider: "EuroLuce Trade", name: "Impresa Sicura XL", type: "fisso", priceUnit: 0.141, fixedFee: 17.50, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 311, provider: "Vortex Biz", name: "Energia P.IVA Direct", type: "variabile", priceUnit: 0.130, fixedFee: 25.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
-                    { id: 312, provider: "AstraEnergy", name: "Azienda Verde Fix", type: "fisso", priceUnit: 0.147, fixedFee: 15.50, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 }
+                    { id: 301, provider: "EneCorp Biz", name: "Impresa Power Pro", type: "fisso", priceUnit: 0.142, fixedFee: 18.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/enecorp-impresa-power" },
+                    { id: 302, provider: "EcoPower Biz", name: "Business Green Flat", type: "fisso", priceUnit: 0.148, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/ecopower-business-green" },
+                    { id: 303, provider: "NetGas Trade", name: "P.IVA Dynamic XL", type: "variabile", priceUnit: 0.135, fixedFee: 22.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/netgas-piva-dynamic" },
+                    { id: 304, provider: "SicuraEnergia Biz", name: "Azienda Continua", type: "fisso", priceUnit: 0.155, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/sicura-azienda-continua" },
+                    { id: 305, provider: "InduPower", name: "Luce Aziende Triase", type: "variabile", priceUnit: 0.138, fixedFee: 20.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/indupower-aziende" },
+                    { id: 306, provider: "MasterLuce", name: "Business Prime Fix", type: "fisso", priceUnit: 0.145, fixedFee: 16.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/masterluce-prime-fix" },
+                    { id: 307, provider: "ProEnergia", name: "P.IVA Green Light", type: "variabile", priceUnit: 0.132, fixedFee: 19.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/proenergia-green-light" },
+                    { id: 308, provider: "OmniaBiz", name: "Corporate Light Fix", type: "fisso", priceUnit: 0.150, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/omniabiz-corporate-fix" },
+                    { id: 309, provider: "DynaBiz", name: "Flexi Business Luce", type: "variabile", priceUnit: 0.136, fixedFee: 21.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/dynabiz-flexi-business" },
+                    { id: 310, provider: "EuroLuce Trade", name: "Impresa Sicura XL", type: "fisso", priceUnit: 0.141, fixedFee: 17.50, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/euroluce-impresa-sicura" },
+                    { id: 311, provider: "Vortex Biz", name: "Energia P.IVA Direct", type: "variabile", priceUnit: 0.130, fixedFee: 25.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/vortex-piva-direct" },
+                    { id: 312, provider: "AstraEnergy", name: "Azienda Verde Fix", type: "fisso", priceUnit: 0.147, fixedFee: 15.50, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, activationUrl: "https://example.com/attiva/astra-azienda-verde" }
                 ],
                 gas: [
-                    { id: 401, provider: "EneCorp Biz", name: "Gas Business Pro", type: "fisso", priceUnit: 0.55, fixedFee: 20.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 402, provider: "EcoPower Biz", name: "Gas Impresa Green", type: "variabile", priceUnit: 0.49, fixedFee: 22.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 403, provider: "NetGas Trade", name: "Flexi Gas P.IVA", type: "variabile", priceUnit: 0.46, fixedFee: 25.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 404, provider: "SicuraEnergia Biz", name: "Gas Calore Continuo", type: "fisso", priceUnit: 0.58, fixedFee: 18.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 405, provider: "InduGas", name: "Gas Industriale XL", type: "variabile", priceUnit: 0.45, fixedFee: 30.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 406, provider: "MasterGas", name: "Corporate Gas Fix", type: "fisso", priceUnit: 0.53, fixedFee: 21.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 407, provider: "ProGas Trade", name: "P.IVA Clima Fix", type: "fisso", priceUnit: 0.54, fixedFee: 19.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 408, provider: "OmniaGas Biz", name: "Azienda Gas Relax", type: "variabile", priceUnit: 0.48, fixedFee: 24.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 409, provider: "DynaGas", name: "Dynamic Trade Gas", type: "variabile", priceUnit: 0.47, fixedFee: 26.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 410, provider: "EuroGas Trade", name: "Gas Impresa Chiaro", type: "fisso", priceUnit: 0.52, fixedFee: 22.50, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 411, provider: "Vortex Gas", name: "P.IVA Gas Direct", type: "variabile", priceUnit: 0.44, fixedFee: 28.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 },
-                    { id: 412, provider: "AstraGas", name: "Gas Calore Pro", type: "fisso", priceUnit: 0.56, fixedFee: 17.50, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22 }
+                    { id: 401, provider: "EneCorp Biz", name: "Gas Business Pro", type: "fisso", priceUnit: 0.55, fixedFee: 20.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/enecorp-gas-business" },
+                    { id: 402, provider: "EcoPower Biz", name: "Gas Impresa Green", type: "variabile", priceUnit: 0.49, fixedFee: 22.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/ecopower-gas-green" },
+                    { id: 403, provider: "NetGas Trade", name: "Flexi Gas P.IVA", type: "variabile", priceUnit: 0.46, fixedFee: 25.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/netgas-flexi-piva" },
+                    { id: 404, provider: "SicuraEnergia Biz", name: "Gas Calore Continuo", type: "fisso", priceUnit: 0.58, fixedFee: 18.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/sicura-calore-continuo" },
+                    { id: 405, provider: "InduGas", name: "Gas Industriale XL", type: "variabile", priceUnit: 0.45, fixedFee: 30.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/indugas-industriale" },
+                    { id: 406, provider: "MasterGas", name: "Corporate Gas Fix", type: "fisso", priceUnit: 0.53, fixedFee: 21.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/mastergas-corporate-fix" },
+                    { id: 407, provider: "ProGas Trade", name: "P.IVA Clima Fix", type: "fisso", priceUnit: 0.54, fixedFee: 19.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/progas-piva-clima" },
+                    { id: 408, provider: "OmniaGas Biz", name: "Azienda Gas Relax", type: "variabile", priceUnit: 0.48, fixedFee: 24.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/omniagas-azienda-relax" },
+                    { id: 409, provider: "DynaGas", name: "Dynamic Trade Gas", type: "variabile", priceUnit: 0.47, fixedFee: 26.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/dynagas-dynamic-trade" },
+                    { id: 410, provider: "EuroGas Trade", name: "Gas Impresa Chiaro", type: "fisso", priceUnit: 0.52, fixedFee: 22.50, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/eurogas-impresa-chiaro" },
+                    { id: 411, provider: "Vortex Gas", name: "P.IVA Gas Direct", type: "variabile", priceUnit: 0.44, fixedFee: 28.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/vortex-gas-direct" },
+                    { id: 412, provider: "AstraGas", name: "Gas Calore Pro", type: "fisso", priceUnit: 0.56, fixedFee: 17.50, transportRate: 0.16, systemRate: 0.04, taxRate: 0.22, activationUrl: "https://example.com/attiva/astragas-calore-pro" }
                 ]
             }
         };
@@ -995,7 +1017,7 @@
 
         let activeSegment = 'residenziale';
         let activeService = 'luce';
-        let visibleCount = 6; // Carica 6 schede alla volta
+        let visibleCount = 6;
         let filteredOffersList = [];
         let activeChartInstance = null;
 
@@ -1004,7 +1026,6 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`tab-${segment}`).classList.add('active');
             
-            // Imposta valore standard consumo a seconda del segmento/servizio
             adjustDefaultConsumption();
             visibleCount = 6;
             applyFilters();
@@ -1069,7 +1090,7 @@
         }
 
         function loadMoreOffers() {
-            visibleCount += 6; // Incrementa di 6 alla volta
+            visibleCount += 6;
             renderGrid();
         }
 
@@ -1115,12 +1136,14 @@
                         <button class="btn-primary" onclick="openPreventivoModal(${item.id})">
                             <i class="fa-solid fa-file-invoice-dollar"></i> Vedi Preventivo Dettagliato
                         </button>
+                        <a href="${item.activationUrl}" target="_blank" rel="noopener noreferrer" class="btn-activate">
+                            <i class="fa-solid fa-bolt"></i> Attiva Offerta Online
+                        </a>
                     </div>
                 `;
                 grid.appendChild(card);
             });
 
-            // Gestione pulsante Carica Altre
             const loadMoreBtnContainer = document.getElementById('load-more-container');
             if (visibleCount >= filteredOffersList.length) {
                 loadMoreBtnContainer.style.display = 'none';
@@ -1200,6 +1223,9 @@
                         <div style="color:var(--text-muted); font-size:12px;">Aliquota fiscale calcolata su base consumi: €${offer.taxRate.toFixed(3)}/${unitMeasure}.</div>
                     </div>
                 </div>
+                <a href="${offer.activationUrl}" target="_blank" rel="noopener noreferrer" class="btn-activate">
+                    <i class="fa-solid fa-bolt"></i> Procedi all'Attivazione Diretta
+                </a>
             `;
 
             document.getElementById('global-modal').classList.add('active');
@@ -1280,6 +1306,11 @@
                 <h3 style="font-size:14px; margin-top:12px; color:var(--text-main);">Grafico Ripartizione Costi</h3>
                 <div class="chart-wrapper">
                     <canvas id="costBreakdownChart"></canvas>
+                </div>
+                <div style="margin-top:20px;">
+                    <a href="${offer.activationUrl}" target="_blank" rel="noopener noreferrer" class="btn-activate">
+                        <i class="fa-solid fa-bolt"></i> Attiva Questa Offerta Ora
+                    </a>
                 </div>
             `;
 
