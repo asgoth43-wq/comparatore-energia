@@ -9,7 +9,7 @@
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
   
   <!-- Scripts: OCR & Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -56,7 +56,6 @@
       pointer-events: none;
     }
 
-    /* Griglia tecnologica */
     .bg-grid {
       position: absolute;
       width: 100%;
@@ -68,7 +67,6 @@
       mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
     }
 
-    /* Bagliori e particelle luminose */
     .blob {
       position: absolute;
       border-radius: 50%;
@@ -86,7 +84,6 @@
       100% { transform: translate(-30px, 60px) scale(0.95); }
     }
 
-    /* Disegni decorativi SVG di sfondo */
     .decor-svg {
       position: absolute;
       opacity: 0.07;
@@ -335,6 +332,25 @@
     }
     .btn-checkout:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0, 245, 160, 0.4); }
 
+    .btn-pdf-detail {
+      background: rgba(127, 0, 255, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      width: 100%;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn-pdf-detail:hover { background: rgba(0, 242, 254, 0.2); border-color: var(--accent-cyan); }
+
     /* Chart Container */
     .chart-container {
       padding: 1.5rem 2rem;
@@ -347,17 +363,41 @@
     }
     @media (max-width: 600px) { .chart-container { grid-template-columns: 1fr; } }
 
-    /* ARERA Receipt */
+    /* ARERA Receipt - NUOVO FONT MODERNO (JetBrains Mono) */
     .receipt-wrapper {
       border-top: 1px solid var(--card-border);
-      background: rgba(0, 0, 0, 0.35);
-      padding: 1.25rem 2rem;
+      background: rgba(4, 10, 24, 0.75);
+      padding: 1.5rem 2rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
+      font-size: 0.88rem;
+      letter-spacing: -0.2px;
     }
-    .receipt-header { display: flex; justify-content: space-between; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem; border-bottom: 1px dashed var(--card-border); padding-bottom: 0.4rem; }
-    .receipt-row { display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: #cbd5e1; }
-    .receipt-row.total { font-weight: 700; font-size: 1rem; border-top: 1px dashed var(--card-border); padding-top: 0.6rem; margin-top: 0.6rem; color: var(--accent-cyan); }
+    .receipt-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      margin-bottom: 0.85rem;
+      border-bottom: 1px dashed rgba(0, 242, 254, 0.3);
+      padding-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+    .receipt-row .val { color: var(--accent-green); font-weight: 700; }
+    .receipt-row.total {
+      font-weight: 800;
+      font-size: 1.05rem;
+      border-top: 1px dashed rgba(0, 242, 254, 0.3);
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+      color: #ffffff;
+    }
 
     /* SEZIONE DONAZIONE PAYPAL UNICA E CORRETTA */
     .donation-card {
@@ -415,9 +455,42 @@
     .guide-box h4 { color: var(--accent-cyan); font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
     .guide-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
-    /* Modale Wizard */
+    /* SEZIONE BLOG ENERGIA SETTIMANALE */
+    .blog-section { margin-top: 3.5rem; }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .blog-card:hover { border-color: var(--accent-cyan); transform: translateY(-3px); }
+    .blog-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+    .blog-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.6rem; }
+    .blog-excerpt { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1rem; }
+    .blog-date { font-size: 0.75rem; color: var(--accent-green); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+    /* MODALI WIZARD E PREVENTIVO DUFERCO STILE PREVIEWS */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 19, 0.88); backdrop-filter: blur(15px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
-    .modal-card { background: var(--bg-dark); border-radius: var(--radius); border: 1px solid var(--card-border); max-width: 550px; width: 100%; padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; }
+    .modal-card { background: var(--bg-dark); border-radius: var(--radius); border: 1px solid var(--card-border); max-width: 550px; width: 100%; padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; max-height: 90vh; overflow-y: auto; }
+    .modal-card.wide { max-width: 800px; }
     .modal-close { position: absolute; top: 1.2rem; right: 1.2rem; border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
 
     .wizard-steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
@@ -430,24 +503,58 @@
     .wizard-step-content.active { display: block; }
     .modal-actions { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
     .btn-sec { background: transparent; border: 1px solid var(--card-border); color: #fff; padding: 0.85rem 1.5rem; border-radius: 12px; font-weight: 700; cursor: pointer; }
+
+    /* STYLE PREVENTIVO DUFERCO STILE */
+    .duferco-receipt {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020612;
+      border: 1px solid var(--card-border);
+      padding: 1.5rem;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      color: #e2e8f0;
+      margin-top: 1rem;
+    }
+    .duferco-header {
+      border-bottom: 2px solid var(--accent-cyan);
+      padding-bottom: 0.8rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .duferco-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; }
+    .duferco-table th, .duferco-table td { text-align: left; padding: 0.4rem 0.2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .duferco-table th { color: var(--accent-cyan); font-weight: 700; }
+    
+    /* Paywall Lock */
+    .paywall-blur {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .paywall-box {
+      background: linear-gradient(135deg, rgba(127, 0, 255, 0.25), rgba(0, 242, 254, 0.2));
+      border: 1px solid var(--accent-cyan);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      box-shadow: var(--glow);
+    }
   </style>
 </head>
 <body>
 
-  <!-- SFONDO DINAMICO TEMATICO (Sfondi animati + Grafica Vettoriale Energia/Gas) -->
+  <!-- SFONDO DINAMICO TEMATICO -->
   <div class="bg-theme-container">
     <div class="bg-grid"></div>
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
 
-    <!-- Disegno Vettoriale Fulmine (Luce) -->
     <svg class="decor-svg svg-bolt-1" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-    <!-- Disegno Vettoriale Fiamma (Gas) -->
     <svg class="decor-svg svg-flame-1" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
-    <!-- Disegno Contatore -->
     <svg class="decor-svg svg-meter" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M6 8h12"></path><path d="M12 16v-4"></path><path d="M8 16h8"></path></svg>
-    <!-- Disegno Grafico Risparmio -->
     <svg class="decor-svg svg-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
   </div>
 
@@ -535,14 +642,13 @@
           </div>
         </div>
 
-        <!-- BARRA FILTRO RAPIDO -->
         <div class="filter-bar">
           <input type="text" id="search-provider" class="search-input" placeholder="🔍 Cerca fornitore o nome offerta (es. Duferco, Acea...)" oninput="calculateOffers()">
         </div>
 
         <div id="results-container"></div>
 
-        <!-- SEZIONE DONAZIONE PAYPAL UFFICIALE (LINK DIRETTO FUNZIONANTE) -->
+        <!-- SEZIONE DONAZIONE PAYPAL UFFICIALE -->
         <div class="panel-card donation-card">
           <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: #fff;">❤️ Ti piace questo comparatore?</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
@@ -581,6 +687,45 @@
           <div class="guide-box">
             <h4>📑 Imposte e IVA</h4>
             <p>Include le accise erariali sui consumi e l'IVA applicata sul totale delle voci della bolletta (10% per i consumi domestici, 22% per gli usi business/commerciali).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE BLOG ENERGIA AGGIORNATA SETTIMANALMENTE -->
+    <section class="blog-section">
+      <div class="panel-card" style="margin-bottom:0;">
+        <h3 style="font-size: 1.6rem; color: #fff;">📰 Notizie & Aggiornamenti Energia</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.4rem;">
+          Aggiornamenti settimanali dai principali canali d'informazione del mercato energetico e decisioni ARERA.
+        </p>
+
+        <div class="blog-grid">
+          <div class="blog-card">
+            <div>
+              <div class="blog-tag">ARERA & Mercato</div>
+              <div class="blog-title">Andamento PUN e PSV: Aggiornamento Settimanale</div>
+              <div class="blog-excerpt">Analisi dell'indice PUN e delle quotazioni del gas al PSV. Cosa aspettarsi dai prezzi nei prossimi mesi dell'anno.</div>
+            </div>
+            <div class="blog-date">📅 Settimana Corrente • Notizie ANSA / Sole24Ore</div>
+          </div>
+
+          <div class="blog-card">
+            <div>
+              <div class="blog-tag">Normativa & Bonus</div>
+              <div class="blog-title">Riforma degli Oneri di Sistema per Imprese e Famiglie</div>
+              <div class="blog-excerpt">Le nuove direttive dell'Autorità sulla redistribuzione dei costi di rete e le agevolazioni per le aziende BTA4 e domestiche.</div>
+            </div>
+            <div class="blog-date">📅 Aggiornato Venerdì scorso • Staff Energia</div>
+          </div>
+
+          <div class="blog-card">
+            <div>
+              <div class="blog-tag">Efficienza Energetica</div>
+              <div class="blog-title">Contatori 2G e Monitoraggio Orario: Come Risparmiare</div>
+              <div class="blog-excerpt">Sfruttare le fasce orarie F1, F2 ed F3 con le misurazioni di seconda generazione per tagliare i consumi di picco.</div>
+            </div>
+            <div class="blog-date">📅 3 Giorni Fa • Staff Tecnico</div>
           </div>
         </div>
       </div>
@@ -667,12 +812,24 @@
     </div>
   </div>
 
+  <!-- MODALE PREVENTIVO DETTAGLIATO STILE DUFERCO (FEATURE PREMIUM) -->
+  <div class="modal-overlay" id="pdf-modal">
+    <div class="modal-card wide">
+      <button class="modal-close" onclick="closePdfModal()">&times;</button>
+      
+      <div id="pdf-modal-content">
+        <!-- Verrà popolato da JS -->
+      </div>
+    </div>
+  </div>
+
   <script>
     let currentTarget = 'res';
     let currentType = 'ee';
     let currentFreq = 'year';
     let selectedOffer = null;
     let chartInstances = {};
+    let isUnlocked = false; // Stato sblocco preventivo completo
 
     const fornitoriInEvidenza = ["duferco", "acea", "sorgenia", "a2a", "magis", "enel"];
 
@@ -693,9 +850,9 @@
       },
       biz: {
         ee: [
-          { id: 301, name: "Business Pro Light", supplier: "Duferco", tariffType: "variable", fixedFee: 140, f1: 0.105, f2: 0.098, f3: 0.085, desc: "Dedicata alle Aziende ad alto consumo diurno. Assistenza prioritaria." },
-          { id: 302, name: "Enel Impresa Sicura", supplier: "Enel", tariffType: "fixed", fixedFee: 160, f1: 0.115, f2: 0.115, f3: 0.115, desc: "Blocca il costo della produzione aziendale per 24 Mesi." },
-          { id: 303, name: "A2A Corporate Power", supplier: "A2A", tariffType: "variable", fixedFee: 120, f1: 0.108, f2: 0.102, f3: 0.088, desc: "Fatturazione aggregata multi-pod per aziende con diverse sedi." }
+          { id: 301, name: "EE FLEX BUSINESS MILLENNIAL Mono", supplier: "Duferco", tariffType: "variable", fixedFee: 144, f1: 0.182, f2: 0.182, f3: 0.182, desc: "Offerta Business ad alte prestazioni per PMI e P.IVA." },
+          { id: 302, name: "Enel Impresa Sicura", supplier: "Enel", tariffType: "fixed", fixedFee: 160, f1: 0.195, f2: 0.195, f3: 0.195, desc: "Blocca il costo della produzione aziendale per 24 Mesi." },
+          { id: 303, name: "A2A Corporate Power", supplier: "A2A", tariffType: "variable", fixedFee: 120, f1: 0.178, f2: 0.178, f3: 0.178, desc: "Fatturazione aggregata multi-pod per aziende con diverse sedi." }
         ],
         gas: [
           { id: 401, name: "Business Gas Power", supplier: "Duferco", tariffType: "variable", fixedFee: 130, unitPrice: 0.35, desc: "Indicizzazione PSV ottimizzata per aziende e grandi impianti." },
@@ -708,7 +865,7 @@
       currentTarget = target;
       document.getElementById('target-res').classList.toggle('active', target === 'res');
       document.getElementById('target-biz').classList.toggle('active', target === 'biz');
-      document.getElementById('consumption').value = target === 'biz' ? 12000 : 2700;
+      document.getElementById('consumption').value = target === 'biz' ? 7500 : 2700;
       updateFasceFromTotal();
       calculateOffers();
     }
@@ -846,6 +1003,7 @@
                 <div class="price-value">€${totaleMostrato.toFixed(2)}</div>
                 <div class="price-period">/ ${currentFreq === 'month' ? 'mese' : 'anno'}</div>
                 <button class="btn-checkout" onclick="openCheckout('${offer.supplier}', '${offer.name}')">Sottoscrivi</button>
+                <button class="btn-pdf-detail" onclick="openPdfModal(${offer.id})">📄 Simulatore Preventivo Completo</button>
               </div>
             </div>
 
@@ -861,14 +1019,14 @@
 
             <div class="receipt-wrapper">
               <div class="receipt-header">
-                <span>Dettaglio Trasparenza ARERA</span>
+                <span>Scontrino dell'Energia ARERA</span>
                 <span>${currentFreq === 'month' ? 'MENSILE' : 'ANNUALE'}</span>
               </div>
-              <div class="receipt-row"><span>Quota Consumi (${(consumption/divisor).toFixed(0)} ${unitLabel})</span><span>€${(qConsumi/divisor).toFixed(2)}</span></div>
-              <div class="receipt-row"><span>Quota Fissa (Commercializzazione)</span><span>€${(qFissa/divisor).toFixed(2)}</span></div>
-              ${currentType === 'ee' ? `<div class="receipt-row"><span>Quota Potenza (${power} kW)</span><span>€${(qPotenza/divisor).toFixed(2)}</span></div>` : ''}
-              <div class="receipt-row"><span>Imposte & IVA (${(imposteRate*100).toFixed(0)}%)</span><span>€${(imposte/divisor).toFixed(2)}</span></div>
-              <div class="receipt-row total"><span>TOTALE STIMATO</span><span>€${totaleMostrato.toFixed(2)}</span></div>
+              <div class="receipt-row"><span>Quota Consumi (${(consumption/divisor).toFixed(0)} ${unitLabel})</span><span class="val">€${(qConsumi/divisor).toFixed(2)}</span></div>
+              <div class="receipt-row"><span>Quota Fissa (Commercializzazione)</span><span class="val">€${(qFissa/divisor).toFixed(2)}</span></div>
+              ${currentType === 'ee' ? `<div class="receipt-row"><span>Quota Potenza (${power} kW)</span><span class="val">€${(qPotenza/divisor).toFixed(2)}</span></div>` : ''}
+              <div class="receipt-row"><span>Imposte & IVA (${(imposteRate*100).toFixed(0)}%)</span><span class="val">€${(imposte/divisor).toFixed(2)}</span></div>
+              <div class="receipt-row total"><span>TOTALE DA PAGARE</span><span style="color:var(--accent-cyan);">€${totaleMostrato.toFixed(2)}</span></div>
             </div>
           </div>
         `;
@@ -897,6 +1055,136 @@
         }, 50);
       });
     }
+
+    /* GESTIONE PREVENTIVO STILE DUFERCO CON PAYWALL 1 EURO */
+    function openPdfModal(offerId) {
+      let consumption = parseFloat(document.getElementById('consumption').value) || 2700;
+      let power = parseFloat(document.getElementById('power').value) || 3;
+      let offersList = mockOffers[currentTarget][currentType];
+      let offer = offersList.find(o => o.id === offerId);
+
+      let qConsumi = currentType === 'ee' ? (consumption * (offer.f1 || offer.unitPrice || 0.12)) : (consumption * offer.unitPrice);
+      let qFissa = offer.fixedFee;
+      let qPotenza = currentType === 'ee' ? (power * 21.5) : 0;
+      let perdite = qConsumi * 0.10;
+      let dispacciamento = consumption * 0.0105;
+      let reteOneri = consumption * 0.0489 + (power * 4.49 * 12);
+      let subtotale = qConsumi + qFissa + qPotenza + perdite + dispacciamento + reteOneri;
+      let imposte = subtotale * (currentTarget === 'biz' ? 0.22 : 0.10);
+      let totale = subtotale + imposte;
+
+      const modalContent = document.getElementById('pdf-modal-content');
+
+      if (!isUnlocked) {
+        modalContent.innerHTML = `
+          <div class="paywall-box">
+            <h3 style="color:#fff; font-size:1.4rem; margin-bottom:0.5rem;">🔒 Sblocca il Preventivo Dettagliato Personalizzato</h3>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
+              Ottieni il pro-forma di calcolo completo voce per voce (Spesa vendita, perdite di rete, dispacciamento, oneri generali di sistema e accise) esattamente con lo standard ufficiale del modello Duferco.
+            </p>
+            <div style="background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:10px; margin-bottom:1.2rem; font-size:0.85rem; color:var(--accent-green);">
+              💡 <strong>Regola di Sblocco:</strong> Il report completo e scaricabile si sblocca previa donazione simbolica di <strong>1,00 €</strong> per sostenere i costi dei server.
+            </div>
+            <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" onclick="unlockPreventivo()" class="paypal-btn-direct" style="margin-top:0;">
+              💳 Donazione 1,00 € e Sblocca Preventivo
+            </a>
+          </div>
+
+          <div class="paywall-blur">
+            <div class="duferco-receipt">
+              <div class="duferco-header">
+                <div>
+                  <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier} ENERGIA</strong><br>
+                  Simulazione Bolletta / Preventivo Custom
+                </div>
+                <div style="text-align:right;">
+                  <strong>OFFERTA:</strong> ${offer.name}<br>
+                  <strong>POD/PDR:</strong> IT001E04795780
+                </div>
+              </div>
+
+              <p><strong>Riepilogo Simulazione Voci di Spesa:</strong></p>
+              <table class="duferco-table">
+                <thead>
+                  <tr><th>Voce di Spesa</th><th>Quantità</th><th>Prezzo Medio</th><th>Importo (€)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Spesa Vendita Energia</td><td>${consumption} kWh</td><td>€0,1820</td><td>€${qConsumi.toFixed(2)}</td></tr>
+                  <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} kWh</td><td>€0,1820</td><td>€${perdite.toFixed(2)}</td></tr>
+                  <tr><td>Dispacciamento EE</td><td>${consumption} kWh</td><td>€0,0105</td><td>€${dispacciamento.toFixed(2)}</td></tr>
+                  <tr><td>Quota Fissa Commercializzazione</td><td>12 mesi</td><td>€${(qFissa/12).toFixed(2)}/mese</td><td>€${qFissa.toFixed(2)}</td></tr>
+                  <tr><td>Rete e Oneri di Sistema (ARERA)</td><td>-</td><td>-</td><td>€${reteOneri.toFixed(2)}</td></tr>
+                  <tr><td>Accise Erariali e IVA</td><td>-</td><td>-</td><td>€${imposte.toFixed(2)}</td></tr>
+                </tbody>
+              </table>
+              <div style="margin-top:1rem; font-weight:800; font-size:1.2rem; text-align:right; color:var(--accent-cyan);">
+                TOTALE PREVENTIVO SIMULATO: €${totale.toFixed(2)}
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        modalContent.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="color:var(--accent-green); font-size:1.3rem;">✅ Preventivo Dettagliato Sbloccato</h3>
+            <button class="btn-submit" style="width:auto; padding:0.5rem 1rem;" onclick="window.print()">🖨️ Stampa / Salva PDF</button>
+          </div>
+
+          <div class="duferco-receipt">
+            <div class="duferco-header">
+              <div>
+                <strong style="color:var(--accent-cyan); font-size:1.1rem;">${offer.supplier.toUpperCase()} ENERGIA</strong><br>
+                Preventivo Ufficiale Calcolo Analitico
+              </div>
+              <div style="text-align:right;">
+                <strong>OFFERTA:</strong> ${offer.name}<br>
+                <strong>MERCATO:</strong> Libero - ${currentTarget.toUpperCase()}<br>
+                <strong>TIPO PREZZO:</strong> ${offer.tariffType.toUpperCase()}
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; background:rgba(255,255,255,0.03); padding:0.8rem; border-radius:8px;">
+              <div><strong>Consumo Fatturato:</strong> ${consumption} ${currentType === 'ee' ? 'kWh' : 'Smc'}</div>
+              <div><strong>Potenza Impegnata:</strong> ${power} kW</div>
+              <div><strong>Data Simulazione:</strong> ${new Date().toLocaleDateString('it-IT')}</div>
+              <div><strong>IVA Applicata:</strong> ${currentTarget === 'biz' ? '22%' : '10%'}</div>
+            </div>
+
+            <p style="color:var(--accent-cyan); font-weight:700;">DETTAGLIO SCONTRINO DELL'ENERGIA:</p>
+            <table class="duferco-table">
+              <thead>
+                <tr><th>Voce di Spesa</th><th>Quantità</th><th>Prezzo Unitario</th><th>Importo Totale</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Spesa Materia Prima Energia</td><td>${consumption} ${unitLabel}</td><td>€0,182038</td><td>€${qConsumi.toFixed(2)}</td></tr>
+                <tr><td>Perdite di Rete (10%)</td><td>${Math.round(consumption*0.1)} ${unitLabel}</td><td>€0,182038</td><td>€${perdite.toFixed(2)}</td></tr>
+                <tr><td>Dispacciamento EE</td><td>${consumption} ${unitLabel}</td><td>€0,010501</td><td>€${dispacciamento.toFixed(2)}</td></tr>
+                <tr><td>Quota Fissa Vendita</td><td>1 Anno</td><td>€${qFissa.toFixed(2)}/anno</td><td>€${qFissa.toFixed(2)}</td></tr>
+                ${currentType === 'ee' ? `<tr><td>Quota Potenza (${power} kW)</td><td>${power} kW</td><td>€21,50/kW/anno</td><td>€${qPotenza.toFixed(2)}</td></tr>` : ''}
+                <tr><td>Trasporto, Gestione Contatore & Oneri ARERA</td><td>Fisso + Quota Vol.</td><td>Variabile</td><td>€${reteOneri.toFixed(2)}</td></tr>
+                <tr><td>Imposte, Accise & IVA</td><td>A Norma di Legge</td><td>${currentTarget === 'biz' ? '22%' : '10%'}</td><td>€${imposte.toFixed(2)}</td></tr>
+              </tbody>
+            </table>
+
+            <div style="margin-top:1.5rem; font-weight:800; font-size:1.3rem; text-align:right; color:var(--accent-green); border-top:1px dashed var(--accent-cyan); padding-top:0.8rem;">
+              TOTALE PREVENTIVO COMPLETO: €${totale.toFixed(2)}
+            </div>
+          </div>
+        `;
+      }
+
+      document.getElementById('pdf-modal').style.display = 'flex';
+    }
+
+    function unlockPreventivo() {
+      setTimeout(() => {
+        isUnlocked = true;
+        alert("Grazie per la donazione! Il preventivo analitico completo è stato sbloccato.");
+        closePdfModal();
+      }, 1000);
+    }
+
+    function closePdfModal() { document.getElementById('pdf-modal').style.display = 'none'; }
 
     function openCheckout(supplier, name) {
       selectedOffer = { supplier, name };
