@@ -12,18 +12,20 @@
   <style>
     :root {
       --bg: #030712;
-      --panel: rgba(17, 24, 39, 0.85);
-      --panel-solid: #0e1626;
-      --border: rgba(56, 189, 248, 0.18);
+      --panel: rgba(15, 23, 42, 0.75);
+      --panel-solid: #0f172a;
+      --border: rgba(56, 189, 248, 0.2);
+      --border-glow: rgba(56, 189, 248, 0.5);
       
       --cyan: #38bdf8;
+      --cyan-bright: #00f0ff;
       --green: #22c55e;
       --purple: #a855f7;
       --orange: #f97316;
       --yellow: #eab308;
       
-      --text: #f9fafb;
-      --text-sub: #9ca3af;
+      --text: #f8fafc;
+      --text-sub: #94a3b8;
       --radius-lg: 24px;
       --radius-md: 14px;
     }
@@ -36,25 +38,40 @@
       color: var(--text);
       line-height: 1.6;
       padding-bottom: 5rem;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    /* SFONDO GLOW */
-    .bg-glow {
+    /* SFONDO DINAMICO A TEMA GRIGLIA ENERGETICA E AURORA */
+    .energy-bg {
       position: fixed;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      filter: blur(140px);
-      pointer-events: none;
+      top: 0; left: 0; width: 100vw; height: 100vh;
       z-index: 0;
-      opacity: 0.15;
+      pointer-events: none;
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 60%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+        linear-gradient(rgba(3, 7, 18, 0.88), rgba(3, 7, 18, 0.95)),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(56, 189, 248, 0.03) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(56, 189, 248, 0.03) 40px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
     }
-    .glow-1 { top: -150px; left: -100px; background: var(--cyan); }
-    .glow-2 { top: 50%; right: -150px; background: var(--purple); }
+
+    .energy-nodes {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(56, 189, 248, 0.25) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.6;
+    }
 
     .wrapper {
       position: relative;
       z-index: 1;
-      max-width: 1300px;
+      max-width: 1350px;
       margin: 0 auto;
       padding: 0 1.5rem;
     }
@@ -68,18 +85,21 @@
       border-bottom: 1px solid var(--border);
     }
     .logo {
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       font-weight: 800;
       letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     .logo span {
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      background: linear-gradient(135deg, var(--cyan-bright), var(--purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .pill-selector {
-      background: var(--panel-solid);
+      background: rgba(15, 23, 42, 0.9);
       border: 1px solid var(--border);
       padding: 4px;
       border-radius: 40px;
@@ -89,7 +109,7 @@
       background: transparent;
       border: none;
       color: var(--text-sub);
-      padding: 0.6rem 1.4rem;
+      padding: 0.65rem 1.5rem;
       border-radius: 30px;
       font-weight: 700;
       font-size: 0.85rem;
@@ -99,7 +119,7 @@
     .pill-btn.active {
       background: linear-gradient(135deg, var(--cyan), #0284c7);
       color: #000;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.4);
     }
 
     /* HERO & DRAG/DROP BOLLETTA */
@@ -113,11 +133,16 @@
     @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
 
     .hero-text h1 {
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 800;
       line-height: 1.15;
-      letter-spacing: -1px;
+      letter-spacing: -1.5px;
       margin-bottom: 1rem;
+    }
+    .hero-text h1 span {
+      background: linear-gradient(135deg, #fff 30%, var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .hero-text p {
       color: var(--text-sub);
@@ -127,21 +152,25 @@
     /* DROPZONE UPLOAD */
     .dropzone-box {
       background: var(--panel);
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(16px);
       border: 2px dashed var(--cyan);
       border-radius: var(--radius-lg);
-      padding: 2rem;
+      padding: 2.2rem;
       text-align: center;
       transition: all 0.3s ease;
       cursor: pointer;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
     .dropzone-box:hover {
-      background: rgba(56, 189, 248, 0.05);
+      background: rgba(56, 189, 248, 0.08);
       border-color: var(--green);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(56, 189, 248, 0.15);
     }
-    .dropzone-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .dropzone-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.3rem; }
-    .dropzone-sub { font-size: 0.8rem; color: var(--text-sub); }
+    .dropzone-icon { font-size: 2.8rem; margin-bottom: 0.5rem; }
+    .dropzone-title { font-weight: 800; font-size: 1.15rem; margin-bottom: 0.3rem; }
+    .dropzone-sub { font-size: 0.85rem; color: var(--text-sub); }
 
     /* CONFIGURATORE STRIP */
     .config-strip {
@@ -155,30 +184,104 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 3rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
     .config-group { display: flex; flex-direction: column; gap: 0.4rem; }
     .config-group label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--cyan); letter-spacing: 0.8px; }
     .config-input {
-      background: var(--bg);
+      background: #090d16;
       border: 1px solid var(--border);
       color: #fff;
       padding: 0.75rem 1rem;
       border-radius: var(--radius-md);
       font-size: 0.95rem;
       outline: none;
+      transition: border-color 0.3s;
     }
     .config-input:focus { border-color: var(--cyan); }
+
+    /* ANALISI TRASPARENTE COSTI CON FRECCE CLICCABILI */
+    .breakdown-section {
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      margin-bottom: 3.5rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+    .breakdown-header {
+      margin-bottom: 1.5rem;
+    }
+    .breakdown-header h2 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .breakdown-box {
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.6rem;
+      position: relative;
+      transition: transform 0.3s, border-color 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .breakdown-box:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan);
+    }
+    
+    /* FRECCIA INTERATTIVA */
+    .arrow-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin-bottom: 0.8rem;
+    }
+    .arrow-btn:hover {
+      background: var(--cyan);
+      color: #000;
+      box-shadow: 0 0 15px var(--cyan);
+      transform: translateX(4px) scale(1.05);
+    }
+
+    .box-title { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.4rem; letter-spacing: 0.5px; }
+    .box-val { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 800; margin-bottom: 0.6rem; color: #fff; }
+    .box-desc { font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; }
 
     /* SEZIONE GRAFICI INTERATTIVI */
     .analytics-section {
       background: var(--panel);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 2rem;
       margin-bottom: 3.5rem;
     }
-    .analytics-head { margin-bottom: 1.5rem; }
-    .analytics-head h2 { font-size: 1.6rem; font-weight: 800; }
+    .analytics-head h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem; }
     
     .charts-grid {
       display: grid;
@@ -188,12 +291,12 @@
     @media (max-width: 850px) { .charts-grid { grid-template-columns: 1fr; } }
 
     .chart-card {
-      background: var(--bg);
+      background: var(--panel-solid);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 1.5rem;
     }
-    .chart-title { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-sub); }
+    .chart-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 1.2rem; color: var(--text-sub); }
 
     /* CSS CUSTOM BAR CHART */
     .bar-chart-container {
@@ -205,10 +308,10 @@
       border-bottom: 1px solid var(--border);
     }
     .bar-wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
-    .bar-fill { width: 100%; max-width: 40px; border-radius: 6px 6px 0 0; transition: height 0.5s ease; }
-    .bar-label { font-size: 0.75rem; color: var(--text-sub); margin-top: 0.5rem; font-weight: 700; }
+    .bar-fill { width: 100%; max-width: 42px; border-radius: 6px 6px 0 0; transition: height 0.5s ease; }
+    .bar-label { font-size: 0.75rem; color: var(--text-sub); margin-top: 0.6rem; font-weight: 700; }
 
-    /* GRID OFFERTE */
+    /* GRID OFFERTE + CARD LIVE PREVENTIVO */
     .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem; }
 
     .offers-grid {
@@ -217,8 +320,10 @@
       gap: 1.5rem;
       margin-bottom: 4rem;
     }
+    
     .offer-card {
       background: var(--panel);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 2rem;
@@ -229,9 +334,47 @@
     }
     .offer-card:hover { transform: translateY(-4px); border-color: var(--cyan); }
     
+    /* SCHEDA INTEGRATA PREVENTIVO LIVE */
+    .offer-card.live-quote-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+      border: 2px solid var(--cyan-bright);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .offer-card.live-quote-card::before {
+      content: 'LIVE PREVENTIVO';
+      position: absolute;
+      top: 15px; right: -30px;
+      background: linear-gradient(135deg, var(--cyan-bright), var(--purple));
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 4px 30px;
+      transform: rotate(45deg);
+      letter-spacing: 1px;
+    }
+
     .supplier-name { color: var(--cyan); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
     .offer-title { font-size: 1.4rem; font-weight: 800; margin: 0.2rem 0; }
     .offer-desc { font-size: 0.85rem; color: var(--text-sub); margin-bottom: 1.5rem; }
+
+    /* TABELLA INTERNA PREVENTIVO LIVE */
+    .live-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.82rem;
+    }
+    .live-table td {
+      padding: 0.4rem 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.1);
+    }
+    .live-table td:last-child {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
 
     .price-wrap {
       border-top: 1px solid var(--border);
@@ -254,32 +397,7 @@
     }
     .btn-act:hover { transform: scale(1.05); }
 
-    /* PREVENTIVO DETTAGLIATO TRASPARENTE STILE DUFERCO CON FRECCE */
-    .breakdown-section {
-      background: var(--panel-solid);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      margin-bottom: 4rem;
-    }
-    .breakdown-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    .breakdown-box {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-    }
-    .arrow-icon { font-size: 1.4rem; color: var(--cyan); font-weight: 800; }
-    .box-title { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; margin: 0.4rem 0; }
-    .box-val { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 800; margin-bottom: 0.6rem; }
-    .box-desc { font-size: 0.85rem; color: var(--text-sub); }
-
-    /* BLOG */
+    /* GUIDE BLOG */
     .blog-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -313,14 +431,16 @@
       padding: 0.85rem 2.2rem;
       border-radius: 40px;
       margin-top: 1rem;
+      transition: transform 0.2s;
     }
+    .btn-paypal:hover { transform: scale(1.05); }
 
-    /* MODALE CHECKOUT / ATTIVAZIONE */
+    /* MODALE DETTAGLI / ATTIVAZIONE */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -331,9 +451,11 @@
       border: 1px solid var(--cyan);
       border-radius: var(--radius-lg);
       padding: 2.5rem;
-      max-width: 500px;
+      max-width: 580px;
       width: 90%;
       position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .close-modal {
       position: absolute;
@@ -355,13 +477,14 @@
 </head>
 <body>
 
-  <div class="bg-glow glow-1"></div>
-  <div class="bg-glow glow-2"></div>
+  <!-- SFONDO TEMATICO ENERGETICO -->
+  <div class="energy-bg"></div>
+  <div class="energy-nodes"></div>
 
   <div class="wrapper">
     <!-- NAVBAR -->
     <header>
-      <div class="logo">PORTAL<span>ENERGY</span></div>
+      <div class="logo">⚡ PORTAL<span>ENERGY</span></div>
       <div class="pill-selector">
         <button class="pill-btn active" id="btn-res" onclick="setTarget('res')">🏠 Casa</button>
         <button class="pill-btn" id="btn-biz" onclick="setTarget('biz')">🏢 Business</button>
@@ -371,16 +494,16 @@
     <!-- HERO CON CARICAMENTO BOLLETTA -->
     <div class="hero-grid">
       <div class="hero-text">
-        <h1>Confronto Energetico Intelligente & Trasparente</h1>
-        <p>Carica la tua bolletta in formato digitale per estrarre i dati in automatico o inserisci i tuoi consumi per trovare l'offerta perfetta.</p>
+        <h1><span>Confronto Energetico</span> Intelligente & Trasparente</h1>
+        <p>Carica la tua bolletta in formato digitale per estrarre i dati in automatico o inserisci i tuoi consumi per generare il preventivo live e trovare l'offerta ideale.</p>
       </div>
 
       <!-- DROPZONE OCR -->
       <div class="dropzone-box" onclick="document.getElementById('file-upload').click()">
         <input type="file" id="file-upload" style="display: none;" accept=".pdf,.jpg,.png" onchange="handleBillUpload(event)">
-        <div class="dropzone-icon">📄</div>
+        <div class="dropzone-icon">📥</div>
         <div class="dropzone-title">Carica la tua Bolletta (PDF o Immagine)</div>
-        <div class="dropzone-sub">Analisi automatica e comparazione immediata</div>
+        <div class="dropzone-sub">Estragga automatica dei consumi e calcolo immediato</div>
         <div id="upload-status" style="margin-top: 0.8rem; font-weight: 700; color: var(--green);"></div>
       </div>
     </div>
@@ -418,6 +541,52 @@
       </div>
     </div>
 
+    <!-- SEZIONE NUOVA: DISAGGREGAZIONE TRASPARENTE DEI COSTI IN BOLLETTA (REDIRETTA INTERATTIVA) -->
+    <div class="breakdown-section">
+      <div class="breakdown-header">
+        <h2>🔍 Disaggregazione Trasparente dei Costi in Bolletta</h2>
+        <p style="color: var(--text-sub);">Clicca sulle frecce ➔ per aprire la scheda di approfondimento ufficiale e capire esattamente dove va ogni singolo euro.</p>
+      </div>
+
+      <div class="breakdown-grid">
+        <div class="breakdown-box">
+          <div>
+            <a href="https://www.arera.it/it/schede/O/faq-spesamateria.htm" target="_blank" class="arrow-btn" title="Approfondisci sul sito ufficiale ARERA">➔</a>
+            <div class="box-title" style="color: var(--cyan);">1. Materia Prima Energia</div>
+            <div class="box-val" id="val-materia">0.00 €</div>
+          </div>
+          <div class="box-desc">Costo dell'energia consumata + quota fissa mensile di commercializzazione (CCV). Clicca la freccia per i dettagli ARERA.</div>
+        </div>
+
+        <div class="breakdown-box">
+          <div>
+            <a href="https://www.arera.it/it/schede/O/faq-spesatrasporto.htm" target="_blank" class="arrow-btn" title="Approfondisci sul sito ufficiale ARERA">➔</a>
+            <div class="box-title" style="color: var(--purple);">2. Trasporto & Gestione Rete</div>
+            <div class="box-val" id="val-rete">0.00 €</div>
+          </div>
+          <div class="box-desc">Tariffa regolamentata per la consegna dell'energia e la gestione del contatore sulla rete nazionale.</div>
+        </div>
+
+        <div class="breakdown-box">
+          <div>
+            <a href="https://www.arera.it/it/schede/O/faq-onerisistema.htm" target="_blank" class="arrow-btn" title="Approfondisci sul sito ufficiale ARERA">➔</a>
+            <div class="box-title" style="color: var(--orange);">3. Oneri Generali di Sistema</div>
+            <div class="box-val" id="val-oneri">0.00 €</div>
+          </div>
+          <div class="box-desc">Corrispettivi fissati per legge per sostenere le fonti rinnovabili e la decomponente di sostenibilità.</div>
+        </div>
+
+        <div class="breakdown-box">
+          <div>
+            <a href="https://www.arera.it/it/schede/O/faq-imposte.htm" target="_blank" class="arrow-btn" title="Approfondisci sul sito ufficiale ARERA">➔</a>
+            <div class="box-title" style="color: var(--green);">4. Imposte Statali & IVA</div>
+            <div class="box-val" id="val-imposte">0.00 €</div>
+          </div>
+          <div class="box-desc">Accisa sull'energia consumata ed IVA (10% per utenze domestiche, 22% per utenze business).</div>
+        </div>
+      </div>
+    </div>
+
     <!-- SEZIONE GRAFICI INTERATTIVI -->
     <div class="analytics-section">
       <div class="analytics-head">
@@ -425,7 +594,7 @@
       </div>
       <div class="charts-grid">
         <div class="chart-card">
-          <div class="chart-title">Composizione Spesa Bolletta Stimata</div>
+          <div class="chart-title">Composizione Spesa Stimata</div>
           <div class="bar-chart-container" id="chart-breakdown">
             <!-- Renderizzato via JS -->
           </div>
@@ -440,45 +609,9 @@
       </div>
     </div>
 
-    <!-- GRID OFFERTE PORTALE100 -->
-    <div class="section-title">⚡ Offerte Disponibili dal Portale</div>
+    <!-- GRID OFFERTE + CARD INTEGRATA PREVENTIVO LIVE -->
+    <div class="section-title">⚡ Offerte e Calcolo Preventivo Istantaneo</div>
     <div class="offers-grid" id="offers-container"></div>
-
-    <!-- PREVENTIVO DETTAGLIATO TRASPARENTE (GRATUITO) STILE DUFERCO -->
-    <div class="breakdown-section">
-      <h2>🔍 Esploso Analitico Trasparente (Senza Costi Nascosti)</h2>
-      <p style="color: var(--text-sub);">Prospetto dettagliato con le frecce esplicative su ogni voce che compone il totale della tua bolletta.</p>
-
-      <div class="breakdown-grid">
-        <div class="breakdown-box">
-          <span class="arrow-icon">➔</span>
-          <div class="box-title" style="color: var(--cyan);">1. Materia Prima Energia</div>
-          <div class="box-val" id="val-materia">0.00 €</div>
-          <div class="box-desc">Quota direttamente legata al consumo effettivo + i costi fissi mensili di commercializzazione (CCV).</div>
-        </div>
-
-        <div class="breakdown-box">
-          <span class="arrow-icon">➔</span>
-          <div class="box-title" style="color: var(--purple);">2. Trasporto & Gestione Rete</div>
-          <div class="box-val" id="val-rete">0.00 €</div>
-          <div class="box-desc">Tariffe regolamentate da ARERA necessarie per far viaggiare l'energia sui cavi/tubature fino a casa tua.</div>
-        </div>
-
-        <div class="breakdown-box">
-          <span class="arrow-icon">➔</span>
-          <div class="box-title" style="color: var(--orange);">3. Oneri Generali di Sistema</div>
-          <div class="box-val" id="val-oneri">0.00 €</div>
-          <div class="box-desc">Contributi stabiliti per legge per sostenere le fonti rinnovabili e la sicurezza della rete nazionale.</div>
-        </div>
-
-        <div class="breakdown-box">
-          <span class="arrow-icon">➔</span>
-          <div class="box-title" style="color: var(--green);">4. Imposte Statali & IVA</div>
-          <div class="box-val" id="val-imposte">0.00 €</div>
-          <div class="box-desc">Accise e IVA applicate al totale dell'imponibile (10% uso residenziale, 22% per usi commerciali).</div>
-        </div>
-      </div>
-    </div>
 
     <!-- GUIDE BLOG -->
     <div class="section-title">💡 Guide & Trasparenza per Utenti Inesperti</div>
@@ -486,17 +619,17 @@
       <div class="blog-card">
         <span class="blog-cat">Guida Facile</span>
         <h3>Cos'è la quota fissa CCV?</h3>
-        <p>È un costo fisso che paghi ogni mese indipendentemente da quanto consumi. Confrontarlo è fondamentale per chi ha bassi consumi.</p>
+        <p>È un costo fisso annuale addebitato mensilmente indipendentemente dai tuoi consumi. Confrontarla è fondamentale per chi ha bassi consumi.</p>
       </div>
       <div class="blog-card">
         <span class="blog-cat">Mercato Libero</span>
-        <h3>Prezzo Fisso o Prezzo Variable?</h3>
-        <p>Il prezzo fisso ti blocca il costo della materia prima per 12-24 mesi. Il variabile segue l'andamento del PUN/PSV mensile.</p>
+        <h3>Prezzo Fisso o Prezzo Variabile?</h3>
+        <p>Il prezzo fisso blocca il costo per 12-24 mesi. Il variabile segue l'andamento mensile del mercato (PUN per la luce, PSV per il gas).</p>
       </div>
       <div class="blog-card">
         <span class="blog-cat">Risparmio</span>
         <h3>Come ottimizzare le Fasce Orarie (F1, F2, F3)</h3>
-        <p>Spostare l'uso dei grandi elettrodomestici la sera o nei fine settimana (F3) riduce la spesa complessiva della luce.</p>
+        <p>Spostare l'uso dei grandi elettrodomestici la sera o nei fine settimana (F3) riduce notevolmente la spesa complessiva dell'energia.</p>
       </div>
     </div>
 
@@ -512,13 +645,16 @@
     </footer>
   </div>
 
-  <!-- MODALE ATTIVAZIONE -->
+  <!-- MODALE ATTIVAZIONE / DETTAGLI -->
   <div class="modal-overlay" id="modal-checkout">
     <div class="modal-box">
       <span class="close-modal" onclick="closeModal()">&times;</span>
-      <h3 style="margin-bottom: 0.5rem; color: var(--cyan);" id="modal-supplier">Fornitore</h3>
+      <h3 style="margin-bottom: 0.2rem; color: var(--cyan);" id="modal-supplier">Fornitore</h3>
       <h2 style="margin-bottom: 1rem;" id="modal-offer-name">Nome Offerta</h2>
-      <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 1.5rem;">Per completare l'attivazione senza costi aggiuntivi, inserisci la tua email per ricevere i moduli precompilati.</p>
+      
+      <div id="modal-details-content" style="margin-bottom: 1.5rem;"></div>
+
+      <p style="color: var(--text-sub); font-size: 0.85rem; margin-bottom: 1.2rem;">Inserisci la tua email per ricevere il riepilogo del preventivo ed i moduli di attivazione diretta senza costi aggiuntivi.</p>
       
       <input type="email" class="config-input" placeholder="La tua email..." style="width: 100%; margin-bottom: 1rem;">
       <button class="btn-act" style="width: 100%; font-size: 1rem;" onclick="confirmActivation()">Procedi con l'Attivazione</button>
@@ -526,13 +662,13 @@
   </div>
 
   <script>
-    // DATABASE ESTESO COMPLETO (PORTALE100 STYLE)
+    // DATABASE ESTESO PORTALE100
     const database = {
       ee: [
         { id: 1, name: "Next Energy Sun", supplier: "Sorgenia", type: "fixed", target: "res", kwh: 0.118, ccv: 96, desc: "Energia 100% verde con sconto digitale e gestione via app." },
         { id: 2, name: "Plenitude Fix Luce", supplier: "Plenitude", type: "fixed", target: "res", kwh: 0.125, ccv: 108, desc: "Prezzo bloccato 12 mesi con programma fedeltà e sconti sulle ricariche auto." },
         { id: 3, name: "Enel Flex Web", supplier: "Enel", type: "variable", target: "res", kwh: 0.108, ccv: 120, desc: "Indicizzato al PUN con azzeramento impronta carbonica." },
-        { name: "Octopus Fixed 12", supplier: "Octopus", type: "fixed", target: "res", kwh: 0.115, ccv: 90, desc: "Servizio clienti eccellente con tariffa bloccata per un anno intero." },
+        { id: 4, name: "Octopus Fixed 12", supplier: "Octopus", type: "fixed", target: "res", kwh: 0.115, ccv: 90, desc: "Servizio clienti eccellente con tariffa bloccata per un anno intero." },
         { id: 5, name: "Duferco Dynamic Flex", supplier: "Duferco", type: "variable", target: "res", kwh: 0.102, ccv: 84, desc: "Trasparenza totale sul PUN con spread ridotto al minimo." },
         { id: 6, name: "NeN Special Luce", supplier: "NeN", type: "fixed", target: "res", kwh: 0.121, ccv: 72, desc: "Rata fissa tutto incluso calcolata su misura sulle tue abitudini." },
         { id: 7, name: "Enel Business Flex Pro", supplier: "Enel", type: "variable", target: "biz", kwh: 0.112, ccv: 144, desc: "Soluzione flessibile per negozi, uffici e pmi." },
@@ -547,6 +683,7 @@
     };
 
     let currentTarget = 'res';
+    let uploadedBillData = null;
 
     function setTarget(target) {
       currentTarget = target;
@@ -555,13 +692,18 @@
       renderAll();
     }
 
-    // SIMULATORE OCR UPLOAD BOLLETTA
+    // SIMULATORE UPLOAD BOLLETTA
     function handleBillUpload(e) {
       const status = document.getElementById('upload-status');
-      status.innerText = "⏳ Analisi della bolletta in corso...";
+      status.innerText = "⏳ Lettura OCR ed estrazione dati in corso...";
       
       setTimeout(() => {
-        status.innerText = "✅ Bolletta rilevata! Consumo estratto: 3100 kWh";
+        uploadedBillData = {
+          cons: 3100,
+          currentCost: 1150,
+          provider: "Vecchio Fornitore"
+        };
+        status.innerText = "✅ Bolletta rilevata! Consumo: 3100 kWh/anno";
         document.getElementById('cfg-cons').value = 3100;
         renderAll();
       }, 1200);
@@ -578,21 +720,64 @@
       let list = database[service].filter(o => o.target === currentTarget);
       if (type !== 'all') list = list.filter(o => o.type === type);
 
-      // CALCOLO E RENDERING GRID OFFERTE
-      const container = document.getElementById('offers-container');
-      container.innerHTML = '';
-
+      // CALCOLO SPESA
       let evaluatedOffers = list.map(item => {
         let materia = (cons * item.kwh) + item.ccv;
         let rete = service === 'ee' ? (20 + (3 * 21) + (cons * 0.04)) : (45 + (cons * 0.15));
         let oneri = cons * (service === 'ee' ? 0.03 : 0.05);
         let totAnno = (materia + rete + oneri) * (currentTarget === 'biz' ? 1.22 : 1.10);
-        return { ...item, totAnno, displayVal: freq === 'year' ? totAnno : (totAnno / 12) };
+        return { 
+          ...item, 
+          materia, rete, oneri, imposte: totAnno - (materia + rete + oneri),
+          totAnno, 
+          displayVal: freq === 'year' ? totAnno : (totAnno / 12) 
+        };
       });
 
-      // Ordina per prezzo crescente
       evaluatedOffers.sort((a, b) => a.totAnno - b.totAnno);
 
+      const container = document.getElementById('offers-container');
+      container.innerHTML = '';
+
+      // --- CARD INTEGRATA: PREVENTIVO LIVE DALLA BOLLETTA ---
+      if (evaluatedOffers.length > 0) {
+        const best = evaluatedOffers[0];
+        const liveCard = document.createElement('div');
+        liveCard.className = 'offer-card live-quote-card';
+        
+        let oldCost = uploadedBillData ? uploadedBillData.currentCost : (best.totAnno * 1.25);
+        let saving = Math.max(0, oldCost - best.totAnno);
+
+        liveCard.innerHTML = `
+          <div>
+            <span class="supplier-name" style="color:var(--cyan-bright);">PREVENTIVO PERSONALIZZATO LIVE</span>
+            <div class="offer-title">Sintesi Calcolo Bolletta</div>
+            <div class="offer-desc">Riepilogo analitico dettagliato in tempo reale calcolato sul tuo consumo di <strong>${cons} ${service === 'ee' ? 'kWh' : 'Smc'}</strong>.</div>
+            
+            <table class="live-table">
+              <tr><td>1. Materia Prima / Energia</td><td>${best.materia.toFixed(2)} €</td></tr>
+              <tr><td>2. Trasporto e Rete</td><td>${best.rete.toFixed(2)} €</td></tr>
+              <tr><td>3. Oneri di Sistema</td><td>${best.oneri.toFixed(2)} €</td></tr>
+              <tr><td>4. Imposte e IVA</td><td>${best.imposte.toFixed(2)} €</td></tr>
+              <tr style="color:var(--green); font-weight:bold;">
+                <td>Risparmio Stimato Annuo:</td>
+                <td>~ ${saving.toFixed(2)} €/anno</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="price-wrap">
+            <div>
+              <div class="price-val" style="color:var(--cyan-bright);">${best.displayVal.toFixed(2)} €</div>
+              <span style="font-size:0.8rem; color:var(--text-sub);">${freq === 'year' ? 'Totale Finito / Anno' : 'Totale Finito / Mese'}</span>
+            </div>
+            <button class="btn-act" onclick="openModal('Preventivo Live', 'Miglior Tariffa Applicata (${best.supplier})', ${best.totAnno}, ${best.materia}, ${best.rete}, ${best.oneri}, ${best.imposte})">Attiva Ora</button>
+          </div>
+        `;
+        container.appendChild(liveCard);
+      }
+
+      // RENDER DELLE ALTRE SCHEDE FORNITORI
       evaluatedOffers.forEach(item => {
         const card = document.createElement('div');
         card.className = 'offer-card';
@@ -601,32 +786,31 @@
             <span class="supplier-name">${item.supplier}</span>
             <div class="offer-title">${item.name}</div>
             <div class="offer-desc">${item.desc}</div>
+            <div style="font-size:0.8rem; color:var(--text-sub); margin-bottom:1rem;">
+              <span>• Prezzo Unità: <strong>${item.kwh} €/${service==='ee'?'kWh':'Smc'}</strong></span><br>
+              <span>• Quota Fissa CCV: <strong>${item.ccv} €/anno</strong></span>
+            </div>
           </div>
           <div class="price-wrap">
             <div>
               <div class="price-val">${item.displayVal.toFixed(2)} €</div>
               <span style="font-size:0.8rem; color:var(--text-sub);">${freq === 'year' ? '/anno' : '/mese'}</span>
             </div>
-            <button class="btn-act" onclick="openModal('${item.supplier}', '${item.name}')">Seleziona</button>
+            <button class="btn-act" onclick="openModal('${item.supplier}', '${item.name}', ${item.totAnno}, ${item.materia}, ${item.rete}, ${item.oneri}, ${item.imposte})">Seleziona</button>
           </div>
         `;
         container.appendChild(card);
       });
 
-      // AGGIORNA PROSPETTO TRASPARENTE
+      // AGGIORNA SEZIONE DISAGGREGAZIONE COSTI
       if (evaluatedOffers.length > 0) {
         let top = evaluatedOffers[0];
-        let materia = (cons * top.kwh) + top.ccv;
-        let rete = service === 'ee' ? (20 + (3 * 21) + (cons * 0.04)) : (45 + (cons * 0.15));
-        let oneri = cons * (service === 'ee' ? 0.03 : 0.05);
-        let imposte = (materia + rete + oneri) * (currentTarget === 'biz' ? 0.22 : 0.10);
+        document.getElementById('val-materia').innerText = top.materia.toFixed(2) + ' €';
+        document.getElementById('val-rete').innerText = top.rete.toFixed(2) + ' €';
+        document.getElementById('val-oneri').innerText = top.oneri.toFixed(2) + ' €';
+        document.getElementById('val-imposte').innerText = top.imposte.toFixed(2) + ' €';
 
-        document.getElementById('val-materia').innerText = materia.toFixed(2) + ' €';
-        document.getElementById('val-rete').innerText = rete.toFixed(2) + ' €';
-        document.getElementById('val-oneri').innerText = oneri.toFixed(2) + ' €';
-        document.getElementById('val-imposte').innerText = imposte.toFixed(2) + ' €';
-
-        renderCharts(materia, rete, oneri, imposte, evaluatedOffers.slice(0, 3));
+        renderCharts(top.materia, top.rete, top.oneri, top.imposte, evaluatedOffers.slice(0, 3));
       }
     }
 
@@ -634,7 +818,6 @@
     function renderCharts(materia, rete, oneri, imposte, top3) {
       const total = materia + rete + oneri + imposte;
       
-      // Chart 1: Ripartizione Costi
       const chart1 = document.getElementById('chart-breakdown');
       chart1.innerHTML = `
         <div class="bar-wrapper"><div class="bar-fill" style="height:${(materia/total)*100}%; background:var(--cyan);"></div><span class="bar-label">Materia</span></div>
@@ -643,7 +826,6 @@
         <div class="bar-wrapper"><div class="bar-fill" style="height:${(imposte/total)*100}%; background:var(--green);"></div><span class="bar-label">Tasse</span></div>
       `;
 
-      // Chart 2: Confronto Top 3
       const chart2 = document.getElementById('chart-comparison');
       if (top3.length > 0) {
         let maxVal = top3[top3.length - 1].totAnno;
@@ -657,9 +839,21 @@
     }
 
     // GESTIONE MODALE
-    function openModal(supplier, name) {
+    function openModal(supplier, name, tot, mat, ret, one, imp) {
       document.getElementById('modal-supplier').innerText = supplier;
       document.getElementById('modal-offer-name').innerText = name;
+      
+      document.getElementById('modal-details-content').innerHTML = `
+        <div style="background:rgba(255,255,255,0.03); padding:1rem; border-radius:12px; border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;"><span>Materia Prima:</span><strong>${mat.toFixed(2)} €</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;"><span>Trasporto e Rete:</span><strong>${ret.toFixed(2)} €</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;"><span>Oneri di Sistema:</span><strong>${one.toFixed(2)} €</strong></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;"><span>Imposte & IVA:</span><strong>${imp.toFixed(2)} €</strong></div>
+          <hr style="border:0; border-top:1px solid var(--border); margin:0.6rem 0;">
+          <div style="display:flex; justify-content:space-between; font-size:1.1rem; color:var(--green);"><span>Totale Annuo Finito:</span><strong>${tot.toFixed(2)} €</strong></div>
+        </div>
+      `;
+
       document.getElementById('modal-checkout').style.display = 'flex';
     }
 
@@ -668,7 +862,7 @@
     }
 
     function confirmActivation() {
-      alert("Richiesta inviata con successo! Un consulente ti contatterà per confermare i dati.");
+      alert("Richiesta registrata con successo! Riceverai un'email con il riepilogo del preventivo ed i contratti precompilati.");
       closeModal();
     }
 
