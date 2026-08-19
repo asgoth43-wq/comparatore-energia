@@ -11,16 +11,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
-  <!-- Scripts: OCR, Chart.js, PayPal SDK -->
+  <!-- Scripts: OCR & Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
 
   <style>
     :root {
-      --bg-dark: #070a12;
-      --card-bg: rgba(18, 26, 43, 0.65);
-      --card-border: rgba(255, 255, 255, 0.1);
+      --bg-dark: #060913;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(0, 242, 254, 0.18);
       --accent-cyan: #00f2fe;
       --accent-blue: #4facfe;
       --accent-purple: #7f00ff;
@@ -45,8 +44,8 @@
       overflow-x: hidden;
     }
 
-    /* SFONDO DINAMICO E PARTICELLE ANIMATE */
-    .bg-blobs {
+    /* SFONDO TEMATICO ENERGIA E GAS CON DISEGNI VETTORIALI */
+    .bg-theme-container {
       position: fixed;
       top: 0;
       left: 0;
@@ -57,24 +56,52 @@
       pointer-events: none;
     }
 
+    /* Griglia tecnologica */
+    .bg-grid {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    }
+
+    /* Bagliori e particelle luminose */
     .blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.35;
-      animation: float 18s ease-in-out infinite alternate;
+      filter: blur(100px);
+      opacity: 0.3;
+      animation: float 16s ease-in-out infinite alternate;
     }
-
     .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--accent-purple); }
     .blob-2 { bottom: -10%; right: -10%; width: 550px; height: 550px; background: var(--accent-cyan); animation-delay: -5s; }
-    .blob-3 { top: 40%; left: 30%; width: 350px; height: 350px; background: var(--accent-orange); opacity: 0.18; animation-delay: -10s; }
+    .blob-3 { top: 45%; left: 35%; width: 350px; height: 350px; background: var(--accent-orange); opacity: 0.15; animation-delay: -10s; }
 
     @keyframes float {
       0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(60px, 40px) scale(1.1); }
-      100% { transform: translate(-40px, 80px) scale(0.95); }
+      50% { transform: translate(50px, 30px) scale(1.08); }
+      100% { transform: translate(-30px, 60px) scale(0.95); }
     }
-    
+
+    /* Disegni decorativi SVG di sfondo */
+    .decor-svg {
+      position: absolute;
+      opacity: 0.07;
+      color: var(--accent-cyan);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .svg-bolt-1 { top: 8%; left: 5%; width: 180px; height: 180px; transform: rotate(-15deg); }
+    .svg-flame-1 { top: 12%; right: 6%; width: 160px; height: 160px; color: var(--accent-orange); transform: rotate(10deg); }
+    .svg-meter { bottom: 10%; left: 4%; width: 220px; height: 220px; color: var(--accent-green); }
+    .svg-chart { bottom: 15%; right: 5%; width: 200px; height: 200px; color: var(--accent-blue); }
+
     .container { max-width: 1240px; margin: 0 auto; }
     
     /* HEADER */
@@ -109,7 +136,7 @@
     /* Switcher Casa / Business */
     .target-switcher {
       display: inline-flex;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       padding: 6px;
       border-radius: 40px;
       border: 1px solid var(--card-border);
@@ -151,7 +178,7 @@
       margin-bottom: 1.75rem;
       transition: all 0.3s ease;
     }
-    .panel-card:hover { border-color: rgba(0, 242, 254, 0.3); }
+    .panel-card:hover { border-color: rgba(0, 242, 254, 0.35); }
     .panel-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; color: #fff; }
 
     /* Dropzone OCR UI */
@@ -177,7 +204,7 @@
     .ocr-status { display: none; margin-top: 1rem; font-size: 0.85rem; padding: 0.75rem; border-radius: 10px; background: rgba(0, 245, 160, 0.1); border: 1px solid rgba(0, 245, 160, 0.2); color: var(--accent-green); text-align: center; font-weight: 600; }
 
     /* Type Switcher */
-    .type-selector { display: grid; grid-template-columns: 1fr 1fr; background: rgba(0, 0, 0, 0.35); padding: 5px; border-radius: 14px; margin-bottom: 1.5rem; border: 1px solid var(--card-border); }
+    .type-selector { display: grid; grid-template-columns: 1fr 1fr; background: rgba(0, 0, 0, 0.4); padding: 5px; border-radius: 14px; margin-bottom: 1.5rem; border: 1px solid var(--card-border); }
     .type-btn { border: none; background: transparent; padding: 0.8rem; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; border-radius: 10px; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
     .type-btn.active { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: #000; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4); }
 
@@ -188,7 +215,7 @@
     .input-wrapper input, select {
       width: 100%;
       padding: 0.85rem 1rem;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
       border-radius: 12px;
       font-size: 0.95rem;
@@ -196,7 +223,7 @@
       outline: none;
       transition: all 0.3s;
     }
-    .input-wrapper input:focus, select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 242, 254, 0.25); background: rgba(0, 0, 0, 0.5); }
+    .input-wrapper input:focus, select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 242, 254, 0.25); background: rgba(0, 0, 0, 0.6); }
     .input-suffix { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text-muted); pointer-events: none; font-weight: 600; }
 
     .fasce-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
@@ -220,7 +247,7 @@
     .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 242, 254, 0.45); }
 
     /* Results Header & Barra Ricerca */
-    .results-header { display: flex; justify-space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     .results-header h2 { font-size: 1.5rem; font-weight: 800; }
     
     .filter-bar {
@@ -243,7 +270,7 @@
     }
     .search-input:focus { border-color: var(--accent-cyan); box-shadow: var(--glow); }
 
-    .freq-toggle { display: flex; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 30px; padding: 4px; }
+    .freq-toggle { display: flex; align-items: center; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--card-border); border-radius: 30px; padding: 4px; }
     .freq-btn { border: none; background: transparent; padding: 0.5rem 1.25rem; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); border-radius: 20px; cursor: pointer; transition: all 0.3s; }
     .freq-btn.active { background: var(--accent-cyan); color: #000; }
 
@@ -312,7 +339,7 @@
     .chart-container {
       padding: 1.5rem 2rem;
       border-top: 1px solid var(--card-border);
-      background: rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.25);
       display: grid;
       grid-template-columns: 200px 1fr;
       gap: 1.5rem;
@@ -323,7 +350,7 @@
     /* ARERA Receipt */
     .receipt-wrapper {
       border-top: 1px solid var(--card-border);
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       padding: 1.25rem 2rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.82rem;
@@ -332,19 +359,34 @@
     .receipt-row { display: flex; justify-content: space-between; margin-bottom: 0.4rem; color: #cbd5e1; }
     .receipt-row.total { font-weight: 700; font-size: 1rem; border-top: 1px dashed var(--card-border); padding-top: 0.6rem; margin-top: 0.6rem; color: var(--accent-cyan); }
 
-    /* SEZIONE DONAZIONE PAYPAL INTEGRATA */
+    /* SEZIONE DONAZIONE PAYPAL UNICA E CORRETTA */
     .donation-card {
       text-align: center;
       background: linear-gradient(135deg, rgba(127, 0, 255, 0.15), rgba(0, 242, 254, 0.1));
       border: 1px solid rgba(0, 242, 254, 0.3);
       backdrop-filter: blur(20px);
-      padding: 2rem;
+      padding: 2.2rem;
     }
-    #donate-button-container {
-      display: flex;
-      justify-content: center;
+    .paypal-btn-direct {
+      display: inline-flex;
       align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #0070ba, #00457c);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 112, 186, 0.4);
       margin-top: 1.2rem;
+    }
+    .paypal-btn-direct:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 112, 186, 0.6);
+      background: linear-gradient(135deg, #007bc8, #00569c);
     }
 
     /* Guida Bolletta */
@@ -374,7 +416,7 @@
     .guide-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
     /* Modale Wizard */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 10, 18, 0.85); backdrop-filter: blur(15px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 9, 19, 0.88); backdrop-filter: blur(15px); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
     .modal-card { background: var(--bg-dark); border-radius: var(--radius); border: 1px solid var(--card-border); max-width: 550px; width: 100%; padding: 2.5rem; box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; }
     .modal-close { position: absolute; top: 1.2rem; right: 1.2rem; border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
 
@@ -392,11 +434,21 @@
 </head>
 <body>
 
-  <!-- Elementi Sfondo Dinamico -->
-  <div class="bg-blobs">
+  <!-- SFONDO DINAMICO TEMATICO (Sfondi animati + Grafica Vettoriale Energia/Gas) -->
+  <div class="bg-theme-container">
+    <div class="bg-grid"></div>
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
+
+    <!-- Disegno Vettoriale Fulmine (Luce) -->
+    <svg class="decor-svg svg-bolt-1" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+    <!-- Disegno Vettoriale Fiamma (Gas) -->
+    <svg class="decor-svg svg-flame-1" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+    <!-- Disegno Contatore -->
+    <svg class="decor-svg svg-meter" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M6 8h12"></path><path d="M12 16v-4"></path><path d="M8 16h8"></path></svg>
+    <!-- Disegno Grafico Risparmio -->
+    <svg class="decor-svg svg-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
   </div>
 
   <div class="container">
@@ -490,17 +542,17 @@
 
         <div id="results-container"></div>
 
-        <!-- SEZIONE DONAZIONE PAYPAL OFFIZIALE INTEGRATA -->
+        <!-- SEZIONE DONAZIONE PAYPAL UFFICIALE (LINK DIRETTO FUNZIONANTE) -->
         <div class="panel-card donation-card">
-          <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: #fff;">❤️ Ti piace questo progetto?</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Questo comparatore è completamente gratuito e indipendente. Se ti ha aiutato a risparmiare sulla tua bolletta, considera di offrire una donazione per sostenere lo sviluppo!
+          <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: #fff;">❤️ Ti piace questo comparatore?</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">
+            Il servizio è gratuito e indipendente. Se ti ha aiutato a risparmiare sulla bolletta, sostieni il progetto con una donazione PayPal!
           </p>
 
-          <!-- SDK UFFICIALE PAYPAL -->
-          <div id="donate-button-container">
-            <div id="donate-button"></div>
-          </div>
+          <a href="https://www.paypal.com/donate/?hosted_button_id=6WMVS49ECBBN6" target="_blank" rel="noopener noreferrer" class="paypal-btn-direct">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.77.77 0 0 1 .761-.643h7.234c3.308 0 5.72 1.396 5.503 4.88-.2 3.197-2.32 5.093-5.28 5.093H9.72l-.936 5.863a.64.64 0 0 1-.633.53a.64.64 0 0 1-.075 0z"/></svg>
+            Fai una Donazione con PayPal
+          </a>
         </div>
       </main>
     </div>
@@ -651,17 +703,6 @@
         ]
       }
     };
-
-    // Render Iniziale SDK Donazione PayPal
-    PayPal.Donation.Button({
-      env: 'production',
-      hosted_button_id: '6WMVS49ECBBN6',
-      image: {
-        src: 'https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif',
-        alt: 'Fai una donazione con il pulsante PayPal',
-        title: 'PayPal - The safer, easier way to pay online!',
-      }
-    }).render('#donate-button');
 
     function setTarget(target) {
       currentTarget = target;
