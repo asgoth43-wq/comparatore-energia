@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EnergyCompare Pro - Il Portale Innovativo per la Comparazione Bollette</title>
+    <title>Confrontiamo! - Il Portale Innovativo per la Comparazione Bollette</title>
     <!-- Chart.js per la visualizzazione grafica avanzata -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome per la iconografia del portale -->
@@ -42,6 +42,7 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         /* Background Effects */
@@ -92,7 +93,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             letter-spacing: -0.5px;
             color: var(--text-main);
@@ -128,15 +129,9 @@
             text-shadow: 0 0 8px rgba(255,255,255,0.5);
         }
 
-        .nav-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        /* Hero & Filters Section */
+        /* Hero & Sections */
         .hero {
-            padding: 60px 20px 40px;
+            padding: 60px 20px 30px;
             text-align: center;
             max-width: 1000px;
             margin: 0 auto;
@@ -156,6 +151,80 @@
             font-size: 18px;
             color: var(--text-muted);
             margin-bottom: 35px;
+        }
+
+        /* Upload Card Section */
+        .upload-section {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+        }
+
+        .upload-card {
+            background: linear-gradient(135deg, rgba(99, 91, 255, 0.1) 0%, rgba(0, 212, 177, 0.05) 100%);
+            border: 2px dashed var(--primary-accent);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-card:hover {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, rgba(99, 91, 255, 0.15) 0%, rgba(0, 212, 177, 0.1) 100%);
+            box-shadow: var(--neon-glow);
+        }
+
+        .upload-icon {
+            font-size: 42px;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .upload-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .upload-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn-upload-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary-accent);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload-trigger:hover {
+            box-shadow: var(--neon-glow);
+            transform: translateY(-2px);
+        }
+
+        .upload-status {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary);
+            display: none;
         }
 
         /* Segment Switcher Tabs */
@@ -429,6 +498,88 @@
             border-color: var(--primary-accent);
         }
 
+        /* Blog Section Layout */
+        .blog-section {
+            max-width: 1400px;
+            margin: 80px auto 60px;
+            padding: 0 20px;
+        }
+
+        .blog-header {
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .blog-header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .blog-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .blog-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-4px);
+        }
+
+        .blog-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .blog-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .blog-excerpt {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .blog-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 12px;
+        }
+
         /* Modal Architecture */
         .modal-overlay {
             position: fixed;
@@ -625,19 +776,15 @@
         <div class="nav-container">
             <a href="#" class="logo">
                 <i class="fa-solid fa-bolt-lightning"></i>
-                Energy<span>Compare</span>
+                Confrontiamo!
             </a>
             <ul class="nav-links">
                 <li><a href="#" class="active">Comparatore</a></li>
-                <li><a href="#">Guida Bolletta</a></li>
-                <li><a href="#">Osservatorio Prezzi</a></li>
-                <li><a href="#">Supporto ARERA</a></li>
+                <li><a href="https://www.arera.it/it/consumatori/guida_bolletta.htm" target="_blank" rel="noopener noreferrer">Guida Bolletta</a></li>
+                <li><a href="https://www.ilportaleofferte.it/portaleOfferte/" target="_blank" rel="noopener noreferrer">Osservatorio Prezzi</a></li>
+                <li><a href="https://www.arera.it/it/callcenter.htm" target="_blank" rel="noopener noreferrer">Supporto ARERA</a></li>
+                <li><a href="#blog-section">Notizie & Blog</a></li>
             </ul>
-            <div class="nav-actions">
-                <button class="btn-primary" style="padding: 8px 16px; font-size: 13px;">
-                    <i class="fa-solid fa-user"></i> Area Riservata
-                </button>
-            </div>
         </div>
     </header>
 
@@ -654,6 +801,18 @@
             </button>
         </div>
     </main>
+
+    <!-- Upload Bolletta Rapido Card -->
+    <section class="upload-section">
+        <div class="upload-card" onclick="document.getElementById('bill-upload-input').click()">
+            <i class="fa-solid fa-file-arrow-up upload-icon"></i>
+            <div class="upload-title">Carica la tua Bolletta per una Comparazione Rapida</div>
+            <div class="upload-desc">Trascina qui il tuo file PDF o clicca per selezionarlo. Il nostro algoritmo estrarrà automaticamente i consumi reali!</div>
+            <span class="btn-upload-trigger"><i class="fa-solid fa-upload"></i> Seleziona Bolletta (PDF/Image)</span>
+            <input type="file" id="bill-upload-input" class="file-input" accept=".pdf,image/*" onchange="handleFileUpload(event)">
+            <div class="upload-status" id="upload-status-text"></div>
+        </div>
+    </section>
 
     <section class="main-container">
         <!-- Dashboard Filtri Avanzati -->
@@ -693,6 +852,19 @@
         </div>
     </section>
 
+    <!-- Sezione Blog e News Energia -->
+    <section class="blog-section" id="blog-section">
+        <div class="blog-header">
+            <div>
+                <h2>Notizie & Trend Energia</h2>
+                <p>Aggiornamenti settimanali sui mercati, delibere ARERA e strategie di risparmio.</p>
+            </div>
+        </div>
+        <div class="blog-grid" id="blog-grid">
+            <!-- Injected Dynamic Blog Posts -->
+        </div>
+    </section>
+
     <!-- Modal Architettura per Scontrino & Preventivo Duferco -->
     <div class="modal-overlay" id="global-modal">
         <div class="modal-wrapper">
@@ -704,7 +876,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 EnergyCompare Pro - P.IVA 09876543210 - Simulative Analytics Engine integrated with ARERA Data Standard Compliance Framework</p>
+        <p>&copy; 2026 Confrontiamo! - P.IVA 09876543210 - Simulative Analytics Engine integrated with ARERA Data Standard Compliance Framework</p>
     </footer>
 
     <script>
@@ -737,11 +909,53 @@
             ]
         };
 
+        // Blog Database Post Settimanali
+        const blogPosts = [
+            {
+                title: "Andamento PUN Agosto 2026: Cosa Aspettarsi in Autunno",
+                excerpt: "Analisi dell'indice energetico nazionale e consigli su quando conviene passare dal prezzo variabile al prezzo fisso bloccato.",
+                date: "18 Agosto 2026",
+                category: "Mercati",
+                readTime: "4 min"
+            },
+            {
+                title: "Oneri di Sistema ARERA: Guida alle Nuove Aliquote",
+                excerpt: "Tutto quello che c'è da sapere sulla rimodulazione della quota A3 e sulle tutele per i clienti vulnerabili.",
+                date: "12 Agosto 2026",
+                category: "Normativa",
+                readTime: "5 min"
+            },
+            {
+                title: "Come Leggere la Bolletta 2.0 Senza Fare Errori",
+                excerpt: "Dai costi di commercializzazione al corrispettivo di stoccaggio: come individuare i margini di risparmio in 3 passaggi.",
+                date: "05 Agosto 2026",
+                category: "Guida Pratica",
+                readTime: "3 min"
+            }
+        ];
+
         // Configuration State
         let activeSegment = 'residenziale';
         let visibleItemsCount = 6;
         let processedOffers = [];
         let activeChartInstance = null;
+
+        // Upload Handler Simulation
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const status = document.getElementById('upload-status-text');
+                status.style.display = 'block';
+                status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Analisi in corso del file ${file.name}... Estrazione consumi kWh...`;
+                
+                setTimeout(() => {
+                    const simulatedConsumption = Math.floor(Math.random() * (3500 - 2100 + 1)) + 2100;
+                    document.getElementById('filter-consumption').value = simulatedConsumption;
+                    status.innerHTML = `<i class="fa-solid fa-circle-check"></i> Bolletta analizzata con successo! Consumo rilevato: <strong>${simulatedConsumption} kWh/anno</strong>. Offerte aggiornate.`;
+                    recalculateEstimates();
+                }, 1500);
+            }
+        }
 
         // Switch Business vs Residenziale
         function switchSegment(segment) {
@@ -770,18 +984,15 @@
 
             let sourceData = [...offerDatabase[activeSegment]];
 
-            // Filter by Type
             if (typeFilter !== 'all') {
                 sourceData = sourceData.filter(o => o.type === typeFilter);
             }
 
-            // Map with Calculated Monthly Estimate
             processedOffers = sourceData.map(offer => {
                 const monthlyEst = calculateMonthlyCost(offer, annualKwh);
                 return { ...offer, calculatedMonthlyEst: monthlyEst };
             });
 
-            // Sorting
             if (sortFilter === 'price-asc') {
                 processedOffers.sort((a, b) => a.calculatedMonthlyEst - b.calculatedMonthlyEst);
             } else if (sortFilter === 'price-desc') {
@@ -839,7 +1050,6 @@
                 grid.appendChild(card);
             });
 
-            // Load More Pagination Management
             const loadMoreContainer = document.getElementById('load-more-container');
             const remaining = processedOffers.length - visibleItemsCount;
 
@@ -849,6 +1059,27 @@
             } else {
                 loadMoreContainer.style.display = 'none';
             }
+        }
+
+        function renderBlog() {
+            const container = document.getElementById('blog-grid');
+            container.innerHTML = '';
+            blogPosts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="blog-tag">${post.category}</div>
+                        <div class="blog-title">${post.title}</div>
+                        <div class="blog-excerpt">${post.excerpt}</div>
+                    </div>
+                    <div class="blog-meta">
+                        <span><i class="fa-regular fa-calendar"></i> ${post.date}</span>
+                        <span><i class="fa-regular fa-clock"></i> ${post.readTime}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         function loadMoreOffers() {
@@ -973,7 +1204,6 @@
 
             document.getElementById('global-modal').classList.add('active');
 
-            // Render Chart.js Dynamic Graph
             setTimeout(() => {
                 const ctx = document.getElementById('costBreakdownChart').getContext('2d');
                 if (activeChartInstance) activeChartInstance.destroy();
@@ -1010,7 +1240,6 @@
             document.getElementById('global-modal').classList.remove('active');
         }
 
-        // Global Modal Event listener for outer click
         window.onclick = function(e) {
             const modal = document.getElementById('global-modal');
             if (e.target === modal) {
@@ -1020,6 +1249,7 @@
 
         // Initialize Engine
         applyFilters();
+        renderBlog();
     </script>
 </body>
 </html>
