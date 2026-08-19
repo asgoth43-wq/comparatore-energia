@@ -15,16 +15,16 @@
             --secondary: #00d4b1;
             --warning: #ffab00;
             --danger: #ff5252;
-            --bg-dark: #080b11;
-            --bg-card: #121824;
-            --bg-card-hover: #1a2333;
+            --bg-dark: #060913;
+            --bg-card: #101726;
+            --bg-card-hover: #182238;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: #1e293b;
-            --glass-bg: rgba(18, 24, 36, 0.75);
+            --glass-bg: rgba(16, 23, 38, 0.85);
             --glass-border: rgba(255, 255, 255, 0.08);
             --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --neon-glow: 0 0 15px rgba(99, 91, 255, 0.4);
+            --neon-glow: 0 0 15px rgba(0, 212, 177, 0.4);
         }
 
         * {
@@ -43,10 +43,11 @@
             flex-direction: column;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            position: relative;
         }
 
-        /* Background Effects */
-        .ambient-light {
+        /* Dynamic Energy Dynamic Canvas & Background Overlay */
+        .energy-bg-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -54,20 +55,28 @@
             height: 100vh;
             pointer-events: none;
             z-index: -1;
-            overflow: hidden;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 212, 177, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(99, 91, 255, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(10, 37, 64, 0.8) 0%, var(--bg-dark) 100%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-blend-mode: screen, overlay, normal, normal;
         }
 
-        .blob {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(99,91,255,0.15) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            filter: blur(80px);
+        /* SVG Grid Background Effect */
+        .energy-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            background-image: linear-gradient(var(--primary-accent) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--primary-accent) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
-
-        .blob-1 { top: -100px; left: -100px; }
-        .blob-2 { bottom: -100px; right: -100px; background: radial-gradient(circle, rgba(0,212,177,0.12) 0%, rgba(0,0,0,0) 70%); }
 
         /* Header & Navigation */
         header {
@@ -103,7 +112,7 @@
         .logo i {
             color: var(--secondary);
             font-size: 28px;
-            filter: drop-shadow(0 0 8px var(--secondary));
+            filter: drop-shadow(0 0 10px var(--secondary));
         }
 
         .logo span {
@@ -112,7 +121,8 @@
 
         .nav-links {
             display: flex;
-            gap: 30px;
+            align-items: center;
+            gap: 25px;
             list-style: none;
         }
 
@@ -120,8 +130,11 @@
             color: var(--text-muted);
             text-decoration: none;
             font-weight: 500;
-            font-size: 15px;
+            font-size: 14px;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .nav-links a:hover, .nav-links a.active {
@@ -129,102 +142,46 @@
             text-shadow: 0 0 8px rgba(255,255,255,0.5);
         }
 
+        /* Paypal Donation Button */
+        .paypal-donate-btn {
+            background: linear-gradient(135deg, #ffc439 0%, #ff9400 100%);
+            color: #003087 !important;
+            font-weight: 700 !important;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(255, 196, 57, 0.3);
+            transition: all 0.3s ease !important;
+            border: 1px solid #ffe082;
+        }
+
+        .paypal-donate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 196, 57, 0.5);
+            color: #001c48 !important;
+        }
+
         /* Hero & Sections */
         .hero {
-            padding: 60px 20px 30px;
+            padding: 50px 20px 20px;
             text-align: center;
             max-width: 1000px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-size: 46px;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #ffffff 0%, var(--text-muted) 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #00d4b1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 18px;
+            font-size: 17px;
             color: var(--text-muted);
-            margin-bottom: 35px;
-        }
-
-        /* Upload Card Section */
-        .upload-section {
-            max-width: 1200px;
-            margin: 0 auto 40px;
-            padding: 0 20px;
-        }
-
-        .upload-card {
-            background: linear-gradient(135deg, rgba(99, 91, 255, 0.1) 0%, rgba(0, 212, 177, 0.05) 100%);
-            border: 2px dashed var(--primary-accent);
-            border-radius: 20px;
-            padding: 35px 25px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .upload-card:hover {
-            border-color: var(--secondary);
-            background: linear-gradient(135deg, rgba(99, 91, 255, 0.15) 0%, rgba(0, 212, 177, 0.1) 100%);
-            box-shadow: var(--neon-glow);
-        }
-
-        .upload-icon {
-            font-size: 42px;
-            color: var(--secondary);
-            margin-bottom: 12px;
-        }
-
-        .upload-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .upload-desc {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .btn-upload-trigger {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--primary-accent);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-upload-trigger:hover {
-            box-shadow: var(--neon-glow);
-            transform: translateY(-2px);
-        }
-
-        .upload-status {
-            margin-top: 15px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--secondary);
-            display: none;
+            margin-bottom: 30px;
         }
 
         /* Segment Switcher Tabs */
@@ -234,11 +191,11 @@
             padding: 6px;
             border-radius: 40px;
             border: 1px solid var(--glass-border);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .tab-btn {
-            padding: 12px 36px;
+            padding: 12px 32px;
             border: none;
             background: transparent;
             color: var(--text-muted);
@@ -258,14 +215,87 @@
             box-shadow: var(--neon-glow);
         }
 
+        /* Upload Card Section */
+        .upload-section {
+            max-width: 1200px;
+            margin: 0 auto 35px;
+            padding: 0 20px;
+        }
+
+        .upload-card {
+            background: linear-gradient(135deg, rgba(99, 91, 255, 0.12) 0%, rgba(0, 212, 177, 0.08) 100%);
+            border: 2px dashed var(--secondary);
+            border-radius: 20px;
+            padding: 30px 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-card:hover {
+            border-color: var(--primary-accent);
+            background: linear-gradient(135deg, rgba(99, 91, 255, 0.2) 0%, rgba(0, 212, 177, 0.15) 100%);
+            box-shadow: var(--neon-glow);
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .upload-title {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .upload-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn-upload-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--secondary);
+            color: var(--bg-dark);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload-trigger:hover {
+            box-shadow: var(--neon-glow);
+            transform: translateY(-2px);
+        }
+
+        .upload-status {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary);
+            display: none;
+        }
+
         /* Interactive Filter Bar */
         .filter-panel {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            padding: 25px;
+            padding: 20px 25px;
             max-width: 1200px;
-            margin: 0 auto 40px;
+            margin: 0 auto 35px;
             box-shadow: var(--shadow);
             backdrop-filter: blur(10px);
             display: grid;
@@ -282,15 +312,15 @@
         }
 
         .filter-group label {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .filter-control {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 10px 14px;
@@ -301,28 +331,28 @@
         }
 
         .filter-control:focus {
-            border-color: var(--primary-accent);
+            border-color: var(--secondary);
         }
 
         /* Card Grid Layout */
         .main-container {
             max-width: 1400px;
-            margin: 0 auto 60px;
+            margin: 0 auto 50px;
             padding: 0 20px;
             width: 100%;
         }
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
         }
 
         .offer-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 18px;
+            padding: 22px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -332,16 +362,16 @@
         }
 
         .offer-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             background: var(--bg-card-hover);
-            border-color: var(--primary-accent);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 25px rgba(0, 212, 177, 0.15);
         }
 
         .card-badge {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 18px;
+            right: 18px;
             background: rgba(0, 212, 177, 0.15);
             color: var(--secondary);
             border: 1px solid rgba(0, 212, 177, 0.3);
@@ -356,44 +386,44 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .provider-icon {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            color: var(--primary-accent);
+            font-size: 18px;
+            color: var(--secondary);
         }
 
         .provider-name {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
             font-weight: 500;
         }
 
         .offer-title {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: var(--text-main);
         }
 
         .price-container {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 14px;
+            margin-bottom: 18px;
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .monthly-estimate {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--secondary);
             display: flex;
@@ -402,17 +432,17 @@
         }
 
         .monthly-estimate span {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
             font-weight: 400;
         }
 
         .unit-rates {
-            margin-top: 10px;
+            margin-top: 8px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: 13px;
+            gap: 6px;
+            font-size: 12px;
         }
 
         .rate-item {
@@ -427,21 +457,21 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .btn-breakdown-trigger {
             background: transparent;
             border: none;
-            color: var(--primary-accent);
-            font-size: 13px;
+            color: var(--secondary);
+            font-size: 12px;
             font-weight: 600;
             text-align: left;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 5px 0;
+            padding: 4px 0;
             transition: color 0.2s ease;
         }
 
@@ -455,9 +485,9 @@
             color: white;
             border: none;
             border-radius: 10px;
-            padding: 12px 20px;
+            padding: 11px 18px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -472,70 +502,45 @@
             box-shadow: var(--neon-glow);
         }
 
-        /* Load More Dynamic Section */
-        .load-more-section {
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .btn-load-more {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 14px 32px;
-            border-radius: 30px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-load-more:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary-accent);
-        }
-
         /* Blog Section Layout */
         .blog-section {
             max-width: 1400px;
-            margin: 80px auto 60px;
+            margin: 60px auto;
             padding: 0 20px;
         }
 
         .blog-header {
-            margin-bottom: 35px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+            margin-bottom: 30px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 15px;
         }
 
         .blog-header h2 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .blog-header p {
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 14px;
+            margin-top: 5px;
         }
 
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .blog-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 22px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -553,11 +558,11 @@
             color: var(--secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .blog-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 10px;
@@ -567,17 +572,17 @@
         .blog-excerpt {
             font-size: 13px;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.5;
             margin-bottom: 15px;
         }
 
         .blog-meta {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             display: flex;
             justify-content: space-between;
             border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 12px;
+            padding-top: 10px;
         }
 
         /* Modal Architecture */
@@ -587,7 +592,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(4, 6, 12, 0.85);
+            background: rgba(4, 6, 12, 0.88);
             backdrop-filter: blur(16px);
             z-index: 1000;
             display: none;
@@ -606,14 +611,14 @@
         .modal-wrapper {
             background: var(--bg-card);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-            padding: 35px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            padding: 30px;
         }
 
         .modal-close {
@@ -639,84 +644,70 @@
             color: white;
         }
 
-        /* Duferco Style Invoice Prospect */
+        /* Invoice Prospect Styles */
         .invoice-header {
             border-bottom: 1px solid var(--border);
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .invoice-title-area h2 {
-            font-size: 24px;
+            font-size: 22px;
             color: var(--text-main);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .invoice-title-area p {
             color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .invoice-badge-duferco {
-            background: linear-gradient(135deg, #0056b3 0%, #002244 100%);
-            padding: 8px 16px;
-            border-radius: 8px;
-            color: white;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-size: 13px;
         }
 
         .metric-banner {
-            background: rgba(99, 91, 255, 0.08);
-            border-left: 4px solid var(--primary-accent);
-            padding: 15px 20px;
-            border-radius: 0 12px 12px 0;
-            margin-bottom: 25px;
+            background: rgba(0, 212, 177, 0.08);
+            border-left: 4px solid var(--secondary);
+            padding: 12px 18px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .metric-banner .value {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--secondary);
         }
 
         .invoice-table-container {
             overflow-x: auto;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .invoice-table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .invoice-table th {
             background: rgba(255, 255, 255, 0.03);
-            padding: 12px 16px;
+            padding: 10px 14px;
             color: var(--text-muted);
             font-weight: 600;
             border-bottom: 1px solid var(--border);
         }
 
         .invoice-table td {
-            padding: 14px 16px;
+            padding: 12px 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .invoice-table tr.total-row {
             background: rgba(0, 212, 177, 0.05);
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .invoice-table tr.total-row td {
@@ -727,34 +718,19 @@
 
         .chart-wrapper {
             position: relative;
-            height: 250px;
-            margin-top: 20px;
+            height: 220px;
+            margin-top: 15px;
         }
 
         /* Footer */
         footer {
             margin-top: auto;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             border-top: 1px solid var(--border);
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: center;
             color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
+            font-size: 13px;
         }
 
         @media (max-width: 768px) {
@@ -767,10 +743,8 @@
 </head>
 <body>
 
-    <div class="ambient-light">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
+    <div class="energy-bg-overlay"></div>
+    <div class="energy-grid"></div>
 
     <header>
         <div class="nav-container">
@@ -779,18 +753,25 @@
                 Confrontiamo!
             </a>
             <ul class="nav-links">
-                <li><a href="#" class="active">Comparatore</a></li>
-                <li><a href="https://www.arera.it/it/consumatori/guida_bolletta.htm" target="_blank" rel="noopener noreferrer">Guida Bolletta</a></li>
-                <li><a href="https://www.ilportaleofferte.it/portaleOfferte/" target="_blank" rel="noopener noreferrer">Osservatorio Prezzi</a></li>
-                <li><a href="https://www.arera.it/it/callcenter.htm" target="_blank" rel="noopener noreferrer">Supporto ARERA</a></li>
-                <li><a href="#blog-section">Notizie & Blog</a></li>
+                <li><a href="#" class="active"><i class="fa-solid fa-chart-simple"></i> Comparatore</a></li>
+                <!-- External Links Verificati e Funzionanti -->
+                <li><a href="https://www.arera.it/it/schede/O/schedag.htm" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-book-open"></i> Guida Bolletta</a></li>
+                <li><a href="https://www.ilportaleofferte.it/portaleOfferte/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-gauge-high"></i> Osservatorio Prezzi</a></li>
+                <li><a href="https://www.arera.it/it/callcenter.htm" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-headset"></i> Supporto ARERA</a></li>
+                <li><a href="#blog-section"><i class="fa-solid fa-newspaper"></i> Blog</a></li>
+                <!-- Pulsante Donazione Paypal -->
+                <li>
+                    <a href="https://www.paypal.com/donate" target="_blank" rel="noopener noreferrer" class="paypal-donate-btn">
+                        <i class="fa-brands fa-paypal"></i> Donazione
+                    </a>
+                </li>
             </ul>
         </div>
     </header>
 
     <main class="hero">
         <h1>Il Confronto Trasparente per la Tua Energia</h1>
-        <p>Analisi quantitativa diretta, scontrino dettagliato e prospetto simulated-bill stile Duferco.</p>
+        <p>Analisi quantitativa diretta e prospetto preventivo dettagliato senza costi nascosti.</p>
         
         <div class="tab-switcher">
             <button class="tab-btn active" id="tab-residenziale" onclick="switchSegment('residenziale')">
@@ -807,8 +788,8 @@
         <div class="upload-card" onclick="document.getElementById('bill-upload-input').click()">
             <i class="fa-solid fa-file-arrow-up upload-icon"></i>
             <div class="upload-title">Carica la tua Bolletta per una Comparazione Rapida</div>
-            <div class="upload-desc">Trascina qui il tuo file PDF o clicca per selezionarlo. Il nostro algoritmo estrarrà automaticamente i consumi reali!</div>
-            <span class="btn-upload-trigger"><i class="fa-solid fa-upload"></i> Seleziona Bolletta (PDF/Image)</span>
+            <div class="upload-desc">Trascina qui il tuo file PDF o la foto della tua bolletta. L'algoritmo rileverà i consumi in automatico!</div>
+            <span class="btn-upload-trigger"><i class="fa-solid fa-upload"></i> Carica Bolletta (PDF/Immagine)</span>
             <input type="file" id="bill-upload-input" class="file-input" accept=".pdf,image/*" onchange="handleFileUpload(event)">
             <div class="upload-status" id="upload-status-text"></div>
         </div>
@@ -843,29 +824,20 @@
         <div class="cards-grid" id="offers-grid">
             <!-- Dynamic Content Injected via JavaScript -->
         </div>
-
-        <!-- Dynamic Load More Section -->
-        <div class="load-more-section" id="load-more-container" style="display: none;">
-            <button class="btn-load-more" onclick="loadMoreOffers()">
-                <i class="fa-solid fa-ellipsis"></i> Carica Altre Offerte (<span id="remaining-count">0</span>)
-            </button>
-        </div>
     </section>
 
     <!-- Sezione Blog e News Energia -->
     <section class="blog-section" id="blog-section">
         <div class="blog-header">
-            <div>
-                <h2>Notizie & Trend Energia</h2>
-                <p>Aggiornamenti settimanali sui mercati, delibere ARERA e strategie di risparmio.</p>
-            </div>
+            <h2><i class="fa-solid fa-newspaper" style="color:var(--secondary);"></i> Notizie & Trend Energia</h2>
+            <p>Aggiornamenti settimanali sui mercati, delibere e consigli di risparmio.</p>
         </div>
         <div class="blog-grid" id="blog-grid">
             <!-- Injected Dynamic Blog Posts -->
         </div>
     </section>
 
-    <!-- Modal Architettura per Scontrino & Preventivo Duferco -->
+    <!-- Modal Architettura per Scontrino & Preventivo -->
     <div class="modal-overlay" id="global-modal">
         <div class="modal-wrapper">
             <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -876,97 +848,80 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 Confrontiamo! - P.IVA 09876543210 - Simulative Analytics Engine integrated with ARERA Data Standard Compliance Framework</p>
+        <p>&copy; 2026 Confrontiamo! - Portale Indipendente di Comparazione Energia</p>
     </footer>
 
     <script>
-        // Database Completo Offerte (Residenziale & Business)
+        // Database Offerte
         const offerDatabase = {
             residenziale: [
-                { id: 1, provider: "EneCorp", name: "Luce Casa Relax", type: "fisso", priceKwh: 0.118, priceSmc: 0.42, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.8 },
-                { id: 2, provider: "EcoPower", name: "Energia Verde Plus", type: "variabile", priceKwh: 0.125, priceSmc: 0.45, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.6 },
-                { id: 3, provider: "NetGas", name: "Flexi Web Casa", type: "variabile", priceKwh: 0.112, priceSmc: 0.40, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.3 },
-                { id: 4, provider: "SicuraEnergia", name: "Luce Sicura Fix", type: "fisso", priceKwh: 0.135, priceSmc: 0.49, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.1 },
-                { id: 5, provider: "OmniaLuce", name: "Zero Pensieri Family", type: "fisso", priceKwh: 0.121, priceSmc: 0.43, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.7 },
-                { id: 6, provider: "GreenLife", name: "Smart Green Dual", type: "variabile", priceKwh: 0.127, priceSmc: 0.46, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.9 },
-                { id: 7, provider: "EneCorp", name: "Casa Eco Dynamic", type: "variabile", priceKwh: 0.109, priceSmc: 0.39, fixedFee: 13.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.4 },
-                { id: 8, provider: "EcoPower", name: "Luce Night & Weekend", type: "fisso", priceKwh: 0.115, priceSmc: 0.41, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.2 },
-                { id: 9, provider: "Voltaic", name: "Volta Direct Home", type: "fisso", priceKwh: 0.123, priceSmc: 0.44, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.0 },
-                { id: 10, provider: "Edison Direct", name: "Luce Leggera", type: "variabile", priceKwh: 0.119, priceSmc: 0.43, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.5 },
-                { id: 11, provider: "A2A Smart", name: "A2A Premium Casa", type: "fisso", priceKwh: 0.130, priceSmc: 0.47, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: true, rating: 4.6 },
-                { id: 12, provider: "Iren Luce", name: "Iren Revolution", type: "variabile", priceKwh: 0.114, priceSmc: 0.41, fixedFee: 11.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, green: false, rating: 4.1 }
+                { id: 1, provider: "EneCorp", name: "Luce Casa Relax", type: "fisso", priceKwh: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                { id: 2, provider: "EcoPower", name: "Energia Verde Plus", type: "variabile", priceKwh: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                { id: 3, provider: "NetGas", name: "Flexi Web Casa", type: "variabile", priceKwh: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                { id: 4, provider: "SicuraEnergia", name: "Luce Sicura Fix", type: "fisso", priceKwh: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                { id: 5, provider: "OmniaLuce", name: "Zero Pensieri Family", type: "fisso", priceKwh: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 },
+                { id: 6, provider: "GreenLife", name: "Smart Green Dual", type: "variabile", priceKwh: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015 }
             ],
             business: [
-                { id: 101, provider: "EneCorp Business", name: "Impresa Power Pro", type: "fisso", priceKwh: 0.142, priceSmc: 0.51, fixedFee: 18.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.9 },
-                { id: 102, provider: "EcoPower Biz", name: "Business Green Flat", type: "fisso", priceKwh: 0.148, priceSmc: 0.54, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.7 },
-                { id: 103, provider: "NetGas Trade", name: "P.IVA Dynamic XL", type: "variabile", priceKwh: 0.135, priceSmc: 0.48, fixedFee: 22.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: false, rating: 4.4 },
-                { id: 104, provider: "SicuraEnergia Biz", name: "Azienda Continua", type: "fisso", priceKwh: 0.155, priceSmc: 0.56, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: false, rating: 4.2 },
-                { id: 105, provider: "OmniaLuce Trade", name: "Retail Flex", type: "variabile", priceKwh: 0.139, priceSmc: 0.50, fixedFee: 20.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.5 },
-                { id: 106, provider: "GreenLife Biz", name: "Corporate Sustainability", type: "fisso", priceKwh: 0.145, priceSmc: 0.52, fixedFee: 16.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.8 },
-                { id: 107, provider: "EneCorp Business", name: "Industry Heavy Direct", type: "variabile", priceKwh: 0.131, priceSmc: 0.47, fixedFee: 25.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.6 },
-                { id: 108, provider: "Enel Biz", name: "Open Energy P.IVA", type: "fisso", priceKwh: 0.150, priceSmc: 0.53, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.3 },
-                { id: 109, provider: "Sorgenia Biz", name: "Next Business Sun", type: "variabile", priceKwh: 0.137, priceSmc: 0.49, fixedFee: 19.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020, green: true, rating: 4.7 }
+                { id: 101, provider: "EneCorp Business", name: "Impresa Power Pro", type: "fisso", priceKwh: 0.142, fixedFee: 18.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                { id: 102, provider: "EcoPower Biz", name: "Business Green Flat", type: "fisso", priceKwh: 0.148, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                { id: 103, provider: "NetGas Trade", name: "P.IVA Dynamic XL", type: "variabile", priceKwh: 0.135, fixedFee: 22.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 },
+                { id: 104, provider: "SicuraEnergia Biz", name: "Azienda Continua", type: "fisso", priceKwh: 0.155, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.020 }
             ]
         };
 
-        // Blog Database Post Settimanali
+        // Blog Database
         const blogPosts = [
             {
-                title: "Andamento PUN Agosto 2026: Cosa Aspettarsi in Autunno",
-                excerpt: "Analisi dell'indice energetico nazionale e consigli su quando conviene passare dal prezzo variabile al prezzo fisso bloccato.",
-                date: "18 Agosto 2026",
+                title: "Andamento PUN 2026: Guida alla Scelta del Prezzo Fisso o Variabile",
+                excerpt: "Analisi completa sui trend dell'energia elettrica e suggerimenti per proteggere la propria bolletta nei prossimi mesi.",
+                date: "Settimana Corrente",
                 category: "Mercati",
                 readTime: "4 min"
             },
             {
-                title: "Oneri di Sistema ARERA: Guida alle Nuove Aliquote",
-                excerpt: "Tutto quello che c'è da sapere sulla rimodulazione della quota A3 e sulle tutele per i clienti vulnerabili.",
-                date: "12 Agosto 2026",
-                category: "Normativa",
-                readTime: "5 min"
-            },
-            {
-                title: "Come Leggere la Bolletta 2.0 Senza Fare Errori",
-                excerpt: "Dai costi di commercializzazione al corrispettivo di stoccaggio: come individuare i margini di risparmio in 3 passaggi.",
-                date: "05 Agosto 2026",
+                title: "Trasparenza in Bolletta: Come Verificare i Costi della Materia Prima",
+                excerpt: "I consigli fondamentali per individuare le voci nascoste e confrontare correttamente le offerte dei fornitori.",
+                date: "Settimana Corrente",
                 category: "Guida Pratica",
                 readTime: "3 min"
+            },
+            {
+                title: "Oneri di Sistema ed Efficienza Energetica",
+                excerpt: "Tutto quello che c'è da sapere sulle componenti di rete e sulle ultime disposizioni dell'autorità di regolazione.",
+                date: "Aggiornato",
+                category: "Normativa",
+                readTime: "5 min"
             }
         ];
 
-        // Configuration State
         let activeSegment = 'residenziale';
-        let visibleItemsCount = 6;
         let processedOffers = [];
         let activeChartInstance = null;
 
-        // Upload Handler Simulation
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (file) {
                 const status = document.getElementById('upload-status-text');
                 status.style.display = 'block';
-                status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Analisi in corso del file ${file.name}... Estrazione consumi kWh...`;
+                status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Elaborazione file ${file.name}... Estrazione dati in corso...`;
                 
                 setTimeout(() => {
-                    const simulatedConsumption = Math.floor(Math.random() * (3500 - 2100 + 1)) + 2100;
+                    const simulatedConsumption = Math.floor(Math.random() * (3400 - 2200 + 1)) + 2200;
                     document.getElementById('filter-consumption').value = simulatedConsumption;
-                    status.innerHTML = `<i class="fa-solid fa-circle-check"></i> Bolletta analizzata con successo! Consumo rilevato: <strong>${simulatedConsumption} kWh/anno</strong>. Offerte aggiornate.`;
+                    status.innerHTML = `<i class="fa-solid fa-circle-check"></i> Bolletta analizzata! Consumo annuo rilevato: <strong>${simulatedConsumption} kWh</strong>. Offerte ricalcolate.`;
                     recalculateEstimates();
-                }, 1500);
+                }, 1400);
             }
         }
 
-        // Switch Business vs Residenziale
         function switchSegment(segment) {
             activeSegment = segment;
-            visibleItemsCount = 6;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`tab-${segment}`).classList.add('active');
             applyFilters();
         }
 
-        // Calculate Monthly Estimate dynamically
         function calculateMonthlyCost(offer, annualKwh) {
             const monthlyKwh = annualKwh / 12;
             const energyCost = (monthlyKwh * offer.priceKwh) + offer.fixedFee;
@@ -976,7 +931,6 @@
             return energyCost + transportCost + systemCost + taxes;
         }
 
-        // Apply Filtering and Sorting Logic
         function applyFilters() {
             const typeFilter = document.getElementById('filter-type').value;
             const sortFilter = document.getElementById('filter-sort').value;
@@ -1008,14 +962,11 @@
             applyFilters();
         }
 
-        // Render UI Cards Grid
         function renderGrid() {
             const grid = document.getElementById('offers-grid');
             grid.innerHTML = '';
 
-            const itemsToDisplay = processedOffers.slice(0, visibleItemsCount);
-
-            itemsToDisplay.forEach(item => {
+            processedOffers.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'offer-card';
                 card.innerHTML = `
@@ -1034,31 +985,21 @@
                             </div>
                             <div class="unit-rates">
                                 <div class="rate-item">Luce: <strong>€${item.priceKwh.toFixed(3)}/kWh</strong></div>
-                                <div class="rate-item">Fisso: <strong>€${item.fixedFee.toFixed(2)}/mo</strong></div>
+                                <div class="rate-item">Fisso: <strong>€${item.fixedFee.toFixed(2)}/mese</strong></div>
                             </div>
                         </div>
                     </div>
                     <div class="card-actions">
                         <button class="btn-breakdown-trigger" onclick="openScontrinoModal(${item.id})">
-                            <i class="fa-solid fa-circle-info"></i> Scontrino Dell'Energia Spiegato Per Ogni Singola Voce
+                            <i class="fa-solid fa-circle-info"></i> Scontrino Energetico Dettagliato
                         </button>
-                        <button class="btn-primary" onclick="openPreventivoDufercoModal(${item.id})">
+                        <button class="btn-primary" onclick="openPreventivoModal(${item.id})">
                             <i class="fa-solid fa-file-invoice-dollar"></i> Vedi Preventivo Dettagliato
                         </button>
                     </div>
                 `;
                 grid.appendChild(card);
             });
-
-            const loadMoreContainer = document.getElementById('load-more-container');
-            const remaining = processedOffers.length - visibleItemsCount;
-
-            if (remaining > 0) {
-                loadMoreContainer.style.display = 'block';
-                document.getElementById('remaining-count').innerText = remaining;
-            } else {
-                loadMoreContainer.style.display = 'none';
-            }
         }
 
         function renderBlog() {
@@ -1082,12 +1023,6 @@
             });
         }
 
-        function loadMoreOffers() {
-            visibleItemsCount += 6;
-            renderGrid();
-        }
-
-        // Modal Execution Functions
         function openScontrinoModal(id) {
             const offer = findOfferById(id);
             const container = document.getElementById('modal-dynamic-content');
@@ -1095,28 +1030,28 @@
             container.innerHTML = `
                 <div style="margin-bottom:20px;">
                     <h2 style="color:var(--text-main); font-size:22px; margin-bottom:8px;">
-                        <i class="fa-solid fa-receipt" style="color:var(--secondary);"></i> Scontrino Dell'Energia Spiegato Per Ogni Singola Voce
+                        <i class="fa-solid fa-receipt" style="color:var(--secondary);"></i> Scontrino dell'Energia
                     </h2>
                     <p style="color:var(--text-muted); font-size:14px;">
-                        Disaggregazione trasparente dei costi di struttura dell'offerta <strong>${offer.name}</strong> erogata da <strong>${offer.provider}</strong>.
+                        Dettaglio analitico dei costi per l'offerta <strong>${offer.name}</strong> (${offer.provider}).
                     </p>
                 </div>
-                <div style="display:grid; gap:15px; margin-bottom:20px;">
-                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
-                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">1. Spesa per la Materia Energia</div>
-                        <div style="color:var(--text-muted); font-size:13px;">Comprende l'acquisto dell'energia elettrica sul mercato all'ingrosso (€${offer.priceKwh.toFixed(3)}/kWh) e le spese di commercializzazione fissa (€${offer.fixedFee.toFixed(2)}/mese).</div>
+                <div style="display:grid; gap:12px; margin-bottom:20px;">
+                    <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
+                        <div style="color:var(--secondary); font-weight:700;">1. Spesa Materia Prima Energia</div>
+                        <div style="color:var(--text-muted); font-size:13px;">€${offer.priceKwh.toFixed(3)}/kWh + Quota fissa di €${offer.fixedFee.toFixed(2)}/mese.</div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
-                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">2. Spesa per il Trasporto e Gestione Contatore</div>
-                        <div style="color:var(--text-muted); font-size:13px;">Costo stabilito per la consegna dell'energia attraverso le reti di trasmissione e distribuzione locale, inclusa la misurazione dei consumi (€${offer.transportRate.toFixed(3)}/kWh).</div>
+                    <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
+                        <div style="color:var(--secondary); font-weight:700;">2. Trasporto e Gestione Contatore</div>
+                        <div style="color:var(--text-muted); font-size:13px;">Tariffa stimata di €${offer.transportRate.toFixed(3)}/kWh.</div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
-                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">3. Spesa per Oneri di Sistema</div>
-                        <div style="color:var(--text-muted); font-size:13px;">Corrispettivi fissati per legge destinati al finanziamento di obiettivi di interesse generale del sistema elettrico nazionale (€${offer.systemRate.toFixed(3)}/kWh).</div>
+                    <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
+                        <div style="color:var(--secondary); font-weight:700;">3. Oneri di Sistema</div>
+                        <div style="color:var(--text-muted); font-size:13px;">Componente fissa di legge pari a €${offer.systemRate.toFixed(3)}/kWh.</div>
                     </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px; border:1px solid var(--border);">
-                        <div style="color:var(--primary-accent); font-weight:700; margin-bottom:4px;">4. Imposte ed Accise Erariali</div>
-                        <div style="color:var(--text-muted); font-size:13px;">Imposta erariale sul consumo e IVA applicata all'imponibile complessivo della fornitura (€${offer.taxRate.toFixed(3)}/kWh).</div>
+                    <div style="background:rgba(255,255,255,0.03); padding:12px 16px; border-radius:10px; border:1px solid var(--border);">
+                        <div style="color:var(--secondary); font-weight:700;">4. Imposte ed Accise</div>
+                        <div style="color:var(--text-muted); font-size:13px;">Quota fiscale calcolata su base consumi a €${offer.taxRate.toFixed(3)}/kWh.</div>
                     </div>
                 </div>
             `;
@@ -1124,7 +1059,8 @@
             document.getElementById('global-modal').classList.add('active');
         }
 
-        function openPreventivoDufercoModal(id) {
+        // Preventivo Dettagliato (Senza la dicitura Duferco)
+        function openPreventivoModal(id) {
             const offer = findOfferById(id);
             const annualKwh = parseFloat(document.getElementById('filter-consumption').value) || 2700;
             const monthlyKwh = annualKwh / 12;
@@ -1142,19 +1078,18 @@
                 <div class="invoice-header">
                     <div class="invoice-title-area">
                         <h2>Prospetto Analitico Preventivo</h2>
-                        <p>Simulazione Fatturazione stile Bolletta Duferco | Fornitore: <strong>${offer.provider}</strong></p>
+                        <p>Fornitore: <strong>${offer.provider}</strong> | Offerta: <strong>${offer.name}</strong></p>
                     </div>
-                    <span class="invoice-badge-duferco">Duferco-Standard Layout</span>
                 </div>
 
                 <div class="metric-banner">
                     <div>
-                        <div style="font-size:12px; color:var(--text-muted); font-weight:600;">PREZZO MEDIO PONDERATO KWH</div>
+                        <div style="font-size:11px; color:var(--text-muted); font-weight:600;">PREZZO MEDIO KWH</div>
                         <div class="value">€${weightedAveragePrice.toFixed(4)} / kWh</div>
                     </div>
                     <div style="text-align:right;">
-                        <div style="font-size:12px; color:var(--text-muted); font-weight:600;">CONSUMO MENSILE STIMATO</div>
-                        <div style="font-size:18px; font-weight:700; color:white;">${monthlyKwh.toFixed(0)} kWh</div>
+                        <div style="font-size:11px; color:var(--text-muted); font-weight:600;">STIMA CONSUMO MENSILE</div>
+                        <div style="font-size:16px; font-weight:700; color:white;">${monthlyKwh.toFixed(0)} kWh</div>
                     </div>
                 </div>
 
@@ -1163,14 +1098,14 @@
                         <thead>
                             <tr>
                                 <th>Voce di Spesa</th>
-                                <th>Parametro Applicato</th>
+                                <th>Calcolo Applicato</th>
                                 <th>Totale Mensile (€)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Spesa Materia Energia</td>
-                                <td>(${monthlyKwh.toFixed(0)} kWh × €${offer.priceKwh.toFixed(3)}) + €${offer.fixedFee.toFixed(2)} quota fissa</td>
+                                <td>(${monthlyKwh.toFixed(0)} kWh × €${offer.priceKwh.toFixed(3)}) + €${offer.fixedFee.toFixed(2)} fisso</td>
                                 <td>€${costMateriaVal.toFixed(2)}</td>
                             </tr>
                             <tr>
@@ -1189,14 +1124,14 @@
                                 <td>€${costTaxesVal.toFixed(2)}</td>
                             </tr>
                             <tr class="total-row">
-                                <td colspan="2">TOTALE STIMATO BOLLETTA (IVA Incl.)</td>
+                                <td colspan="2">STIMA TOTALE BOLLETTA MENSILE</td>
                                 <td>€${totalBill.toFixed(2)}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <h3 style="font-size:16px; margin-top:20px; color:var(--text-main);">Ripartizione Percentuale Costi</h3>
+                <h3 style="font-size:15px; margin-top:15px; color:var(--text-main);">Ripartizione Costi</h3>
                 <div class="chart-wrapper">
                     <canvas id="costBreakdownChart"></canvas>
                 </div>
@@ -1247,7 +1182,6 @@
             }
         };
 
-        // Initialize Engine
         applyFilters();
         renderBlog();
     </script>
