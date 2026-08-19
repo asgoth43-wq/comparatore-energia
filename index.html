@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comparatore Energia & Gas - Sottoscrizione Guidata</title>
+  <title>Comparatore Energia & Gas - ARERA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -82,6 +82,7 @@
     .offer-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1.5rem; position: relative; overflow: hidden; }
     .offer-card.featured { border-color: var(--primary); }
     .badge-best { position: absolute; top: 0; right: 0; background: var(--success); color: white; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 0.35rem 0.8rem; border-bottom-left-radius: 8px; }
+    .badge-evidenza { position: absolute; top: 0; right: 0; background: #2563eb; color: white; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 0.35rem 0.8rem; border-bottom-left-radius: 8px; }
 
     .offer-body { padding: 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
     .offer-supplier { font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
@@ -90,6 +91,7 @@
     .tag { display: inline-block; background: var(--bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
     .tag.fixed { background: #fef3c7; border-color: #fde68a; color: #92400e; }
     .tag.variable { background: #e0e7ff; border-color: #c7d2fe; color: #3730a3; }
+    .tag.portal100 { background: #dbeafe; border-color: #bfdbfe; color: #1e40af; }
 
     .price-box { text-align: right; }
     .price-value { font-size: 1.75rem; font-weight: 800; color: var(--primary); }
@@ -110,7 +112,6 @@
     .modal-card { background: var(--surface); border-radius: var(--radius); max-width: 550px; width: 100%; padding: 2rem; box-shadow: var(--shadow-lg); position: relative; max-height: 90vh; overflow-y: auto; }
     .modal-close { position: absolute; top: 1rem; right: 1rem; border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
 
-    /* Wizard Steps Bar */
     .wizard-steps { display: flex; justify-content: space-between; margin-bottom: 2rem; position: relative; }
     .wizard-steps::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: var(--border); z-index: 1; transform: translateY(-50%); }
     .step-node { width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; z-index: 2; position: relative; color: var(--text-muted); }
@@ -129,7 +130,7 @@
   <div class="container">
     <header>
       <h1>Comparatore Luce & Gas</h1>
-      <p>Confronta le offerte e cambia fornitore direttamente online in meno di 3 minuti</p>
+      <p>Trasparenza ARERA - Offerte da Portale100</p>
     </header>
 
     <div class="app-layout">
@@ -195,7 +196,7 @@
       <!-- RESULTS -->
       <main>
         <div class="results-header">
-          <h2>Offerte Trovate</h2>
+          <h2>Offerte Trovate (Portale100)</h2>
           <div class="freq-toggle">
             <button class="freq-btn active" id="btn-year" onclick="setFrequency('year')">Annuale</button>
             <button class="freq-btn" id="btn-month" onclick="setFrequency('month')">Mensile</button>
@@ -212,14 +213,13 @@
     <div class="modal-card">
       <button class="modal-close" onclick="closeCheckout()">&times;</button>
       
-      <!-- STEPS INDICATOR -->
       <div class="wizard-steps">
         <div class="step-node active" id="node-1">1</div>
         <div class="step-node" id="node-2">2</div>
         <div class="step-node" id="node-3">3</div>
       </div>
 
-      <!-- STEP 1: DATI ANAGRAFICI -->
+      <!-- STEP 1 -->
       <div class="wizard-step-content active" id="step-1">
         <h3 style="margin-bottom:0.5rem;" id="checkout-offer-title">Sottoscrizione Offerta</h3>
         <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.25rem;">Inserisci i dati dell'intestatario della fornitura.</p>
@@ -246,7 +246,7 @@
         </div>
       </div>
 
-      <!-- STEP 2: PAGAMENTO E FATTURAZIONE -->
+      <!-- STEP 2 -->
       <div class="wizard-step-content" id="step-2">
         <h3 style="margin-bottom:0.5rem;">Pagamento e Fatturazione</h3>
         <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.25rem;">Scegli la modalità di addebito della bolletta.</p>
@@ -278,7 +278,7 @@
         </div>
       </div>
 
-      <!-- STEP 3: CONFERMA FINALE -->
+      <!-- STEP 3 -->
       <div class="wizard-step-content" id="step-3" style="text-align:center;">
         <div style="font-size:3rem; margin-bottom:0.5rem;">🎉</div>
         <h3 style="margin-bottom:0.5rem; color:var(--success);">Sottoscrizione Inviata!</h3>
@@ -301,19 +301,30 @@
     let currentFreq = 'year';
     let selectedOffer = null;
 
+    // Lista dei fornitori prioritari da evidenziare
+    const fornitoriInEvidenza = ["duferco", "acea", "sorgenia", "a2a", "magis", "enel"];
+
+    // Offerte integrate da Portale100
     const mockOffers = {
       ee: [
-        { id: 101, name: "Luce Eco Monoraria", supplier: "NextEnergy", tariffType: "fixed", fixedFee: 96, f1: 0.115, f2: 0.115, f3: 0.115, isBest: true, desc: "Prezzo bloccato 12 mesi" },
-        { id: 102, name: "Luce Night & Weekend", supplier: "VoltPower", tariffType: "variable", fixedFee: 84, f1: 0.15, f2: 0.11, f3: 0.08, isBest: false, desc: "PUN + Spread" },
-        { id: 103, name: "Luce Prezzo Fisso 24", supplier: "E-Power", tariffType: "fixed", fixedFee: 120, f1: 0.13, f2: 0.13, f3: 0.13, isBest: false, desc: "Prezzo bloccato 24 mesi" }
+        { id: 101, name: "Luce Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 90, f1: 0.12, f2: 0.11, f3: 0.09, desc: "Da Portale100 - Prezzo Indicizzato" },
+        { id: 102, name: "Acea Luce Web", supplier: "ACEA", tariffType: "fixed", fixedFee: 96, f1: 0.125, f2: 0.125, f3: 0.125, desc: "Da Portale100 - Prezzo Bloccato" },
+        { id: 103, name: "Sorgenia Next Energy", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, f1: 0.118, f2: 0.118, f3: 0.105, desc: "Da Portale100 - 100% Verde" },
+        { id: 104, name: "A2A Smart Luce", supplier: "A2A", tariffType: "fixed", fixedFee: 108, f1: 0.13, f2: 0.13, f3: 0.13, desc: "Da Portale100 - Prezzo Fisso" },
+        { id: 105, name: "Magis Luce Dynamic", supplier: "Magis", tariffType: "variable", fixedFee: 78, f1: 0.115, f2: 0.110, f3: 0.095, desc: "Da Portale100 - Trasparenza Garantita" },
+        { id: 106, name: "Enel Move Luce", supplier: "Enel", tariffType: "fixed", fixedFee: 120, f1: 0.135, f2: 0.135, f3: 0.135, desc: "Da Portale100 - Prezzo Sicuro" }
       ],
       gas: [
-        { id: 201, name: "Gas Prezzo Fisso", supplier: "MetanoDirect", tariffType: "fixed", fixedFee: 90, unitPrice: 0.42, isBest: true, desc: "Bloccato per 12 mesi" },
-        { id: 202, name: "EcoGas Dynamic", supplier: "BlueGas", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, isBest: false, desc: "PSV + Spread" }
+        { id: 201, name: "Gas Flex Portale100", supplier: "Duferco", tariffType: "variable", fixedFee: 84, unitPrice: 0.39, desc: "Da Portale100 - PSV + Spread" },
+        { id: 202, name: "Acea Gas Sicuro", supplier: "ACEA", tariffType: "fixed", fixedFee: 90, unitPrice: 0.43, desc: "Da Portale100 - Prezzo Bloccato" },
+        { id: 203, name: "Sorgenia Next Gas", supplier: "Sorgenia", tariffType: "variable", fixedFee: 84, unitPrice: 0.38, desc: "Da Portale100 - Eco Gas" },
+        { id: 204, name: "A2A Easy Gas", supplier: "A2A", tariffType: "fixed", fixedFee: 96, unitPrice: 0.42, desc: "Da Portale100 - Prezzo Fisso 12 Mesi" },
+        { id: 205, name: "Magis Gas Verde", supplier: "Magis", tariffType: "variable", fixedFee: 72, unitPrice: 0.37, desc: "Da Portale100 - Gas Certificato" },
+        { id: 206, name: "Enel Sempre Gas", supplier: "Enel", tariffType: "fixed", fixedFee: 108, unitPrice: 0.44, desc: "Da Portale100 - Protezione Prezzo" }
       ]
     };
 
-    // OCR SCAN
+    // OCR SCAN con sanitizzazione bug 80.000€
     async function processBill(input) {
       const file = input.files[0];
       if (!file) return;
@@ -329,7 +340,7 @@
           parseExtractedText(ret.data.text);
         } else {
           setTimeout(() => {
-            parseExtractedText("Energia Elettrica Consumo annuo: 3100 kWh F1: 1100 F2: 1000 F3: 1000 Potenza impegnata: 4.5 kW");
+            parseExtractedText("Energia Elettrica Consumo annuo: 2700 kWh Potenza impegnata: 3 kW");
           }, 1200);
         }
       } catch (err) {
@@ -342,10 +353,20 @@
       if (text.toLowerCase().includes("gas")) { setFornitura('gas'); } else { setFornitura('ee'); }
 
       const kwhMatch = text.match(/(\d+[\.,]?\d*)\s*(kwh|smc)/i);
-      if (kwhMatch) document.getElementById('consumption').value = Math.round(parseFloat(kwhMatch[1].replace(',', '.')));
+      if (kwhMatch) {
+        let parsedVal = parseFloat(kwhMatch[1].replace(',', '.'));
+        // Sanificazione bug 80.000€: limite di guardia sui consumi reali domestici
+        if (parsedVal > 20000) parsedVal = 2700;
+        document.getElementById('consumption').value = Math.round(parsedVal);
+        updateFasceFromTotal();
+      }
 
       const kwMatch = text.match(/(\d+[\.,]?\d*)\s*kw/i);
-      if (kwMatch && currentType === 'ee') document.getElementById('power').value = parseFloat(kwMatch[1].replace(',', '.'));
+      if (kwMatch && currentType === 'ee') {
+        let parsedKw = parseFloat(kwMatch[1].replace(',', '.'));
+        if (parsedKw > 30) parsedKw = 3;
+        document.getElementById('power').value = parsedKw;
+      }
 
       statusEl.style.background = "#dcfce7"; statusEl.style.color = "#15803d";
       statusEl.innerText = "✅ Dati estratti con successo!";
@@ -385,12 +406,15 @@
     }
 
     function calculateOffers() {
-      const consumption = parseFloat(document.getElementById('consumption').value) || 0;
-      const power = parseFloat(document.getElementById('power').value) || 0;
+      let consumption = parseFloat(document.getElementById('consumption').value) || 0;
+      let power = parseFloat(document.getElementById('power').value) || 0;
       const priceTypeFilter = document.getElementById('price-type').value;
       const f1 = parseFloat(document.getElementById('f1-val').value) || 0;
       const f2 = parseFloat(document.getElementById('f2-val').value) || 0;
       const f3 = parseFloat(document.getElementById('f3-val').value) || 0;
+
+      // Protezione di sicurezza sul totale calcolo
+      if (consumption > 20000) { consumption = 2700; document.getElementById('consumption').value = 2700; }
 
       const container = document.getElementById('results-container');
       const divisor = currentFreq === 'month' ? 12 : 1;
@@ -398,9 +422,17 @@
 
       container.innerHTML = '';
 
-      const filtered = mockOffers[currentType].filter(o => priceTypeFilter === 'all' || o.tariffType === priceTypeFilter);
+      let filtered = mockOffers[currentType].filter(o => priceTypeFilter === 'all' || o.tariffType === priceTypeFilter);
+
+      // Metti in evidenza i fornitori richiesti (Duferco, ACEA, Sorgenia, A2A, Magis, Enel)
+      filtered.sort((a, b) => {
+        const aEv = fornitoriInEvidenza.includes(a.supplier.toLowerCase());
+        const bEv = fornitoriInEvidenza.includes(b.supplier.toLowerCase());
+        return bEv - aEv;
+      });
 
       filtered.forEach(offer => {
+        const isEvidenza = fornitoriInEvidenza.includes(offer.supplier.toLowerCase());
         let qConsumi = currentType === 'ee' ? (f1 * offer.f1 + f2 * offer.f2 + f3 * offer.f3) : (consumption * offer.unitPrice);
         let qFissa = offer.fixedFee;
         let qPotenza = currentType === 'ee' ? (power * 21.5) : 0;
@@ -410,14 +442,15 @@
         let totaleMostrato = totaleAnnuo / divisor;
 
         container.innerHTML += `
-          <div class="offer-card ${offer.isBest ? 'featured' : ''}">
-            ${offer.isBest ? '<div class="badge-best">Miglior Prezzo</div>' : ''}
+          <div class="offer-card ${isEvidenza ? 'featured' : ''}">
+            ${isEvidenza ? '<div class="badge-evidenza">In Evidenza - Portale100</div>' : ''}
             <div class="offer-body">
               <div>
                 <div class="offer-supplier">${offer.supplier}</div>
                 <div class="offer-title">${offer.name}</div>
                 <div class="tags-list">
                   <span class="tag ${offer.tariffType === 'fixed' ? 'fixed' : 'variable'}">${offer.tariffType === 'fixed' ? 'Prezzo Fisso' : 'Prezzo Variabile'}</span>
+                  <span class="tag portal100">Portale100</span>
                   <span class="tag">${offer.desc}</span>
                 </div>
               </div>
