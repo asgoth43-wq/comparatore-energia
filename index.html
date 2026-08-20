@@ -810,6 +810,324 @@
             header { padding: 15px 20px; }
             .nav-links { gap: 15px; }
         }
+
+        /* ===== FEATURE STRIP ===== */
+        .feature-strip {
+            max-width: 1200px;
+            margin: 0 auto 35px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .feature-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .feature-item i {
+            font-size: 20px;
+            color: var(--secondary);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 177, 0.1);
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .feature-item .feature-text strong {
+            display: block;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .feature-item .feature-text span {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ===== ANIMAZIONI REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== CHECKBOX CONFRONTA ===== */
+        .compare-checkbox-wrap {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .compare-checkbox-wrap input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .compare-checkbox-wrap label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .offer-card { padding-top: 44px; }
+
+        /* ===== BADGE MIGLIOR PREZZO ===== */
+        .badge-best {
+            position: absolute;
+            top: -12px;
+            left: 16px;
+            background: linear-gradient(135deg, var(--warning) 0%, #ff8a00 100%);
+            color: var(--bg-dark);
+            font-size: 10px;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(255, 171, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 2;
+        }
+
+        .offer-card.is-best {
+            border-color: var(--warning);
+            box-shadow: 0 0 0 1px var(--warning), 0 10px 25px rgba(255, 171, 0, 0.12);
+        }
+
+        /* ===== BADGE RISPARMIO ===== */
+        .savings-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        .savings-badge.positive {
+            background: rgba(0, 212, 177, 0.12);
+            color: var(--secondary);
+        }
+
+        .savings-badge.negative {
+            background: rgba(255, 82, 82, 0.12);
+            color: var(--danger);
+        }
+
+        /* ===== TRAY DI CONFRONTO ===== */
+        .compare-tray {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--glass-border);
+            padding: 14px 20px;
+            z-index: 200;
+            transform: translateY(120%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
+        }
+
+        .compare-tray.active {
+            transform: translateY(0);
+        }
+
+        .compare-tray-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .compare-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .compare-chip {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 6px 10px 6px 14px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
+        .compare-chip button {
+            background: rgba(255,82,82,0.15);
+            color: var(--danger);
+            border: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-compare-now {
+            background: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .btn-compare-now:hover {
+            box-shadow: var(--neon-glow);
+        }
+
+        .btn-compare-now:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .compare-table-wrapper { overflow-x: auto; }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            min-width: 500px;
+        }
+
+        .compare-table th, .compare-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
+        }
+
+        .compare-table th:first-child, .compare-table td:first-child {
+            color: var(--text-muted);
+            font-weight: 600;
+            width: 160px;
+        }
+
+        .compare-table th {
+            color: var(--secondary);
+            font-size: 13px;
+        }
+
+        .compare-table tr.highlight-row td {
+            color: var(--secondary);
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        /* ===== BLOG NOTIZIE REALI ===== */
+        .blog-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .blog-card-link {
+            text-decoration: none;
+            display: block;
+        }
+
+        .blog-source-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .blog-source {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .blog-read-link {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .blog-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 177, 0.1);
+        }
+
+        /* ===== RICERCA FORNITORE ===== */
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-wrap i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .search-wrap input {
+            padding-left: 32px;
+        }
     </style>
 </head>
 <body>
@@ -889,6 +1207,38 @@
         </div>
     </main>
 
+    <!-- Feature Strip -->
+    <section class="feature-strip">
+        <div class="feature-item">
+            <i class="fa-solid fa-bolt"></i>
+            <div class="feature-text">
+                <strong>Calcolo in Tempo Reale</strong>
+                <span>Stima aggiornata mentre confronti</span>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <div class="feature-text">
+                <strong>Confronto Fino a 3 Offerte</strong>
+                <span>Metti a confronto lato a lato</span>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-piggy-bank"></i>
+            <div class="feature-text">
+                <strong>Calcolatore di Risparmio</strong>
+                <span>Vedi quanto puoi risparmiare</span>
+            </div>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-file-invoice"></i>
+            <div class="feature-text">
+                <strong>Lettura Automatica Bolletta</strong>
+                <span>Carica il PDF e confronta subito</span>
+            </div>
+        </div>
+    </section>
+
     <!-- Upload Bolletta Card -->
     <section class="upload-section">
         <div class="upload-card" onclick="document.getElementById('bill-upload-input').click()">
@@ -924,6 +1274,17 @@
                 <label id="consumption-label"><i class="fa-solid fa-plug"></i> Consumo Annuo Stimato (kWh)</label>
                 <input type="number" class="filter-control" id="filter-consumption" value="2700" oninput="recalculateEstimates()">
             </div>
+            <div class="filter-group">
+                <label><i class="fa-solid fa-piggy-bank"></i> La Tua Spesa Mensile Attuale (€, opzionale)</label>
+                <input type="number" class="filter-control" id="filter-current-spend" placeholder="Es. 95" oninput="recalculateEstimates()">
+            </div>
+            <div class="filter-group">
+                <label><i class="fa-solid fa-magnifying-glass"></i> Cerca Fornitore</label>
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="filter-control" id="filter-search" placeholder="Es. Enel, Sorgenia..." oninput="applyFilters()">
+                </div>
+            </div>
         </div>
 
         <!-- Griglia Schede Comparazione -->
@@ -940,15 +1301,26 @@
     <section class="blog-section" id="blog-section">
         <div class="blog-header">
             <h2><i class="fa-solid fa-newspaper" style="color:var(--secondary);"></i> Notizie & Trend Energia</h2>
+            <div class="blog-subtitle">Una selezione di articoli dalle principali testate italiane sul mercato dell'energia. Cliccando si apre l'articolo originale sul sito della fonte.</div>
         </div>
         <div class="blog-grid" id="blog-grid"></div>
     </section>
 
-    <!-- Modal per Scontrino, Preventivo & Blog -->
+    <!-- Modal per Scontrino, Preventivo & Confronto -->
     <div class="modal-overlay" id="global-modal">
         <div class="modal-wrapper">
             <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             <div id="modal-dynamic-content"></div>
+        </div>
+    </div>
+
+    <!-- Tray Confronto Offerte -->
+    <div class="compare-tray" id="compare-tray">
+        <div class="compare-tray-inner">
+            <div class="compare-chips" id="compare-chips"></div>
+            <button class="btn-compare-now" id="btn-compare-now" onclick="openCompareModal()">
+                <i class="fa-solid fa-scale-balanced"></i> Confronta Ora
+            </button>
         </div>
     </div>
 
@@ -997,31 +1369,52 @@
 
         const blogPosts = [
             {
-                title: "Andamento PUN & PSV: Guida al Mercato Energia",
-                excerpt: "Analisi completa sui trend dei prezzi all'ingrosso dell'energia elettrica e del gas in Italia.",
-                date: "Ultimo aggiornamento",
+                title: "Il prezzo dell'elettricità ai massimi da tre anni",
+                excerpt: "L'elettricità all'ingrosso italiana tocca il livello più alto dal 2022-2023, con l'Italia che paga tariffe superiori alla media europea.",
                 tag: "Mercato",
-                content: `<p>Il PUN (Prezzo Unico Nazionale) e il PSV (Punto di Scambio Virtuale) sono i due indici di riferimento del mercato all'ingrosso rispettivamente di elettricità e gas in Italia. Il loro andamento influenza direttamente le offerte a prezzo indicizzato proposte dai fornitori del mercato libero.</p>
-                <p>Quando questi indici salgono, le bollette delle offerte variabili aumentano nel mese successivo; quando scendono, il beneficio si riflette rapidamente sui consumatori che hanno scelto una tariffa indicizzata. Le offerte a prezzo fisso, invece, restano invariate per tutta la durata del contratto, offrendo maggiore prevedibilità ma meno flessibilità verso i ribassi di mercato.</p>
-                <p>Per scegliere tra fisso e variabile conviene valutare la propria tolleranza al rischio, l'andamento stagionale dei consumi e il contesto geopolitico che può incidere sui prezzi dell'energia nei mesi invernali.</p>`
+                source: "Today.it",
+                date: "Agosto 2026",
+                url: "https://www.today.it/dossier/economia/energia-prezzo-record-agosto-2026.html"
             },
             {
-                title: "Come Leggere la Bolletta dell'Energia senza Errori",
-                excerpt: "Scopri quali sono le voci nascoste e come calcolare la quota energia effettiva.",
-                date: "Guida Pratica",
-                tag: "Guida",
-                content: `<p>Ogni bolletta luce o gas si compone di quattro macro-voci: la spesa per la materia energia (quella su cui si concentra la concorrenza tra fornitori), il trasporto e gestione del contatore, gli oneri di sistema stabiliti da ARERA e le imposte.</p>
-                <p>Molti consumatori confrontano le offerte guardando solo il prezzo al kWh o al Smc, ma la quota fissa mensile di commercializzazione incide in modo significativo sul totale, specialmente per chi consuma poco. Per un confronto corretto è necessario sommare tutte le voci su base annua.</p>
-                <p>Usa il nostro comparatore per vedere il prospetto dettagliato di ogni offerta e capire esattamente cosa stai pagando ogni mese.</p>`
+                title: "Stangata estiva 2026: Arera alza il gas, elettricità ai massimi",
+                excerpt: "Approfondimento sui rincari estivi in bolletta e sui fattori che spingono al rialzo il costo di luce e gas per le famiglie italiane.",
+                tag: "Approfondimento",
+                source: "Capitalist.it",
+                date: "Agosto 2026",
+                url: "https://capitalist.it/bollette-gas-luce-stangata-estiva-2026-arera-record/"
             },
             {
-                title: "Passaggio al Mercato Libero: Consigli Pratici",
-                excerpt: "I passi fondamentali per scegliere la migliore offerta senza interruzioni di servizio.",
-                date: "Consigli Utili",
-                tag: "Consigli",
-                content: `<p>Passare al mercato libero, o cambiare fornitore all'interno del mercato libero, non comporta alcuna interruzione della fornitura: il servizio tecnico resta sempre gestito dal distributore locale, indipendentemente dal fornitore scelto.</p>
-                <p>Prima di sottoscrivere una nuova offerta, tieni a portata i dati dell'ultima bolletta: codice POD (per la luce) o PDR (per il gas), consumi annui e potenza impegnata. Questi dati permettono di ottenere una stima accurata della spesa con il nuovo fornitore.</p>
-                <p>Ricorda infine che puoi cambiare fornitore in qualsiasi momento sul mercato libero, senza costi di recesso, salvo eventuali penali specifiche indicate nel contratto per le offerte a prezzo bloccato.</p>`
+                title: "Quanto pesa il gas sull'aumento delle bollette elettriche",
+                excerpt: "Un'analisi tecnica di come il prezzo del gas continui a trainare il costo dell'elettricità in Italia rispetto al resto d'Europa.",
+                tag: "Analisi",
+                source: "QualEnergia.it",
+                date: "2026",
+                url: "https://www.qualenergia.it/articoli/quanto-pesa-gas-aumento-bollette-elettriche-italiane/"
+            },
+            {
+                title: "Elettricità a +8,1% per i clienti vulnerabili nel secondo trimestre",
+                excerpt: "Il quadro degli aggiornamenti tariffari per gli utenti in Maggior Tutela e l'impatto sulla spesa annua delle famiglie.",
+                tag: "Tariffe",
+                source: "Il Sole 24 Ore",
+                date: "2026",
+                url: "https://www.ilsole24ore.com/art/bollette-elettricita-81percento-i-clienti-vulnerabili-secondo-trimestre-AIphzdFC"
+            },
+            {
+                title: "Bollette luce e gas, la maxi stangata di settembre",
+                excerpt: "Le stime di Nomisma Energia sull'impatto dei rincari al rientro dalle vacanze, tra famiglie e imprese.",
+                tag: "Mercato",
+                source: "Collettiva.it",
+                date: "Agosto 2026",
+                url: "https://www.collettiva.it/copertine/italia/luce-gas-bollette-rincari-nu7oujyu"
+            },
+            {
+                title: "Offerte luce e gas di agosto: sconti fino a 52€",
+                excerpt: "Una rassegna delle promozioni dual fuel del mese, tra sconti di benvenuto e prezzi bloccati per tagliare la bolletta.",
+                tag: "Offerte",
+                source: "Facile.it",
+                date: "Agosto 2026",
+                url: "https://www.facile.it/energia-luce-gas/news/offerte-luce-gas-agosto-2026.html"
             }
         ];
 
@@ -1029,11 +1422,28 @@
         let currentService = 'luce';
         let visibleCount = 6;
         let activeChart = null;
+        let compareList = [];
 
         document.addEventListener("DOMContentLoaded", () => {
             renderOffers();
             renderBlog();
+            setupScrollReveal();
         });
+
+        function setupScrollReveal() {
+            if (!('IntersectionObserver' in window)) return;
+            if (window._revealObserver) window._revealObserver.disconnect();
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            window._revealObserver = observer;
+            document.querySelectorAll('.reveal:not(.in-view)').forEach(el => observer.observe(el));
+        }
 
         function switchSegment(segment) {
             currentSegment = segment;
@@ -1069,9 +1479,14 @@
             const typeFilter = document.getElementById('filter-type').value;
             const sortFilter = document.getElementById('filter-sort').value;
             const consumption = parseFloat(document.getElementById('filter-consumption').value) || 0;
+            const searchTerm = (document.getElementById('filter-search').value || '').trim().toLowerCase();
 
             if (typeFilter !== 'all') {
                 list = list.filter(item => item.type === typeFilter);
+            }
+
+            if (searchTerm) {
+                list = list.filter(item => item.provider.toLowerCase().includes(searchTerm) || item.name.toLowerCase().includes(searchTerm));
             }
 
             list.forEach(item => {
@@ -1082,6 +1497,11 @@
                 const annualFixed = item.fixedFee * 12;
                 item.computedMonthly = (annualEnergy + annualTransport + annualSystem + annualTax + annualFixed) / 12;
             });
+
+            if (list.length > 0) {
+                const cheapest = list.reduce((min, item) => item.computedMonthly < min.computedMonthly ? item : min, list[0]);
+                list.forEach(item => item.isBest = (item.id === cheapest.id));
+            }
 
             if (sortFilter === 'price-asc') {
                 list.sort((a, b) => a.computedMonthly - b.computedMonthly);
@@ -1099,10 +1519,30 @@
             const offers = getFilteredOffers();
             const visibleOffers = offers.slice(0, visibleCount);
             const unitLabel = currentService === 'luce' ? '€/kWh' : '€/Smc';
+            const currentSpend = parseFloat(document.getElementById('filter-current-spend').value) || 0;
 
-            grid.innerHTML = visibleOffers.map(offer => `
-                <div class="offer-card">
+            grid.innerHTML = visibleOffers.map(offer => {
+                let savingsHtml = '';
+                if (currentSpend > 0) {
+                    const diffMonthly = currentSpend - offer.computedMonthly;
+                    const diffAnnual = diffMonthly * 12;
+                    if (diffMonthly >= 0) {
+                        savingsHtml = `<div class="savings-badge positive"><i class="fa-solid fa-arrow-trend-down"></i> Risparmi ~€${diffAnnual.toFixed(0)}/anno</div>`;
+                    } else {
+                        savingsHtml = `<div class="savings-badge negative"><i class="fa-solid fa-arrow-trend-up"></i> Costa ~€${Math.abs(diffAnnual).toFixed(0)}/anno in più</div>`;
+                    }
+                }
+
+                const isChecked = compareList.includes(offer.id);
+
+                return `
+                <div class="offer-card reveal ${offer.isBest ? 'is-best' : ''}">
+                    ${offer.isBest ? '<span class="badge-best"><i class="fa-solid fa-crown"></i> Più Conveniente</span>' : ''}
                     <span class="card-badge">${offer.type === 'fisso' ? 'Prezzo Fisso' : 'Indicizzato'}</span>
+                    <div class="compare-checkbox-wrap">
+                        <input type="checkbox" id="cmp-${offer.id}" ${isChecked ? 'checked' : ''} onchange="toggleCompare(${offer.id})">
+                        <label for="cmp-${offer.id}">Confronta</label>
+                    </div>
                     <div>
                         <div class="provider-info">
                             <div class="provider-icon"><i class="fa-solid ${currentService === 'luce' ? 'fa-bolt' : 'fa-fire'}"></i></div>
@@ -1117,6 +1557,7 @@
                                 <div class="rate-item">Costo materia: <strong>€${offer.priceUnit.toFixed(3)} ${unitLabel}</strong></div>
                                 <div class="rate-item">Quota fissa: <strong>€${offer.fixedFee.toFixed(2)}/mese</strong></div>
                             </div>
+                            ${savingsHtml}
                         </div>
                     </div>
                     <div class="card-actions">
@@ -1128,7 +1569,8 @@
                         </a>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             const loadMoreBtn = document.getElementById('load-more-container');
             if (visibleCount >= offers.length) {
@@ -1136,6 +1578,8 @@
             } else {
                 loadMoreBtn.style.display = 'block';
             }
+
+            setupScrollReveal();
         }
 
         function loadMoreOffers() {
@@ -1346,48 +1790,146 @@
             }, 100);
         }
 
-        function openBlogModal(index) {
-            const post = blogPosts[index];
-            if (!post) return;
-
-            const modal = document.getElementById('global-modal');
-            const container = document.getElementById('modal-dynamic-content');
-
-            container.innerHTML = `
-                <div class="invoice-header">
-                    <div class="invoice-title-area">
-                        <div class="blog-tag">${post.tag}</div>
-                        <h2>${post.title}</h2>
-                        <p>${post.date}</p>
-                    </div>
-                </div>
-                <div class="blog-article-body">
-                    ${post.content}
-                </div>
-            `;
-
-            modal.classList.add('active');
-        }
-
         function closeModal() {
             document.getElementById('global-modal').classList.remove('active');
         }
 
         function renderBlog() {
             const grid = document.getElementById('blog-grid');
-            grid.innerHTML = blogPosts.map((post, index) => `
-                <div class="blog-card">
-                    <div>
-                        <div class="blog-tag">${post.tag}</div>
-                        <div class="blog-title">${post.title}</div>
-                        <div class="blog-excerpt">${post.excerpt}</div>
+            grid.innerHTML = blogPosts.map((post) => `
+                <a class="blog-card-link" href="${post.url}" target="_blank" rel="noopener noreferrer">
+                    <div class="blog-card reveal">
+                        <div>
+                            <div class="blog-tag">${post.tag}</div>
+                            <div class="blog-title">${post.title}</div>
+                            <div class="blog-excerpt">${post.excerpt}</div>
+                        </div>
+                        <div class="blog-source-row">
+                            <span class="blog-source"><i class="fa-regular fa-calendar"></i> ${post.source} · ${post.date}</span>
+                            <span class="blog-read-link">Leggi <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </div>
                     </div>
-                    <div class="blog-meta">
-                        <span><i class="fa-regular fa-calendar"></i> ${post.date}</span>
-                        <button class="blog-read-more" onclick="openBlogModal(${index})">Leggi tutto <i class="fa-solid fa-chevron-right"></i></button>
+                </a>
+            `).join('');
+            setupScrollReveal();
+        }
+
+        /* ===== CONFRONTO OFFERTE ===== */
+        function findOfferById(id) {
+            for (const segment of Object.values(offerDatabase)) {
+                for (const service of Object.values(segment)) {
+                    const found = service.find(o => o.id === id);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+
+        function toggleCompare(id) {
+            const idx = compareList.indexOf(id);
+            if (idx > -1) {
+                compareList.splice(idx, 1);
+            } else {
+                if (compareList.length >= 3) {
+                    alert("Puoi confrontare al massimo 3 offerte contemporaneamente. Rimuovine una per aggiungerne un'altra.");
+                    const checkbox = document.getElementById('cmp-' + id);
+                    if (checkbox) checkbox.checked = false;
+                    return;
+                }
+                compareList.push(id);
+            }
+            renderCompareTray();
+        }
+
+        function removeFromCompare(id) {
+            compareList = compareList.filter(i => i !== id);
+            const checkbox = document.getElementById('cmp-' + id);
+            if (checkbox) checkbox.checked = false;
+            renderCompareTray();
+        }
+
+        function renderCompareTray() {
+            const tray = document.getElementById('compare-tray');
+            const chipsWrap = document.getElementById('compare-chips');
+            const btn = document.getElementById('btn-compare-now');
+
+            if (compareList.length === 0) {
+                tray.classList.remove('active');
+                return;
+            }
+
+            tray.classList.add('active');
+            chipsWrap.innerHTML = compareList.map(id => {
+                const offer = findOfferById(id);
+                if (!offer) return '';
+                return `<div class="compare-chip">${offer.provider} - ${offer.name} <button onclick="removeFromCompare(${id})"><i class="fa-solid fa-xmark"></i></button></div>`;
+            }).join('');
+
+            btn.disabled = compareList.length < 2;
+            btn.innerHTML = compareList.length < 2
+                ? '<i class="fa-solid fa-scale-balanced"></i> Seleziona almeno 2'
+                : '<i class="fa-solid fa-scale-balanced"></i> Confronta Ora (' + compareList.length + ')';
+        }
+
+        function openCompareModal() {
+            if (compareList.length < 2) return;
+            const consumption = parseFloat(document.getElementById('filter-consumption').value) || 0;
+            const unitLabel = currentService === 'luce' ? 'kWh' : 'Smc';
+            const offers = compareList.map(id => findOfferById(id)).filter(Boolean);
+
+            const rows = [
+                { label: 'Fornitore', get: o => o.provider },
+                { label: 'Nome Offerta', get: o => o.name },
+                { label: 'Tipologia', get: o => o.type === 'fisso' ? 'Prezzo Fisso' : 'Indicizzato' },
+                { label: `Costo Materia (€/${unitLabel})`, get: o => '€' + o.priceUnit.toFixed(3) },
+                { label: 'Quota Fissa Mensile', get: o => '€' + o.fixedFee.toFixed(2) },
+                { label: 'Trasporto', get: o => '€' + o.transportRate.toFixed(3) },
+                { label: 'Oneri di Sistema', get: o => '€' + o.systemRate.toFixed(3) },
+            ];
+
+            const cheapestId = offers.reduce((min, o) => {
+                const est = estimateMonthly(o, consumption);
+                return est < min.val ? { id: o.id, val: est } : min;
+            }, { id: offers[0].id, val: estimateMonthly(offers[0], consumption) }).id;
+
+            let tableHtml = '<table class="compare-table"><thead><tr><th>Voce</th>';
+            offers.forEach(o => tableHtml += `<th>${o.provider}</th>`);
+            tableHtml += '</tr></thead><tbody>';
+
+            rows.forEach(row => {
+                tableHtml += `<tr><td>${row.label}</td>`;
+                offers.forEach(o => tableHtml += `<td>${row.get(o)}</td>`);
+                tableHtml += '</tr>';
+            });
+
+            tableHtml += '<tr class="highlight-row"><td>Stima Mensile Totale</td>';
+            offers.forEach(o => {
+                const est = estimateMonthly(o, consumption);
+                tableHtml += `<td>${o.id === cheapestId ? '<i class="fa-solid fa-crown" style="color:var(--warning);"></i> ' : ''}€${est.toFixed(2)}</td>`;
+            });
+            tableHtml += '</tr></tbody></table>';
+
+            const modal = document.getElementById('global-modal');
+            const container = document.getElementById('modal-dynamic-content');
+            container.innerHTML = `
+                <div class="invoice-header">
+                    <div class="invoice-title-area">
+                        <h2>Confronto Offerte</h2>
+                        <p>Basato su un consumo di ${consumption} ${unitLabel}/anno</p>
                     </div>
                 </div>
-            `).join('');
+                <div class="compare-table-wrapper">${tableHtml}</div>
+            `;
+            modal.classList.add('active');
+        }
+
+        function estimateMonthly(offer, consumption) {
+            const annualEnergy = consumption * offer.priceUnit;
+            const annualTransport = consumption * offer.transportRate;
+            const annualSystem = consumption * offer.systemRate;
+            const annualTax = consumption * offer.taxRate;
+            const annualFixed = offer.fixedFee * 12;
+            return (annualEnergy + annualTransport + annualSystem + annualTax + annualFixed) / 12;
         }
     </script>
 </body>
