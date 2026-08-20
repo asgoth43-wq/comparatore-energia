@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://asgoth43-wq.github.io/comparatore-energia/sitemap.xml
