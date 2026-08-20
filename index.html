@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confrontiamo! - Il Portale Innovativo per la Comparazione Bollette</title>
+    <!-- Codice Google AdSense Integration -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3666974498067088" crossorigin="anonymous"></script>
     <!-- Chart.js per la visualizzazione grafica avanzata -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome per la iconografia del portale -->
@@ -919,41 +921,41 @@
     </footer>
 
     <script>
-        // DATABASE OFFERTE COMPLETO
+        // DATABASE OFFERTE COMPLETO CON LINK UFFICIALI VERIFICATI
         const offerDatabase = {
             residenziale: {
                 luce: [
-                    { id: 101, provider: "Enel Energia", name: "Luce Casa Flex", type: "variabile", priceUnit: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.enel.it/it/luce-e-gas/luce" },
-                    { id: 102, provider: "Eni Plenitude", name: "Fixa Time Luce", type: "fisso", priceUnit: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://eniplenitude.com/luce-gas" },
+                    { id: 101, provider: "Enel Energia", name: "Luce Casa Flex", type: "variabile", priceUnit: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.enel.it/it/luce-e-gas/luce/offerte" },
+                    { id: 102, provider: "Eni Plenitude", name: "Fixa Time Luce", type: "fisso", priceUnit: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://eniplenitude.com/offerte/luce-gas" },
                     { id: 103, provider: "Edison Energia", name: "Edison Dynamic Luce", type: "variabile", priceUnit: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.edisonenergia.it/casa/offerte-luce-gas" },
-                    { id: 104, provider: "A2A Energia", name: "A2A Smart Casa", type: "fisso", priceUnit: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.a2a.it/casa/offerte-luce-gas" },
-                    { id: 105, provider: "Sorgenia", name: "Next Energy Luce", type: "fisso", priceUnit: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.sorgenia.it/offerte-luce-e-gas" },
+                    { id: 104, provider: "A2A Energia", name: "A2A Smart Casa", type: "fisso", priceUnit: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.a2aenergia.it/casa/offerte-luce-gas" },
+                    { id: 105, provider: "Sorgenia", name: "Next Energy Luce", type: "fisso", priceUnit: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.sorgenia.it/offerte-luce-gas" },
                     { id: 106, provider: "Acea Energia", name: "Acea Smart Luce", type: "variabile", priceUnit: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.acea.it/luce-e-gas" },
                     { id: 107, provider: "Hera Comm", name: "Hera Nuova Impronta", type: "variabile", priceUnit: 0.110, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://heracomm.gruppohera.it/casa/offerte-luce-gas" },
                     { id: 108, provider: "Iren Luce e Gas", name: "Iren Prezzo Fisso Luce", type: "fisso", priceUnit: 0.130, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.irenlucegas.it/offerte-luce-gas" },
                     { id: 109, provider: "E.ON Energia", name: "E.ON Luce Click", type: "fisso", priceUnit: 0.122, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.eon-energia.com/offerte-luce-gas.html" },
                     { id: 110, provider: "Engie Italia", name: "Engie Energia 3.0", type: "variabile", priceUnit: 0.115, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://casa.engie.it/offerte-luce-gas/" },
                     { id: 111, provider: "Pulsee Luce e Gas", name: "Pulsee Limitless Luce", type: "fisso", priceUnit: 0.129, fixedFee: 8.90, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://pulsee.it/offerte-luce-gas" },
-                    { id: 112, provider: "NeN Energia", name: "NeN Abbonamento Luce", type: "variabile", priceUnit: 0.119, fixedFee: 7.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://nen.it/" }
+                    { id: 112, provider: "NeN Energia", name: "NeN Abbonamento Luce", type: "variabile", priceUnit: 0.119, fixedFee: 7.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://nen.it/offerte-luce-gas" }
                 ],
                 gas: [
-                    { id: 201, provider: "Enel Energia", name: "Gas Flex Casa", type: "variabile", priceUnit: 0.45, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.enel.it/it/luce-e-gas/gas" },
-                    { id: 202, provider: "Eni Plenitude", name: "Fixa Time Gas", type: "fisso", priceUnit: 0.48, fixedFee: 9.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://eniplenitude.com/luce-gas" },
+                    { id: 201, provider: "Enel Energia", name: "Gas Flex Casa", type: "variabile", priceUnit: 0.45, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.enel.it/it/luce-e-gas/gas/offerte" },
+                    { id: 202, provider: "Eni Plenitude", name: "Fixa Time Gas", type: "fisso", priceUnit: 0.48, fixedFee: 9.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://eniplenitude.com/offerte/luce-gas" },
                     { id: 203, provider: "Edison Energia", name: "Edison World Gas", type: "variabile", priceUnit: 0.42, fixedFee: 11.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.edisonenergia.it/casa/offerte-luce-gas" },
-                    { id: 204, provider: "A2A Energia", name: "A2A Easy Gas", type: "variabile", priceUnit: 0.44, fixedFee: 9.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.a2a.it/casa/offerte-luce-gas" },
-                    { id: 205, provider: "Sorgenia", name: "Next Energy Gas", type: "fisso", priceUnit: 0.47, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.sorgenia.it/offerte-luce-e-gas" },
+                    { id: 204, provider: "A2A Energia", name: "A2A Easy Gas", type: "variabile", priceUnit: 0.44, fixedFee: 9.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.a2aenergia.it/casa/offerte-luce-gas" },
+                    { id: 205, provider: "Sorgenia", name: "Next Energy Gas", type: "fisso", priceUnit: 0.47, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.sorgenia.it/offerte-luce-gas" },
                     { id: 206, provider: "Iren Luce e Gas", name: "Iren Gas Prezzo Fisso", type: "fisso", priceUnit: 0.49, fixedFee: 8.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.irenlucegas.it/offerte-luce-gas" }
                 ]
             },
             business: {
                 luce: [
-                    { id: 301, provider: "Enel Business", name: "Open Italia Luce", type: "variabile", priceUnit: 0.128, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://www.enel.it/it/business" },
+                    { id: 301, provider: "Enel Business", name: "Open Italia Luce", type: "variabile", priceUnit: 0.128, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://www.enel.it/it/aziende/offerte-luce" },
                     { id: 302, provider: "Eni Plenitude Business", name: "Trend Business Luce", type: "variabile", priceUnit: 0.122, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://eniplenitude.com/business" },
-                    { id: 303, provider: "Edison Business", name: "Edison B2B Power", type: "fisso", priceUnit: 0.140, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://www.edisonenergia.it/business" }
+                    { id: 303, provider: "Edison Business", name: "Edison B2B Power", type: "fisso", priceUnit: 0.140, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://www.edisonenergia.it/aziende" }
                 ],
                 gas: [
-                    { id: 401, provider: "Enel Business", name: "Open Italia Gas", type: "variabile", priceUnit: 0.49, fixedFee: 15.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.08, activationUrl: "https://www.enel.it/it/business" },
-                    { id: 402, provider: "Edison Business", name: "Edison B2B Gas", type: "fisso", priceUnit: 0.52, fixedFee: 14.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.08, activationUrl: "https://www.edisonenergia.it/business" }
+                    { id: 401, provider: "Enel Business", name: "Open Italia Gas", type: "variabile", priceUnit: 0.49, fixedFee: 15.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.08, activationUrl: "https://www.enel.it/it/aziende/offerte-gas" },
+                    { id: 402, provider: "Edison Business", name: "Edison B2B Gas", type: "fisso", priceUnit: 0.52, fixedFee: 14.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.08, activationUrl: "https://www.edisonenergia.it/aziende" }
                 ]
             }
         };
