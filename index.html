@@ -162,6 +162,7 @@
             padding: 0 20px;
             text-align: center;
             overflow: hidden;
+            min-height: 90px;
         }
 
         /* HERO & SWITCHER */
@@ -631,6 +632,34 @@
             padding-top: 8px;
         }
 
+        .blog-read-more {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0;
+        }
+
+        .blog-read-more:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .blog-article-body {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .blog-article-body p {
+            margin-bottom: 14px;
+        }
+
         /* MODALE PROSPETTO */
         .modal-overlay {
             position: fixed;
@@ -823,11 +852,15 @@
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-3666974498067088"
-             data-ad-slot="auto"
+             data-ad-slot="1234567890"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
+             try {
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+             } catch (e) {
+                 console.warn("AdSense non ancora pronto o bloccato:", e);
+             }
         </script>
     </div>
 
@@ -911,7 +944,7 @@
         <div class="blog-grid" id="blog-grid"></div>
     </section>
 
-    <!-- Modal per Scontrino & Preventivo -->
+    <!-- Modal per Scontrino, Preventivo & Blog -->
     <div class="modal-overlay" id="global-modal">
         <div class="modal-wrapper">
             <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -927,45 +960,69 @@
         const offerDatabase = {
             residenziale: {
                 luce: [
-                    { id: 101, provider: "Enel Energia", name: "Luce Casa Flex", type: "variabile", priceUnit: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.enel.it/it/luce-e-gas/luce/offerte" },
-                    { id: 102, provider: "Eni Plenitude", name: "Fixa Time Luce", type: "fisso", priceUnit: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://eniplenitude.com/offerte/luce-gas" },
-                    { id: 103, provider: "Edison Energia", name: "Edison Dynamic Luce", type: "variabile", priceUnit: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.edisonenergia.it/casa/offerte-luce-gas" },
-                    { id: 104, provider: "A2A Energia", name: "A2A Smart Casa", type: "fisso", priceUnit: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.a2aenergia.it/casa/offerte-luce-gas" },
-                    { id: 105, provider: "Sorgenia", name: "Next Energy Luce", type: "fisso", priceUnit: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.sorgenia.it/offerte-luce-gas" },
-                    { id: 106, provider: "Acea Energia", name: "Acea Smart Luce", type: "variabile", priceUnit: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.acea.it/luce-e-gas" },
-                    { id: 107, provider: "Hera Comm", name: "Hera Nuova Impronta", type: "variabile", priceUnit: 0.110, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://heracomm.gruppohera.it/casa/offerte-luce-gas" },
-                    { id: 108, provider: "Iren Luce e Gas", name: "Iren Prezzo Fisso Luce", type: "fisso", priceUnit: 0.130, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.irenlucegas.it/offerte-luce-gas" },
-                    { id: 109, provider: "E.ON Energia", name: "E.ON Luce Click", type: "fisso", priceUnit: 0.122, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.eon-energia.com/offerte-luce-gas.html" },
-                    { id: 110, provider: "Engie Italia", name: "Engie Energia 3.0", type: "variabile", priceUnit: 0.115, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://casa.engie.it/offerte-luce-gas/" },
-                    { id: 111, provider: "Pulsee Luce e Gas", name: "Pulsee Limitless Luce", type: "fisso", priceUnit: 0.129, fixedFee: 8.90, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://pulsee.it/offerte-luce-gas" },
-                    { id: 112, provider: "NeN Energia", name: "NeN Abbonamento Luce", type: "variabile", priceUnit: 0.119, fixedFee: 7.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://nen.it/offerte-luce-gas" }
+                    { id: 101, provider: "Enel Energia", name: "Luce Casa Flex", type: "variabile", priceUnit: 0.118, fixedFee: 9.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.enel.it/it/luce-e-gas/luce" },
+                    { id: 102, provider: "Eni Plenitude", name: "Fixa Time Luce", type: "fisso", priceUnit: 0.125, fixedFee: 8.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://eniplenitude.com/luce-gas" },
+                    { id: 103, provider: "Edison Energia", name: "Edison Dynamic Luce", type: "variabile", priceUnit: 0.112, fixedFee: 12.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.edisonenergia.it/casa" },
+                    { id: 104, provider: "A2A Energia", name: "A2A Smart Casa", type: "fisso", priceUnit: 0.135, fixedFee: 7.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.a2aenergia.it/casa" },
+                    { id: 105, provider: "Sorgenia", name: "Next Energy Luce", type: "fisso", priceUnit: 0.121, fixedFee: 10.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.sorgenia.it/" },
+                    { id: 106, provider: "Acea Energia", name: "Acea Smart Luce", type: "variabile", priceUnit: 0.127, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.aceaenergia.it/" },
+                    { id: 107, provider: "Hera Comm", name: "Hera Nuova Impronta", type: "variabile", priceUnit: 0.110, fixedFee: 11.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://heracomm.gruppohera.it/casa" },
+                    { id: 108, provider: "Iren Luce e Gas", name: "Iren Prezzo Fisso Luce", type: "fisso", priceUnit: 0.130, fixedFee: 8.00, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.irenlucegas.it/" },
+                    { id: 109, provider: "E.ON Energia", name: "E.ON Luce Click", type: "fisso", priceUnit: 0.122, fixedFee: 9.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://www.eon-energia.com/" },
+                    { id: 110, provider: "Engie Italia", name: "Engie Energia 3.0", type: "variabile", priceUnit: 0.115, fixedFee: 10.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://casa.engie.it/" },
+                    { id: 111, provider: "Pulsee Luce e Gas", name: "Pulsee Limitless Luce", type: "fisso", priceUnit: 0.129, fixedFee: 8.90, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://pulsee.it/" },
+                    { id: 112, provider: "NeN Energia", name: "NeN Abbonamento Luce", type: "variabile", priceUnit: 0.119, fixedFee: 7.50, transportRate: 0.035, systemRate: 0.028, taxRate: 0.015, activationUrl: "https://nen.it/" }
                 ],
                 gas: [
-                    { id: 201, provider: "Enel Energia", name: "Gas Flex Casa", type: "variabile", priceUnit: 0.45, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.enel.it/it/luce-e-gas/gas/offerte" },
-                    { id: 202, provider: "Eni Plenitude", name: "Fixa Time Gas", type: "fisso", priceUnit: 0.48, fixedFee: 9.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://eniplenitude.com/offerte/luce-gas" },
-                    { id: 203, provider: "Edison Energia", name: "Edison World Gas", type: "variabile", priceUnit: 0.42, fixedFee: 11.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.edisonenergia.it/casa/offerte-luce-gas" },
-                    { id: 204, provider: "A2A Energia", name: "A2A Easy Gas", type: "variabile", priceUnit: 0.44, fixedFee: 9.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.a2aenergia.it/casa/offerte-luce-gas" },
-                    { id: 205, provider: "Sorgenia", name: "Next Energy Gas", type: "fisso", priceUnit: 0.47, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.sorgenia.it/offerte-luce-gas" },
-                    { id: 206, provider: "Iren Luce e Gas", name: "Iren Gas Prezzo Fisso", type: "fisso", priceUnit: 0.49, fixedFee: 8.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.irenlucegas.it/offerte-luce-gas" }
+                    { id: 201, provider: "Enel Energia", name: "Gas Flex Casa", type: "variabile", priceUnit: 0.45, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.enel.it/it/luce-e-gas/gas" },
+                    { id: 202, provider: "Eni Plenitude", name: "Fixa Time Gas", type: "fisso", priceUnit: 0.48, fixedFee: 9.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://eniplenitude.com/luce-gas" },
+                    { id: 203, provider: "Edison Energia", name: "Edison World Gas", type: "variabile", priceUnit: 0.42, fixedFee: 11.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.edisonenergia.it/casa" },
+                    { id: 204, provider: "A2A Energia", name: "A2A Easy Gas", type: "variabile", priceUnit: 0.44, fixedFee: 9.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.a2aenergia.it/casa" },
+                    { id: 205, provider: "Sorgenia", name: "Next Energy Gas", type: "fisso", priceUnit: 0.47, fixedFee: 10.00, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.sorgenia.it/" },
+                    { id: 206, provider: "Iren Luce e Gas", name: "Iren Gas Prezzo Fisso", type: "fisso", priceUnit: 0.49, fixedFee: 8.50, transportRate: 0.18, systemRate: 0.05, taxRate: 0.08, activationUrl: "https://www.irenlucegas.it/" }
                 ]
             },
             business: {
                 luce: [
-                    { id: 301, provider: "Enel Business", name: "Open Italia Luce", type: "variabile", priceUnit: 0.128, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://www.enel.it/it/aziende/offerte-luce" },
+                    { id: 301, provider: "Enel Business", name: "Open Italia Luce", type: "variabile", priceUnit: 0.128, fixedFee: 14.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://www.enel.it/it/aziende/energia" },
                     { id: 302, provider: "Eni Plenitude Business", name: "Trend Business Luce", type: "variabile", priceUnit: 0.122, fixedFee: 15.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://eniplenitude.com/business" },
                     { id: 303, provider: "Edison Business", name: "Edison B2B Power", type: "fisso", priceUnit: 0.140, fixedFee: 12.00, transportRate: 0.030, systemRate: 0.025, taxRate: 0.015, activationUrl: "https://www.edisonenergia.it/aziende" }
                 ],
                 gas: [
-                    { id: 401, provider: "Enel Business", name: "Open Italia Gas", type: "variabile", priceUnit: 0.49, fixedFee: 15.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.08, activationUrl: "https://www.enel.it/it/aziende/offerte-gas" },
+                    { id: 401, provider: "Enel Business", name: "Open Italia Gas", type: "variabile", priceUnit: 0.49, fixedFee: 15.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.08, activationUrl: "https://www.enel.it/it/aziende/energia" },
                     { id: 402, provider: "Edison Business", name: "Edison B2B Gas", type: "fisso", priceUnit: 0.52, fixedFee: 14.00, transportRate: 0.16, systemRate: 0.04, taxRate: 0.08, activationUrl: "https://www.edisonenergia.it/aziende" }
                 ]
             }
         };
 
         const blogPosts = [
-            { title: "Andamento PUN & PSV: Guida al Mercato Energia", excerpt: "Analisi completa sui trend dei prezzi all'ingrosso dell'energia elettrica e del gas in Italia.", date: "Ultimo aggiornamento", tag: "Mercato" },
-            { title: "Come Leggere la Bolletta dell'Energia senza Errori", excerpt: "Scopri quali sono le voci nascoste e come calcolare la quota energia effettiva.", date: "Guida Pratica", tag: "Guida" },
-            { title: "Passaggio al Mercato Libero: Consigli Pratici", excerpt: "I passi fondamentali per scegliere la migliore offerta senza interruzioni di servizio.", date: "Consigli Utili", tag: "Consigli" }
+            {
+                title: "Andamento PUN & PSV: Guida al Mercato Energia",
+                excerpt: "Analisi completa sui trend dei prezzi all'ingrosso dell'energia elettrica e del gas in Italia.",
+                date: "Ultimo aggiornamento",
+                tag: "Mercato",
+                content: `<p>Il PUN (Prezzo Unico Nazionale) e il PSV (Punto di Scambio Virtuale) sono i due indici di riferimento del mercato all'ingrosso rispettivamente di elettricità e gas in Italia. Il loro andamento influenza direttamente le offerte a prezzo indicizzato proposte dai fornitori del mercato libero.</p>
+                <p>Quando questi indici salgono, le bollette delle offerte variabili aumentano nel mese successivo; quando scendono, il beneficio si riflette rapidamente sui consumatori che hanno scelto una tariffa indicizzata. Le offerte a prezzo fisso, invece, restano invariate per tutta la durata del contratto, offrendo maggiore prevedibilità ma meno flessibilità verso i ribassi di mercato.</p>
+                <p>Per scegliere tra fisso e variabile conviene valutare la propria tolleranza al rischio, l'andamento stagionale dei consumi e il contesto geopolitico che può incidere sui prezzi dell'energia nei mesi invernali.</p>`
+            },
+            {
+                title: "Come Leggere la Bolletta dell'Energia senza Errori",
+                excerpt: "Scopri quali sono le voci nascoste e come calcolare la quota energia effettiva.",
+                date: "Guida Pratica",
+                tag: "Guida",
+                content: `<p>Ogni bolletta luce o gas si compone di quattro macro-voci: la spesa per la materia energia (quella su cui si concentra la concorrenza tra fornitori), il trasporto e gestione del contatore, gli oneri di sistema stabiliti da ARERA e le imposte.</p>
+                <p>Molti consumatori confrontano le offerte guardando solo il prezzo al kWh o al Smc, ma la quota fissa mensile di commercializzazione incide in modo significativo sul totale, specialmente per chi consuma poco. Per un confronto corretto è necessario sommare tutte le voci su base annua.</p>
+                <p>Usa il nostro comparatore per vedere il prospetto dettagliato di ogni offerta e capire esattamente cosa stai pagando ogni mese.</p>`
+            },
+            {
+                title: "Passaggio al Mercato Libero: Consigli Pratici",
+                excerpt: "I passi fondamentali per scegliere la migliore offerta senza interruzioni di servizio.",
+                date: "Consigli Utili",
+                tag: "Consigli",
+                content: `<p>Passare al mercato libero, o cambiare fornitore all'interno del mercato libero, non comporta alcuna interruzione della fornitura: il servizio tecnico resta sempre gestito dal distributore locale, indipendentemente dal fornitore scelto.</p>
+                <p>Prima di sottoscrivere una nuova offerta, tieni a portata i dati dell'ultima bolletta: codice POD (per la luce) o PDR (per il gas), consumi annui e potenza impegnata. Questi dati permettono di ottenere una stima accurata della spesa con il nuovo fornitore.</p>
+                <p>Ricorda infine che puoi cambiare fornitore in qualsiasi momento sul mercato libero, senza costi di recesso, salvo eventuali penali specifiche indicate nel contratto per le offerte a prezzo bloccato.</p>`
+            }
         ];
 
         let currentSegment = 'residenziale';
@@ -1289,13 +1346,36 @@
             }, 100);
         }
 
+        function openBlogModal(index) {
+            const post = blogPosts[index];
+            if (!post) return;
+
+            const modal = document.getElementById('global-modal');
+            const container = document.getElementById('modal-dynamic-content');
+
+            container.innerHTML = `
+                <div class="invoice-header">
+                    <div class="invoice-title-area">
+                        <div class="blog-tag">${post.tag}</div>
+                        <h2>${post.title}</h2>
+                        <p>${post.date}</p>
+                    </div>
+                </div>
+                <div class="blog-article-body">
+                    ${post.content}
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
         function closeModal() {
             document.getElementById('global-modal').classList.remove('active');
         }
 
         function renderBlog() {
             const grid = document.getElementById('blog-grid');
-            grid.innerHTML = blogPosts.map(post => `
+            grid.innerHTML = blogPosts.map((post, index) => `
                 <div class="blog-card">
                     <div>
                         <div class="blog-tag">${post.tag}</div>
@@ -1304,7 +1384,7 @@
                     </div>
                     <div class="blog-meta">
                         <span><i class="fa-regular fa-calendar"></i> ${post.date}</span>
-                        <span>Leggi tutto <i class="fa-solid fa-chevron-right"></i></span>
+                        <button class="blog-read-more" onclick="openBlogModal(${index})">Leggi tutto <i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>
             `).join('');
