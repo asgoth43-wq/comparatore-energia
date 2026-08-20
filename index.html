@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <title>Confrontiamo! - Il Portale Innovativo per la Comparazione Bollette</title>
-    <!-- Codice Google AdSense Integration -->
+
+    <!-- GOOGLE ADSENSE CODE (Posizionato in cima per la verifica del crawler) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3666974498067088" crossorigin="anonymous"></script>
+
     <!-- Chart.js per la visualizzazione grafica avanzata -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome per la iconografia del portale -->
@@ -14,6 +17,7 @@
     <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
     <!-- Tesseract.js per l'estrazione OCR dei dati dalla bolletta -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
     <style>
         :root {
             --primary: #0a2540;
@@ -143,7 +147,7 @@
             text-shadow: 0 0 8px rgba(255,255,255,0.5);
         }
 
-        /* CONTAINER PULSANTE PAYPAL INTEGRATO */
+        /* CONTAINER PAYPAL */
         #donate-button-container {
             display: flex;
             align-items: center;
@@ -151,7 +155,16 @@
             min-height: 40px;
         }
 
-        /* HERO & SELEZIONE SEGMENTO/SERVIZIO */
+        /* BANNER ADSENSE INTEGRATO */
+        .adsense-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* HERO & SWITCHER */
         .hero {
             padding: 40px 20px 20px;
             text-align: center;
@@ -498,28 +511,6 @@
             text-decoration: underline;
         }
 
-        .btn-primary {
-            background: var(--primary-accent);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 16px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-        }
-
-        .btn-primary:hover {
-            background: #4f46e5;
-            box-shadow: var(--neon-glow);
-        }
-
         .btn-activate {
             background: linear-gradient(135deg, #00d4b1 0%, #00b395 100%);
             color: var(--bg-dark);
@@ -542,7 +533,7 @@
             transform: translateY(-1px);
         }
 
-        /* PAGINAZIONE A TRE PUNTINI */
+        /* PAGINAZIONE */
         .load-more-container {
             text-align: center;
             margin-top: 35px;
@@ -570,7 +561,7 @@
             transform: translateY(-2px);
         }
 
-        /* SEZIONE BLOG */
+        /* BLOG SECTION */
         .blog-section {
             max-width: 1400px;
             margin: 40px auto 60px;
@@ -640,7 +631,7 @@
             padding-top: 8px;
         }
 
-        /* MODALE PROSPETTO & SCONTRINO */
+        /* MODALE PROSPETTO */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -698,7 +689,6 @@
             color: white;
         }
 
-        /* TABELLA PREVENTIVO */
         .invoice-header {
             border-bottom: 1px solid var(--border);
             padding-bottom: 12px;
@@ -813,13 +803,13 @@
                         <div id="donate-button"></div>
                         <script>
                         PayPal.Donation.Button({
-                        env:'production',
-                        hosted_button_id:'6WMVS49ECBBN6',
-                        image: {
-                        src:'https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif',
-                        alt:'Fai una donazione con il pulsante PayPal',
-                        title:'PayPal - The safer, easier way to pay online!',
-                        }
+                            env:'production',
+                            hosted_button_id:'6WMVS49ECBBN6',
+                            image: {
+                                src:'https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif',
+                                alt:'Fai una donazione con il pulsante PayPal',
+                                title:'PayPal - The safer, easier way to pay online!',
+                            }
                         }).render('#donate-button');
                         </script>
                     </div>
@@ -827,6 +817,19 @@
             </ul>
         </div>
     </header>
+
+    <!-- BANNER DI VERIFICA GOOGLE ADSENSE VISIBILE AL CRAWLER -->
+    <div class="adsense-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-3666974498067088"
+             data-ad-slot="auto"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
 
     <main class="hero">
         <h1>Il Confronto Trasparente per la Tua Energia</h1>
@@ -921,7 +924,6 @@
     </footer>
 
     <script>
-        // DATABASE OFFERTE COMPLETO CON LINK UFFICIALI VERIFICATI
         const offerDatabase = {
             residenziale: {
                 luce: [
@@ -966,13 +968,11 @@
             { title: "Passaggio al Mercato Libero: Consigli Pratici", excerpt: "I passi fondamentali per scegliere la migliore offerta senza interruzioni di servizio.", date: "05 Febbraio 2026", tag: "Consigli" }
         ];
 
-        // STATO APPLICAZIONE
         let currentSegment = 'residenziale';
         let currentService = 'luce';
         let visibleCount = 6;
         let activeChart = null;
 
-        // INIZIALIZZAZIONE
         document.addEventListener("DOMContentLoaded", () => {
             renderOffers();
             renderBlog();
@@ -1094,7 +1094,6 @@
             renderOffers();
         }
 
-        // FUNZIONE OCR ED ESTRAZIONE DATI BOLLETTA
         async function handleFileUpload(event) {
             const file = event.target.files[0];
             const statusText = document.getElementById('upload-status-text');
@@ -1120,13 +1119,11 @@
 
                 const textLower = extractedText.toLowerCase();
 
-                // Identificazione Servizio (Luce o Gas)
                 let detectedService = "luce";
                 if (textLower.includes("gas") || textLower.includes("smc") || textLower.includes("m3")) {
                     detectedService = "gas";
                 }
 
-                // Estrazione Consumi (kWh o Smc)
                 let detectedConsumption = null;
                 const consumptionMatches = extractedText.match(/(\d+[\.,]?\d*)\s*(kwh|smc)/gi);
                 if (consumptionMatches && consumptionMatches.length > 0) {
@@ -1136,7 +1133,6 @@
                     }
                 }
 
-                // Estrazione Importo Totale (€)
                 let detectedCost = null;
                 const costMatches = extractedText.match(/(totale|importo|da pagare)\s*[:\.]?\s*€?\s*(\d+[\.,]\d{2})/gi);
                 if (costMatches && costMatches.length > 0) {
@@ -1147,13 +1143,11 @@
                     }
                 }
 
-                // Calcolo consumi stimati su base annua se rilevati in bolletta mensile/bimensile
                 let annualConsumption = detectedConsumption;
                 if (detectedConsumption && detectedConsumption < 1000) {
-                    annualConsumption = detectedConsumption * 6; // Stima su base bimensile
+                    annualConsumption = detectedConsumption * 6;
                 }
 
-                // Aggiornamento interfaccia
                 if (detectedService !== currentService) {
                     switchService(detectedService);
                 }
@@ -1175,7 +1169,6 @@
             }
         }
 
-        // APERTURA MODALE SCONTRINO
         function openBreakdownModal(offerId) {
             const offer = offerDatabase[currentSegment][currentService].find(o => o.id === offerId);
             if (!offer) return;
